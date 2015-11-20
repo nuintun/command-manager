@@ -50,6 +50,8 @@ module.exports = Vue.component('app-configure', {
       this.popup = !this.popup;
 
       if (!this.popup) {
+        this.name = '';
+        this.path = '';
         this.submitError = '';
         this.$broadcast('clean-error');
       }
