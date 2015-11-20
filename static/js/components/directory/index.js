@@ -18,6 +18,7 @@ module.exports = Vue.component('directory', {
     },
     path: {
       type: String,
+      twoWay: true,
       default: ''
     }
   },

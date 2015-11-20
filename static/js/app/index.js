@@ -19,6 +19,11 @@ window.addEventListener('DOMContentLoaded', function (){
     data: {
       activeIndex: 0,
       configure: {}
+    },
+    events: {
+      'save-configure': function (){
+        
+      }
     }
   });
 

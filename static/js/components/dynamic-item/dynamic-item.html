@@ -4,7 +4,7 @@
     <span :title="item.value">{{ item.value }}</span>
     <i @click="remove(index)" title="删除" class="icon-trash"></i>
   </li>
-  <li class="ui-action-bar">
+  <li class="ui-item-add">
     <input type="text" :placeholder="nameLabel" v-model="name" lazy @focus="focus('nameError')"/>&nbsp;
     <input type="text" :placeholder="valueLabel" v-model="value" lazy @focus="focus('valueError')"/>&nbsp;
     <input type="button" class="ui-button" @click="add" value="添加"/>

@@ -18,9 +18,20 @@ module.exports = Vue.component('app-configure', {
       required: true
     }
   },
+  data: function (){
+    return {
+      popup: false
+    }
+  },
   methods: {
     appConfigure: function (command, configure){
       ipc.send('app-configure', command, configure);
+    },
+    popupToggle: function (){
+      this.popup = !this.popup;
+    },
+    addProject: function (){
+      
     }
   }
 });

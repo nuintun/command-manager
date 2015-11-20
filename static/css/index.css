@@ -420,15 +420,22 @@ header [class*=" icon-"] {
 .ui-sub-item ul {
   padding: 0;
 }
-.ui-sub-item .ui-action-bar {
+.ui-sub-item .ui-item-add {
   margin: 0;
+}
+.ui-sub-item span,
+.ui-item-error span {
+  line-height: 25px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .ui-sub-item span {
   width: 192px;
-  line-height: 25px;
   border-bottom: 1px dotted #ccc;
-  display: inline-block;
-  vertical-align: middle;
+}
+.ui-item-error span {
+  color: #f00;
+  border-bottom: none;
 }
 .ui-sub-item .icon-trash {
   cursor: pointer;
@@ -441,12 +448,12 @@ header [class*=" icon-"] {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.ui-sub-item .ui-item-error {
-  margin: 10px 0 0;
+.ui-popup-content .ui-item-error,
+.ui-project-configure .ui-item-error {
+  margin: 10px 0;
 }
-.ui-item-error span {
-  color: #f00;
-  border-bottom-color: #f00;
+.ui-sub-item .ui-item-error {
+  margin: 15px 0 -10px;
 }
 .ui-item-error .icon-expand {
   position: absolute;

@@ -157,7 +157,7 @@ AppConfigure.prototype = {
 
     this.create();
 
-    ipc.on('app-configure', function (event, command){
+    ipc.on('app-configure', function (event, command, configure){
       switch (command) {
         case 'import':
           context.import(function (configure){
@@ -185,11 +185,11 @@ AppConfigure.prototype = {
             });
           });
           break;
-        case 'add':
-          context.save(function (configure){
-
-          }, function (configure){
-
+        case 'save':
+          context.save(configure, function (){
+            this.showMessageBox('保存成功！', { type: 'info' });
+          }, function (){
+            this.showMessageBox('保存失败！');
           });
           break;
       }
