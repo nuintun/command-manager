@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function (){
     el: '#app',
     data: {
       activeIndex: 0,
-      configure: {}
+      configure: { projects: [] }
     },
     events: {
       'save-configure': function (){
@@ -36,6 +36,7 @@ window.addEventListener('DOMContentLoaded', function (){
     switch (command) {
       case 'refresh':
         app.activeIndex = 0;
+        configure.projects = configure.projects || [];
         app.configure = configure;
         break;
     }

@@ -31,7 +31,7 @@ module.exports = Vue.component('app-configure', {
     uniqueCache: function (){
       var cache = {};
 
-      this.configure.projects && this.configure.projects.forEach(function (project){
+      this.configure.projects.forEach(function (project){
         cache[project.name] = true;
       });
 
