@@ -5,13 +5,13 @@
 'use strict';
 
 var ipc = require('ipc-renderer');
-var Vue = require('./js/vue/vue');
+var Vue = require('../vue/vue');
 
-require('./js/components/app-configure');
-require('./js/components/window-control');
-require('./js/components/app-nav');
-require('./js/components/directory');
-require('./js/components/dynamic-item');
+require('../components/app-configure');
+require('../components/window-control');
+require('../components/app-nav');
+require('../components/directory');
+require('../components/dynamic-item');
 
 window.addEventListener('DOMContentLoaded', function (){
   var app = new Vue({
