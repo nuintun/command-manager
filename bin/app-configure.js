@@ -17,6 +17,7 @@ const USERDATA = app.getPath('userData');
 const USERDESKTOP = app.getPath('userDesktop');
 const CONFIGURENAME = 'command-manager.config';
 const CONFIGUREPATH = join(USERDATA, CONFIGURENAME);
+const TEMPCONFIGUREPATH = join(USERDESKTOP, CONFIGURENAME);
 const DEFAULTCONFIGURE = { projects: [] };
 const ERRORMESSAGE = {
   NONEXISTS: '不存在',
@@ -254,7 +255,7 @@ AppConfigure.prototype = {
     // show open dialog
     dialog.showOpenDialog(this.window, {
       title: this.title,
-      defaultPath: CONFIGURENAME,
+      defaultPath: TEMPCONFIGUREPATH,
       properties: ['openFile'],
       filters: [{ name: 'Config Files', extensions: ['config'] }]
     }, function (paths){
@@ -298,7 +299,7 @@ AppConfigure.prototype = {
     // show save dialog
     dialog.showSaveDialog(this.window, {
       title: this.title,
-      defaultPath: join(USERDESKTOP, CONFIGURENAME),
+      defaultPath: TEMPCONFIGUREPATH,
       filters: [{ name: 'Config Files', extensions: ['config'] }]
     }, function (path){
       if (path) {
