@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>命令管理器</title>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <link href="./css/base.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/index.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="./js/app/index.js"></script>
+  </head>
+  <body id="app" class="fn-clear">
+    <header class="fn-clear">
+      <app-configure :configure.sync="configure"></app-configure>
+      <window-control></window-control>
+    </header>
+    <nav class="ui-project-tree fn-left">
+      <app-nav :configure.sync="configure" :active-index.sync="activeIndex"></app-nav>
+    </nav>
+    <main class="ui-project-main fn-right">
+      <div class="ui-project-stage fn-hide">
+        <div class="ui-control-bar fn-clear">
+          <div class="ui-control-operate fn-left">
+            <a title="删除项目" href="javascript:;"><i class="icon-trash"></i></a>
+            <a title="设置项目" href="javascript:;"><i class="icon-gear"></i></a>
+          </div>
+          <div class="fn-right">
+            <ul class="ui-command fn-clear">
+              <li><a href="javascript:;"><i class="icon-play"></i>命令1</a></li>
+              <li><a href="javascript:;"><i class="icon-stop"></i>命令2</a></li>
+              <li><a href="javascript:;"><i class="icon-play"></i>命令3</a></li>
+              <li class="ui-command-more">
+                <a href="javascript:;">更多&nbsp;<i class="icon-expand"></i></a>
+                <ul class="ui-command-popup fn-hide">
+                  <li><a href="javascript:;"><i class="icon-play"></i>命令4</a></li>
+                  <li><a href="javascript:;"><i class="icon-stop"></i>命令5</a></li>
+                  <li><a href="javascript:;"><i class="icon-play"></i>命令6</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="ui-project-terminal"></div>
+      </div>
+      <div class="ui-project-setting">
+        <form>
+          <div class="ui-control-bar fn-clear">
+            <div class="fn-right">
+              <input type="submit" class="ui-button" value="确认"/>
+              <input type="button" class="ui-button ui-button-orange" value="取消"/>
+            </div>
+          </div>
+          <div class="ui-project-configure">
+            <ul>
+              <li>
+                <label>项目名称：</label>
+                <input type="text" placeholder="项目名称"/>
+              </li>
+              <li id="open-dir">
+                <directory label="项目路径"></directory>
+              </li>
+              <li id="add-env" class="ui-sub-item">
+                <label>环境变量：</label>
+                <dynamic-item name-label="变量名" value-label="变量值"></dynamic-item>
+              </li>
+              <li id="add-cmd" class="ui-sub-item">
+                <label>项目命令：</label>
+                <dynamic-item name-label="名称" value-label="命令"></dynamic-item>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

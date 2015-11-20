@@ -1,0 +1,16 @@
+<ul>
+  <li v-for="(index, item) in items">
+    <span :title="item.name">{{ item.name }}</span>&nbsp;
+    <span :title="item.value">{{ item.value }}</span>
+    <i @click="remove(index)" title="删除" class="icon-trash"></i>
+  </li>
+  <li class="ui-action-bar">
+    <input type="text" :placeholder="nameLabel" v-model="name" lazy @focus="focus('nameError')"/>&nbsp;
+    <input type="text" :placeholder="valueLabel" v-model="value" lazy @focus="focus('valueError')"/>&nbsp;
+    <input type="button" class="ui-button" @click="add" value="添加"/>
+  </li>
+  <li v-show="nameError || valueError" class="ui-item-error">
+    <span :class="nameError ? '' : 'fn-invisible'"><i class="icon-expand"></i>{{ nameLabel }}{{ nameError }}</span>&nbsp;
+    <span :class="valueError ? '' : 'fn-invisible'"><i class="icon-expand"></i>{{ valueLabel }}{{ valueError }}</span>
+  </li>
+</ul>

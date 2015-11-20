@@ -1,0 +1,7 @@
+<ul>
+  <li v-for="(index, project) in configure.projects">
+    <a href="javascript:;" :class="{ active: activeIndex === index }" :title="project.name" @click="select(index)">
+      <i class="icon-folder"></i>{{ project.name }}
+    </a>
+  </li>
+</ul>
