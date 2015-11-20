@@ -34,6 +34,9 @@ module.exports = Vue.component('project-base', {
     }
   },
   events: {
+    'directory-input-focus': function (){
+      this.pathError = '';
+    },
     'clean-error': function (){
       this.nameError = '';
       this.pathError = '';

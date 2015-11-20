@@ -1,6 +1,6 @@
 <li>
   <label>项目名称：</label>
-  <input type="text" v-model="name" placeholder="项目名称"/>
+  <input type="text" v-model="name" placeholder="项目名称" lazy @focus="focus('nameError')"/>
 </li>
 <li v-show="nameError" class="ui-item-error">
   <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
