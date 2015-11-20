@@ -8,7 +8,7 @@ var fs = require('fs');
 var path = require('path');
 var Vue = require('../../vue/vue');
 
-module.exports = Vue.component('app-configure', {
+module.exports = Vue.component('project-base', {
   template: fs.readFileSync(path.join(__dirname, 'project-base.html')).toString(),
   props: {
     name: {
@@ -28,7 +28,16 @@ module.exports = Vue.component('app-configure', {
       pathError: ''
     };
   },
+  methods: {
+    focus: function (key){
+      this[key] = '';
+    }
+  },
   events: {
+    'clean-error': function (){
+      this.nameError = '';
+      this.pathError = '';
+    },
     'submit': function (){
       this.name = this.name.trim();
       this.path = this.path.trim();

@@ -11,6 +11,7 @@ require('../components/app-configure');
 require('../components/window-control');
 require('../components/app-nav');
 require('../components/directory');
+require('../components/project-base');
 require('../components/dynamic-item');
 
 window.addEventListener('DOMContentLoaded', function (){
@@ -18,11 +19,11 @@ window.addEventListener('DOMContentLoaded', function (){
     el: '#app',
     data: {
       activeIndex: 0,
-      configure: {}
+      configure: { projects: [] }
     },
     events: {
       'save-configure': function (){
-        
+
       }
     }
   });

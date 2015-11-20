@@ -82,6 +82,12 @@ module.exports = Vue.component('dynamic-item', {
       delete this.$data._cached[item.name];
     }
   },
+  events: {
+    'clean-error': function (){
+      this.nameError = '';
+      this.valueError = '';
+    }
+  },
   created: function (){
     this.items.forEach(function (item){
       this.$data._cached[item.name] = true;

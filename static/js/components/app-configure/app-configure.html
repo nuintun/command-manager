@@ -16,23 +16,10 @@
     <span></span>
   </div>
   <div class="ui-popup-content">
-    <form>
+    <div v-show="submitError" class="ui-submit-tips">{{ submitError }}</div>
+    <form @submit.prevent="addProject">
       <ul>
-        <li>
-          <label>项目名称：</label>
-          <input type="text" placeholder="项目名称"/>
-        </li>
-        <li class="ui-item-error">
-          <label class="fn-invisible">项目名称：</label>
-          <span><i class="icon-expand"></i>asdasdasdsa</span>
-        </li>
-        <li id="popup-open-dir">
-          <directory label="项目路径"></directory>
-        </li>
-        <li class="ui-item-error">
-          <label class="fn-invisible">项目名称：</label>
-          <span><i class="icon-expand"></i>asdasdasdsa</span>
-        </li>
+        <li is="project-base" :name.sync="name" :path.sync="path"></li>
         <li class="ui-popup-control">
           <input type="submit" class="ui-button" value="确定"/>
           <input @click="popupToggle" type="button" class="ui-button ui-button-orange" value="取消"/>

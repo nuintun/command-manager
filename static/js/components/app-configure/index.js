@@ -20,6 +20,10 @@ module.exports = Vue.component('app-configure', {
   },
   data: function (){
     return {
+      name: '',
+      path: '',
+      _cached: {},
+      submitError: '',
       popup: false
     }
   },
@@ -29,9 +33,34 @@ module.exports = Vue.component('app-configure', {
     },
     popupToggle: function (){
       this.popup = !this.popup;
+
+      if (!this.popup) {
+        this.submitError = '';
+        this.$broadcast('clean-error');
+      }
     },
     addProject: function (){
-      
+      this.$broadcast('submit');
+
+      if (this.name && this.path) {
+        if (this.$data._cached[this.name]) {
+          this.submitError = '项目已存在';
+        } else {
+          this.popup = false;
+          this.configure.projects.push({ name: this.name, path: this.path });
+          this.$data._cached[this.name] = true;
+
+          // clean imput
+          this.name = '';
+          this.path = '';
+          this.submitError = '';
+        }
+      }
     }
+  },
+  created: function (){
+    this.configure.projects.forEach(function (project){
+      this.$data._cached[project.name] = true;
+    }, this);
   }
 });

@@ -389,6 +389,7 @@ header [class*=" icon-"] {
 .ui-project-terminal,
 .ui-project-configure {
   width: 100%;
+  padding: 30px 0;
   box-sizing: border-box;
   height: calc(100% - 39px);
   border-top: 1px dashed #ccc;
@@ -406,7 +407,6 @@ header [class*=" icon-"] {
   text-align: center;
 }
 .ui-project-configure ul {
-  padding: 30px 0;
   text-align: left;
   display: inline-block;
 }
@@ -460,4 +460,9 @@ header [class*=" icon-"] {
   transform: rotate(180deg);
   margin-top: -11px;
   margin-left: -5px;
+}
+.ui-submit-tips {
+  color: #f00;
+  text-align: center;
+  padding: 0 0 15px;
 }
