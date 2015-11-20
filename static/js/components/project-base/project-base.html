@@ -4,12 +4,12 @@
 </li>
 <li v-show="nameError" class="ui-item-error">
   <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
-  <span><i class="icon-expand"></i>{{ nameError }}</span>
+  <span>{{ nameError }}</span>
 </li>
 <li @focusin="focus('pathError', $event)">
   <directory label="项目路径" :path.sync="path"></directory>
 </li>
 <li v-show="pathError" class="ui-item-error">
   <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
-  <span><i class="icon-expand"></i>{{ pathError }}</span>
+  <span>{{ pathError }}</span>
 </li>

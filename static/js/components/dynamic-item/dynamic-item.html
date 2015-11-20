@@ -10,7 +10,7 @@
     <input type="button" class="ui-button" @click="add" value="添加"/>
   </li>
   <li v-show="nameError || valueError" class="ui-item-error">
-    <span :class="nameError ? '' : 'fn-invisible'"><i class="icon-expand"></i>{{ nameLabel }}{{ nameError }}</span>&nbsp;
-    <span :class="valueError ? '' : 'fn-invisible'"><i class="icon-expand"></i>{{ valueLabel }}{{ valueError }}</span>
+    <span :class="nameError ? '' : 'fn-invisible'">{{ nameLabel }}{{ nameError }}</span>&nbsp;
+    <span :class="valueError ? '' : 'fn-invisible'">{{ valueLabel }}{{ valueError }}</span>
   </li>
 </ul>

@@ -450,16 +450,15 @@ header [class*=" icon-"] {
 }
 .ui-popup-content .ui-item-error,
 .ui-project-configure .ui-item-error {
-  margin: 10px 0;
+  margin: -10px 0 5px;
 }
 .ui-sub-item .ui-item-error {
-  margin: 15px 0 -10px;
+  margin: 5px 0 -10px;
 }
-.ui-item-error .icon-expand {
-  position: absolute;
-  transform: rotate(180deg);
-  margin-top: -11px;
-  margin-left: -5px;
+.ui-submit-tips:before,
+.ui-item-error span:before {
+  content: '* ';
+  font-weight: bold;;
 }
 .ui-submit-tips {
   color: #f00;

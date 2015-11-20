@@ -16,7 +16,7 @@
       <app-nav :configure.sync="configure" :active-index.sync="activeIndex"></app-nav>
     </nav>
     <main class="ui-project-main fn-right">
-      <div class="ui-project-stage">
+      <div class="ui-project-stage fn-hide">
         <div class="ui-control-bar fn-clear">
           <div class="ui-control-operate fn-left">
             <a title="删除项目" href="javascript:;"><i class="icon-trash"></i></a>
@@ -40,7 +40,7 @@
         </div>
         <div class="ui-project-terminal"></div>
       </div>
-      <div class="ui-project-setting fn-hide">
+      <div class="ui-project-setting">
         <form>
           <div class="ui-control-bar fn-clear">
             <div class="fn-right">
@@ -57,14 +57,14 @@
               </li>
               <li class="ui-item-error">
                 <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
-                <span><i class="icon-expand"></i>项目名称不能为空</span>
+                <span>项目名称不能为空</span>
               </li>
               <li>
                 <directory label="项目路径"></directory>
               </li>
               <li class="ui-item-error">
                 <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
-                <span><i class="icon-expand"></i>项目路径不能为空</span>
+                <span>项目路径不能为空</span>
               </li>
               <li id="add-env" class="ui-sub-item">
                 <label>环境变量：</label>
