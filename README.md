@@ -1,2 +1,3 @@
-# command-manager
-A command manager app
+command-manager
+===========
+>A command manager app
