@@ -33,10 +33,20 @@ module.exports = Vue.component('dynamic-item', {
     return {
       name: '',
       value: '',
-      _cached: {},
       nameError: '',
       valueError: ''
     };
+  },
+  computed: {
+    uniqueCache: function (){
+      var cache = {};
+
+      this.items.forEach(function (item){
+        cache[item.name] = true;
+      }, this);
+
+      return cache;
+    }
   },
   methods: {
     add: function (){
@@ -47,7 +57,7 @@ module.exports = Vue.component('dynamic-item', {
       // name error
       if (!this.name) {
         this.nameError = '不能为空';
-      } else if (this.$data._cached[this.name]) {
+      } else if (this.uniqueCache[this.name]) {
         this.nameError = ' ' + this.name + ' 已存在';
       } else {
         this.nameError = '';
@@ -61,9 +71,7 @@ module.exports = Vue.component('dynamic-item', {
       }
 
       // add item
-      if (this.name && this.value && !this.$data._cached[this.name]) {
-        // cache name
-        this.$data._cached[this.name] = true;
+      if (this.name && this.value && !this.uniqueCache[this.name]) {
         // add item
         this.items.push({ name: this.name, value: this.value });
 
@@ -76,10 +84,7 @@ module.exports = Vue.component('dynamic-item', {
       this[key] = '';
     },
     remove: function (index){
-      var item = this.items[index];
-
       this.items.splice(index, 1);
-      delete this.$data._cached[item.name];
     }
   },
   events: {
@@ -87,10 +92,5 @@ module.exports = Vue.component('dynamic-item', {
       this.nameError = '';
       this.valueError = '';
     }
-  },
-  created: function (){
-    this.items.forEach(function (item){
-      this.$data._cached[item.name] = true;
-    }, this);
   }
 });

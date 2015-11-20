@@ -22,7 +22,6 @@ module.exports = Vue.component('app-configure', {
     return {
       name: '',
       path: '',
-      _cached: {},
       submitError: '',
       popup: false
     }
