@@ -29,8 +29,10 @@ module.exports = Vue.component('project-base', {
     };
   },
   methods: {
-    focus: function (key){
-      this[key] = '';
+    focus: function (key, event){
+      if (event.target.type === 'text') {
+        this[key] = '';
+      }
     }
   },
   events: {

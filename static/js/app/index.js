@@ -15,15 +15,19 @@ require('../components/project-base');
 require('../components/dynamic-item');
 
 window.addEventListener('DOMContentLoaded', function (){
+  function normalize(configure){
+    return JSON.parse(JSON.stringify(configure));
+  }
+
   var app = new Vue({
     el: '#app',
     data: {
       activeIndex: 0,
-      configure: { projects: [] }
+      configure: {}
     },
     events: {
       'save-configure': function (){
-
+        ipc.send('app-configure', 'save', normalize(this.configure));
       }
     }
   });

@@ -186,9 +186,7 @@ AppConfigure.prototype = {
           });
           break;
         case 'save':
-          context.save(configure, function (){
-            this.showMessageBox('保存成功！', { type: 'info' });
-          }, function (){
+          context.save(configure, null, function (){
             this.showMessageBox('保存失败！');
           });
           break;

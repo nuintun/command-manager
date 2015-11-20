@@ -27,9 +27,22 @@ module.exports = Vue.component('app-configure', {
       popup: false
     }
   },
+  computed: {
+    uniqueCache: function (){
+      var cache = {};
+
+      this.configure.projects && this.configure.projects.forEach(function (project){
+        cache[project.name] = true;
+      });
+
+      return cache;
+    }
+  },
   methods: {
-    focus: function (){
-      this.submitError = '';
+    focus: function (event){
+      if (event.target.type === 'text') {
+        this.submitError = '';
+      }
     },
     appConfigure: function (command, configure){
       ipc.send('app-configure', command, configure);
@@ -45,25 +58,23 @@ module.exports = Vue.component('app-configure', {
     addProject: function (){
       this.$broadcast('submit');
 
+      console.log(this.uniqueCache[this.name]);
+
       if (this.name && this.path) {
-        if (this.$data._cached[this.name]) {
+        if (this.uniqueCache[this.name]) {
           this.submitError = '项目已存在';
         } else {
           this.popup = false;
           this.configure.projects.push({ name: this.name, path: this.path });
-          this.$data._cached[this.name] = true;
 
           // clean imput
           this.name = '';
           this.path = '';
           this.submitError = '';
+
+          this.$dispatch('save-configure');
         }
       }
     }
-  },
-  created: function (){
-    this.configure.projects.forEach(function (project){
-      this.$data._cached[project.name] = true;
-    }, this);
   }
 });
