@@ -28,6 +28,9 @@ module.exports = Vue.component('app-configure', {
     }
   },
   methods: {
+    focus: function (){
+      this.submitError = '';
+    },
     appConfigure: function (command, configure){
       ipc.send('app-configure', command, configure);
     },

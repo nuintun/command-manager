@@ -6,7 +6,7 @@
   <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
   <span><i class="icon-expand"></i>{{ nameError }}</span>
 </li>
-<li>
+<li @focusin="focus('pathError')">
   <directory label="项目路径" :path.sync="path"></directory>
 </li>
 <li v-show="pathError" class="ui-item-error">

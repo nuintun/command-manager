@@ -26,9 +26,6 @@ module.exports = Vue.component('directory', {
   methods: {
     open: function (){
       ipc.send('open-directory', this.path, this._uid);
-    },
-    focus: function (){
-      this.$dispatch('directory-input-focus');
     }
   },
   created: function (){
