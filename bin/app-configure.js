@@ -257,7 +257,7 @@ AppConfigure.prototype = {
       title: this.title,
       defaultPath: TEMPCONFIGUREPATH,
       properties: ['openFile'],
-      filters: [{ name: 'Config Files', extensions: ['config'] }]
+      filters: [{ name: 'Configure Files', extensions: ['config'] }]
     }, function (paths){
       if (paths) {
         fs.readFile(paths[0], function (error, configure){
@@ -300,7 +300,7 @@ AppConfigure.prototype = {
     dialog.showSaveDialog(this.window, {
       title: this.title,
       defaultPath: TEMPCONFIGUREPATH,
-      filters: [{ name: 'Config Files', extensions: ['config'] }]
+      filters: [{ name: 'Configure Files', extensions: ['config'] }]
     }, function (path){
       if (path) {
         fs.createReadStream(CONFIGUREPATH)
