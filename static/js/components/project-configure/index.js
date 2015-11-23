@@ -14,6 +14,11 @@ require('../dynamic-item');
 module.exports = Vue.component('project-configure', {
   template: fs.readFileSync(path.join(__dirname, 'project-configure.html')).toString(),
   props: {
+    show: {
+      type: Boolean,
+      twoWay: true,
+      default: false
+    },
     project: {
       type: Object,
       required: true
@@ -52,11 +57,14 @@ module.exports = Vue.component('project-configure', {
         } else {
           // clean error
           this.submitError = '';
-  
+
           // send message
           this.$dispatch('edit', this.projectClone);
         }
       }
+    },
+    cancel: function (){
+      this.show = false;
     }
   },
   events: {

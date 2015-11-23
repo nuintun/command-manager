@@ -313,6 +313,7 @@ header [class*=" icon-"] {
   vertical-align: middle;
 }
 .ui-project-main {
+  position: relative;
   box-sizing: border-box;
   width: 80%;
   height: calc(100% - 31px);
@@ -324,6 +325,13 @@ header [class*=" icon-"] {
 .ui-project-setting form {
   width: 100%;
   height: 100%;
+  background-color: #fff;
+}
+.ui-project-setting {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 .ui-control-bar {
   height: 39px;

@@ -1,9 +1,9 @@
-<div class="ui-project-setting">
-  <form @submit.prevent="edit">
+<div v-show="show" class="ui-project-setting">
+  <form @submit.prevent="edit" @focusin="focus">
     <div class="ui-control-bar fn-clear">
       <div class="fn-right">
         <input type="submit" class="ui-button" value="确认"/>
-        <input type="button" class="ui-button ui-button-orange" value="取消"/>
+        <input type="button" class="ui-button ui-button-orange" value="取消" @click="cancel"/>
       </div>
     </div>
     <div class="ui-project-configure">

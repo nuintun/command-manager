@@ -30,7 +30,7 @@ module.exports = Vue.component('app-configure', {
       name: '',
       path: '',
       submitError: '',
-      popup: false
+      showPopup: false
     }
   },
   methods: {
@@ -43,9 +43,9 @@ module.exports = Vue.component('app-configure', {
       ipc.send('app-configure', command, configure);
     },
     popupToggle: function (){
-      this.popup = !this.popup;
+      this.showPopup = !this.showPopup;
 
-      if (!this.popup) {
+      if (!this.showPopup) {
         this.name = '';
         this.path = '';
         this.submitError = '';
@@ -59,7 +59,7 @@ module.exports = Vue.component('app-configure', {
         if (this.uniqueProjects[this.name]) {
           this.submitError = '项目已存在';
         } else {
-          this.popup = false;
+          this.showPopup = false;
           this.configure.projects.push({ name: this.name, path: this.path });
 
           // clean imput

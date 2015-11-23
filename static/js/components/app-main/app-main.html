@@ -1,21 +1,28 @@
-<project-configure :project="project" :unique-projects.sync="uniqueProjects"></project-configure>
-<div class="ui-project-stage fn-hide">
+<project-configure :show.sync="showSetting" :project="project" :unique-projects.sync="uniqueProjects">
+</project-configure>
+<div class="ui-project-stage">
   <div class="ui-control-bar fn-clear">
     <div class="ui-control-operate fn-left">
-      <a title="删除项目" href="javascript:;"><i class="icon-trash"></i></a>
-      <a title="设置项目" href="javascript:;"><i class="icon-gear"></i></a>
+      <a title="删除项目" href="javascript:;" @click="remove"><i class="icon-trash"></i></a>
+      <a title="设置项目" href="javascript:;" @click="setting"><i class="icon-gear"></i></a>
     </div>
     <div class="fn-right">
       <ul class="ui-command fn-clear">
-        <li><a href="javascript:;"><i class="icon-play"></i>命令1</a></li>
-        <li><a href="javascript:;"><i class="icon-stop"></i>命令2</a></li>
-        <li><a href="javascript:;"><i class="icon-play"></i>命令3</a></li>
-        <li class="ui-command-more">
+        <li v-for="cmd in comand">
+          <a href="javascript:;">
+            <i class="icon-play"></i>
+            {{ cmd.name }}
+          </a>
+        </li>
+        <li v-if="moreCommand.length" class="ui-command-more">
           <a href="javascript:;">更多&nbsp;<i class="icon-expand"></i></a>
           <ul class="ui-command-popup fn-hide">
-            <li><a href="javascript:;"><i class="icon-play"></i>命令4</a></li>
-            <li><a href="javascript:;"><i class="icon-stop"></i>命令5</a></li>
-            <li><a href="javascript:;"><i class="icon-play"></i>命令6</a></li>
+            <li v-for="moreCmd in moreCommand">
+              <a href="javascript:;">
+                <i class="icon-play"></i>
+                {{ moreCmd.name }}
+              </a>
+            </li>
           </ul>
         </li>
       </ul>

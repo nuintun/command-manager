@@ -5,7 +5,6 @@
 
 var fs = require('fs');
 var path = require('path');
-var ipc = require('ipc-renderer');
 var Vue = require('../../vue/vue');
 
 require('../project-configure');
@@ -29,11 +28,18 @@ module.exports = Vue.component('app-main', {
     }
   },
   data: function (){
-    return {};
+    return {
+      showSetting: false
+    };
   },
   computed: {
     project: function (){
-      var project = this.projects[this.activeIndex];
+      var project = this.projects[this.activeIndex] || {
+          name: '',
+          path: '',
+          env: [],
+          command: []
+        };
 
       if (!project.env) {
         project.env = [];
@@ -44,11 +50,22 @@ module.exports = Vue.component('app-main', {
       }
 
       return JSON.parse(JSON.stringify(project));
+    },
+    command: function (){
+      console.log(this.project.command.slice(0, 3));
+      return this.project.command.slice(0, 3);
+    },
+    moreCommand: function (){
+      return this.project.command.slice(3);
     }
   },
   methods: {
+    setting: function (){
+      this.showSetting = true;
+    },
     remove: function (){
       this.projects.splice(this.activeIndex, 1);
+      this.activeIndex = 0;
       this.$dispatch('save-configure');
     }
   },

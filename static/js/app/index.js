@@ -15,10 +15,6 @@ require('../components/app-main');
 window.addEventListener('DOMContentLoaded', function (){
   var app;
 
-  function normalize(configure){
-    return JSON.parse(JSON.stringify(configure));
-  }
-
   function init(configure){
     app = new Vue({
       el: '#app',
@@ -42,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function (){
           this.activeIndex = index;
         },
         'save-configure': function (){
-          ipc.send('app-configure', 'save', normalize(this.configure));
+          ipc.send('app-configure', 'save', JSON.parse(JSON.stringify(this.configure)));
         }
       }
     });
