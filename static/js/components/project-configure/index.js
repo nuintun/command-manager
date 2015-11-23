@@ -68,7 +68,7 @@ module.exports = Vue.component('project-configure', {
       var origin = JSON.parse(JSON.stringify(this.project));
 
       this.show = false;
-      this.project = { name: '', path: '', env: [], command: [] };
+      this.project = JSON.parse(JSON.stringify(this.projectClone));
 
       this.$nextTick(function (){
         this.project = origin;
