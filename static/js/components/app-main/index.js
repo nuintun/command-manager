@@ -50,7 +50,7 @@ module.exports = Vue.component('app-main', {
         project.command = [];
       }
 
-      return JSON.parse(JSON.stringify(project));
+      return project;
     },
     command: function (){
       return this.project.command.slice(0, 3);
