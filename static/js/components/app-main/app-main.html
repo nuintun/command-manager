@@ -12,7 +12,7 @@
     <div class="fn-right">
       <ul class="ui-command fn-clear">
         <li v-for="cmd in command">
-          <a href="javascript:;">
+          <a :title="cmd.name" href="javascript:;">
             <i class="icon-play"></i>
             {{ cmd.name }}
           </a>
@@ -21,7 +21,7 @@
           <a href="javascript:;" @click="commandToggle">更多&nbsp;<i class="icon-expand"></i></a>
           <ul v-show="showMoreCommand" class="ui-command-popup">
             <li v-for="moreCmd in moreCommand">
-              <a href="javascript:;">
+              <a :title="moreCmd.name" href="javascript:;">
                 <i class="icon-play"></i>
                 {{ moreCmd.name }}
               </a>
