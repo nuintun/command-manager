@@ -6,7 +6,6 @@
 
 var fs = require('fs');
 var path = require('path');
-var ipc = require('ipc-renderer');
 var Vue = require('../../vue/vue');
 
 require('../project-base');
@@ -17,8 +16,24 @@ module.exports = Vue.component('project-configure', {
   props: {
     project: {
       type: Object,
+      required: true
+    },
+    uniqueProjects: {
+      type: Object,
       twoWay: true,
       required: true
+    }
+  },
+  data: function (){
+    return {
+      nameError: '',
+      pathError: '',
+      submitError: ''
+    }
+  },
+  computed: {
+    projectClone: function (){
+      return JSON.parse(JSON.stringify(this.project));
     }
   },
   methods: {
@@ -28,9 +43,26 @@ module.exports = Vue.component('project-configure', {
       }
     },
     edit: function (){
-      this.$broadcast('submit');
+      var name = this.projectClone.name;
+      var originName = this.project.name;
 
-      console.log(this.project);
+      if (this.projectClone.name && this.projectClone.path) {
+        if (name !== originName && this.uniqueProjects[name]) {
+          this.submitError = '项目已存在';
+        } else {
+          // clean error
+          this.submitError = '';
+  
+          // send message
+          this.$dispatch('edit', this.projectClone);
+        }
+      }
+    }
+  },
+  events: {
+    'configure-refresh': function (){
+      this.submitError = '';
+      this.$broadcast('clean-error');
     }
   }
 });

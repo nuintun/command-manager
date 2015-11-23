@@ -56,19 +56,22 @@ module.exports = Vue.component('dynamic-item', {
       this.value = this.value.trim();
 
       // name error
-      if (!this.name) {
-        this.nameError = '不能为空';
-      } else if (this.uniqueItems[this.name]) {
-        this.nameError = ' ' + this.name + ' 已存在';
+      if (this.name) {
+        if (this.uniqueItems[this.name]) {
+          this.nameError = ' ' + this.name + ' 已存在';
+        } else {
+          this.nameError = '';
+        }
       } else {
-        this.nameError = '';
+
+        this.nameError = '不能为空';
       }
 
       // value error
-      if (!this.value) {
-        this.valueError = '不能为空';
-      } else {
+      if (this.value) {
         this.valueError = '';
+      } else {
+        this.valueError = '不能为空';
       }
 
       // add item

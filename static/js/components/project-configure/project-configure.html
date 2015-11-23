@@ -7,15 +7,16 @@
       </div>
     </div>
     <div class="ui-project-configure">
+      <div v-show="submitError" class="ui-submit-tips">{{ submitError }}</div>
       <ul>
-        <li is="project-base" :name.sync="project.name" :path.sync="project.path"></li>
+        <li is="project-base" :name.sync="projectClone.name" :path.sync="projectClone.path"></li>
         <li class="ui-sub-item">
           <label>环境变量：</label>
-          <dynamic-item name-label="变量名" value-label="变量值" :items.sync="project.env"></dynamic-item>
+          <dynamic-item name-label="变量名" value-label="变量值" :items.sync="projectClone.env"></dynamic-item>
         </li>
         <li id="add-cmd" class="ui-sub-item">
           <label>项目命令：</label>
-          <dynamic-item name-label="名称" value-label="命令" :items.sync="project.command"></dynamic-item>
+          <dynamic-item name-label="名称" value-label="命令" :items.sync="projectClone.command"></dynamic-item>
         </li>
       </ul>
     </div>

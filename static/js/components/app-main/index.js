@@ -28,14 +28,12 @@ module.exports = Vue.component('app-main', {
       required: true
     }
   },
+  data: function (){
+    return {};
+  },
   computed: {
     project: function (){
-      var project = this.projects[this.activeIndex] || {
-          name: '',
-          path: '',
-          env: [],
-          command: []
-        };
+      var project = this.projects[this.activeIndex];
 
       if (!project.env) {
         project.env = [];
@@ -45,7 +43,19 @@ module.exports = Vue.component('app-main', {
         project.command = [];
       }
 
-      return project;
+      return JSON.parse(JSON.stringify(project));
+    }
+  },
+  methods: {
+    remove: function (){
+      this.projects.splice(this.activeIndex, 1);
+      this.$dispatch('save-configure');
+    }
+  },
+  events: {
+    edit: function (project){
+      this.projects.$set(this.activeIndex, project);
+      this.$dispatch('save-configure');
     }
   }
 });
