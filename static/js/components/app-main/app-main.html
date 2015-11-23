@@ -1,4 +1,7 @@
-<project-configure :show.sync="showSetting" :project="project" :unique-projects.sync="uniqueProjects">
+<project-configure
+  :show.sync="showSetting"
+  :project="project"
+  :unique-projects.sync="uniqueProjects">
 </project-configure>
 <div class="ui-project-stage">
   <div class="ui-control-bar fn-clear">
@@ -8,7 +11,7 @@
     </div>
     <div class="fn-right">
       <ul class="ui-command fn-clear">
-        <li v-for="cmd in comand">
+        <li v-for="cmd in command">
           <a href="javascript:;">
             <i class="icon-play"></i>
             {{ cmd.name }}

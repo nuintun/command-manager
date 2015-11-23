@@ -9,14 +9,24 @@
   </head>
   <body id="app" class="fn-clear">
     <header class="fn-clear">
-      <app-configure :configure.sync="configure" :unique-projects.sync="uniqueProjects"></app-configure>
+      <app-configure
+        :configure.sync="configure"
+        :unique-projects.sync="uniqueProjects">
+      </app-configure>
       <window-control></window-control>
     </header>
     <nav class="ui-project-tree fn-left">
-      <app-nav :configure.sync="configure" :active-index.sync="activeIndex"></app-nav>
+      <app-nav
+        :configure.sync="configure"
+        :active-index.sync="activeIndex">
+      </app-nav>
     </nav>
     <main class="ui-project-main fn-right">
-      <app-main :active-index="activeIndex" :projects.sync="configure.projects" :unique-projects.sync="uniqueProjects"></app-main>
+      <app-main
+        :active-index.sync="activeIndex"
+        :projects.sync="configure.projects"
+        :unique-projects.sync="uniqueProjects">
+      </app-main>
     </main>
   </body>
 </html>

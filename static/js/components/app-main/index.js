@@ -14,6 +14,7 @@ module.exports = Vue.component('app-main', {
   props: {
     activeIndex: {
       type: Number,
+      twoWay: true,
       required: true
     },
     projects: {
@@ -52,7 +53,6 @@ module.exports = Vue.component('app-main', {
       return JSON.parse(JSON.stringify(project));
     },
     command: function (){
-      console.log(this.project.command.slice(0, 3));
       return this.project.command.slice(0, 3);
     },
     moreCommand: function (){

@@ -357,7 +357,11 @@ header [class*=" icon-"] {
   color: #333;
 }
 .ui-command a {
-  padding: 0 6px;
+  padding: 0 10px;
+  max-width: 130px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .ui-command-more .icon-expand {
   font-size: 24px;

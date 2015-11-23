@@ -58,6 +58,7 @@ module.exports = Vue.component('project-configure', {
           // clean error
           this.submitError = '';
 
+          this.show = false;
           // send message
           this.$dispatch('edit', this.projectClone);
         }
