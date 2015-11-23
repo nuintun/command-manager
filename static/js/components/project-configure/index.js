@@ -65,7 +65,14 @@ module.exports = Vue.component('project-configure', {
       }
     },
     cancel: function (){
+      var origin = JSON.parse(JSON.stringify(this.project));
+
       this.show = false;
+      this.project = { name: '', path: '', env: [], command: [] };
+
+      this.$nextTick(function (){
+        this.project = origin;
+      });
     }
   },
   events: {
@@ -73,5 +80,8 @@ module.exports = Vue.component('project-configure', {
       this.submitError = '';
       this.$broadcast('clean-error');
     }
+  },
+  created: function (){
+    window.app = this;
   }
 });
