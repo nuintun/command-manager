@@ -75,7 +75,7 @@ function verifyConfigure(configure){
 
     if (Array.isArray(project.command)) {
       if (
-        project.command.every(function (command){
+        !project.command.every(function (command){
           return command.name && typeof command.name === 'string'
             && command.value && typeof command.value === 'string';
         })
