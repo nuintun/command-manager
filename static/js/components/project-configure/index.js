@@ -64,6 +64,11 @@ module.exports = Vue.component('project-configure', {
 
           // send message
           this.$dispatch('edit', util.clone(this.projectClone));
+
+          // clean error
+          this.$broadcast('reset-error');
+          // clean input
+          this.$broadcast('reset-input');
         }
       }
     },
@@ -74,6 +79,8 @@ module.exports = Vue.component('project-configure', {
 
       // clean error
       this.$broadcast('reset-error');
+      // clean input
+      this.$broadcast('reset-input');
     }
   },
   events: {
@@ -82,6 +89,8 @@ module.exports = Vue.component('project-configure', {
 
       // clean error
       this.$broadcast('reset-error');
+      // clean input
+      this.$broadcast('reset-input');
     }
   },
   created: function (){
