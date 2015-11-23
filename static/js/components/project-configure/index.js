@@ -9,27 +9,16 @@ var path = require('path');
 var ipc = require('ipc-renderer');
 var Vue = require('../../vue/vue');
 
+require('../project-base');
+require('../dynamic-item');
+
 module.exports = Vue.component('project-configure', {
   template: fs.readFileSync(path.join(__dirname, 'project-configure.html')).toString(),
   props: {
-    activeIndex: {
-      type: Number,
-      required: true
-    },
-    projects: {
+    project: {
       type: Object,
       twoWay: true,
       required: true
-    },
-    uniqueProjects: {
-      type: Object,
-      twoWay: true,
-      required: true
-    }
-  },
-  computed: {
-    project: function (){
-      return this.projects[this.activeIndex] || { name: '', path: '', env: [], command: [] };
     }
   },
   methods: {

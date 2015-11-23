@@ -9,6 +9,8 @@ var path = require('path');
 var ipc = require('ipc-renderer');
 var Vue = require('../../vue/vue');
 
+require('../project-base');
+
 module.exports = Vue.component('app-configure', {
   template: fs.readFileSync(path.join(__dirname, 'app-configure.html')).toString(),
   props: {

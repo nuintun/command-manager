@@ -1,3 +1,51 @@
 /**
  * Created by nuintun on 2015/11/20.
  */
+
+
+var fs = require('fs');
+var path = require('path');
+var ipc = require('ipc-renderer');
+var Vue = require('../../vue/vue');
+
+require('../project-configure');
+
+module.exports = Vue.component('app-main', {
+  template: fs.readFileSync(path.join(__dirname, 'app-main.html')).toString(),
+  props: {
+    activeIndex: {
+      type: Number,
+      required: true
+    },
+    projects: {
+      type: Array,
+      twoWay: true,
+      required: true
+    },
+    uniqueProjects: {
+      type: Object,
+      twoWay: true,
+      required: true
+    }
+  },
+  computed: {
+    project: function (){
+      var project = this.projects[this.activeIndex] || {
+          name: '',
+          path: '',
+          env: [],
+          command: []
+        };
+
+      if (!project.env) {
+        project.env = [];
+      }
+
+      if (!project.command) {
+        project.command = [];
+      }
+
+      return project;
+    }
+  }
+});

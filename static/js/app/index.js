@@ -10,10 +10,7 @@ var Vue = require('../vue/vue');
 require('../components/app-configure');
 require('../components/window-control');
 require('../components/app-nav');
-require('../components/directory');
-require('../components/project-base');
-require('../components/dynamic-item');
-require('../components/project-configure');
+require('../components/app-main');
 
 window.addEventListener('DOMContentLoaded', function (){
   function normalize(configure){

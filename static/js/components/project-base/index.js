@@ -8,6 +8,8 @@ var fs = require('fs');
 var path = require('path');
 var Vue = require('../../vue/vue');
 
+require('../directory');
+
 module.exports = Vue.component('project-base', {
   template: fs.readFileSync(path.join(__dirname, 'project-base.html')).toString(),
   props: {
