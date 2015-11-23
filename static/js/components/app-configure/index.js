@@ -46,6 +46,8 @@ module.exports = Vue.component('app-configure', {
       this.showPopup = !this.showPopup;
 
       if (!this.showPopup) {
+        this.name = '';
+        this.path = '';
         this.submitError = '';
 
         // clean error
@@ -62,6 +64,8 @@ module.exports = Vue.component('app-configure', {
           this.showPopup = false;
           this.configure.projects.push({ name: this.name, path: this.path, env: [], command: [] });
 
+          this.name = '';
+          this.path = '';
           this.submitError = '';
 
           // clean error

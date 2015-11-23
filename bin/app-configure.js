@@ -85,7 +85,7 @@ function verifyConfigure(configure){
           && command.value && typeof command.value === 'string';
       });
 
-      if (commandValid) {
+      if (!commandValid) {
         return false;
       }
     } else {

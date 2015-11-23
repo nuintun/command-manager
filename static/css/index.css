@@ -185,6 +185,7 @@ a:hover {
   background-color: #f57527;
 }
 header {
+  height: 24px;
   padding: 3px 6px;
   position: relative;
   -webkit-app-region: drag;
