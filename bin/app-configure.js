@@ -251,6 +251,11 @@ AppConfigure.prototype = {
         }
       }
 
+      // invalid configure
+      if (!verifyConfigure(configure)) {
+        return fail.call(context, new ConfigureError('VALIDERROR', ERRORMESSAGE.VALIDERROR));
+      }
+
       done.call(context, configure);
     });
   },
@@ -280,11 +285,8 @@ AppConfigure.prototype = {
               return fail.call(context, new ConfigureError('PARSEERROR', ERRORMESSAGE.PARSEERROR));
             }
 
-            // verify configure
-            var invalid = !verifyConfigure(configure);
-
             // invalid configure
-            if (invalid) {
+            if (!verifyConfigure(configure)) {
               return fail.call(context, new ConfigureError('VALIDERROR', ERRORMESSAGE.VALIDERROR));
             }
 
