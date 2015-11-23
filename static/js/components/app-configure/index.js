@@ -50,7 +50,7 @@ module.exports = Vue.component('app-configure', {
         this.$broadcast('clean-error');
       }
     },
-    addProject: function (){
+    add: function (){
       this.$broadcast('submit');
 
       if (this.name && this.path) {

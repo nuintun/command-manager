@@ -23,6 +23,7 @@ module.exports = Vue.component('dynamic-item', {
     },
     items: {
       type: Array,
+      twoWay: true,
       default: function (){
         return [];
       }

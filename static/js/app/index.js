@@ -13,6 +13,7 @@ require('../components/app-nav');
 require('../components/directory');
 require('../components/project-base');
 require('../components/dynamic-item');
+require('../components/project-configure');
 
 window.addEventListener('DOMContentLoaded', function (){
   function normalize(configure){

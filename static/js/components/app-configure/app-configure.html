@@ -17,7 +17,7 @@
   </div>
   <div class="ui-popup-content">
     <div v-show="submitError" class="ui-submit-tips">{{ submitError }}</div>
-    <form @submit.prevent="addProject" @focusin="focus">
+    <form @submit.prevent="add" @focusin="focus">
       <ul>
         <li is="project-base" :name.sync="name" :path.sync="path"></li>
         <li class="ui-popup-control">

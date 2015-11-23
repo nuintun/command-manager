@@ -40,44 +40,7 @@
         </div>
         <div class="ui-project-terminal"></div>
       </div>
-      <div class="ui-project-setting">
-        <form>
-          <div class="ui-control-bar fn-clear">
-            <div class="fn-right">
-              <input type="submit" class="ui-button" value="确认"/>
-              <input type="button" class="ui-button ui-button-orange" value="取消"/>
-            </div>
-          </div>
-          <div class="ui-project-configure">
-            <div class="ui-submit-tips">项目已经存在</div>
-            <ul>
-              <li>
-                <label>项目名称：</label>
-                <input type="text" placeholder="项目名称"/>
-              </li>
-              <li class="ui-item-error">
-                <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
-                <span>项目名称不能为空</span>
-              </li>
-              <li>
-                <directory label="项目路径"></directory>
-              </li>
-              <li class="ui-item-error">
-                <label class="fn-invisible">&emsp;&emsp;&emsp;&emsp;&emsp;</label>
-                <span>项目路径不能为空</span>
-              </li>
-              <li id="add-env" class="ui-sub-item">
-                <label>环境变量：</label>
-                <dynamic-item name-label="变量名" value-label="变量值"></dynamic-item>
-              </li>
-              <li id="add-cmd" class="ui-sub-item">
-                <label>项目命令：</label>
-                <dynamic-item name-label="名称" value-label="命令"></dynamic-item>
-              </li>
-            </ul>
-          </div>
-        </form>
-      </div>
+      <project-configure :active-index.once="activeIndex" :projects.sync="configure.projects" ：unique-projects.sync="{}"></project-configure>
     </main>
   </body>
 </html>
