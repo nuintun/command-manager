@@ -48,8 +48,8 @@ module.exports = Vue.component('app-configure', {
       if (!this.showPopup) {
         this.submitError = '';
 
-        // clean imput
-        this.$broadcast('reset-form');
+        // clean error
+        this.$broadcast('reset-error');
       }
     },
     add: function (){
@@ -64,8 +64,8 @@ module.exports = Vue.component('app-configure', {
 
           this.submitError = '';
 
-          // clean imput
-          this.$broadcast('reset-form');
+          // clean error
+          this.$broadcast('reset-error');
 
           // send message
           this.$dispatch('change-active', this.configure.projects.length - 1, true);

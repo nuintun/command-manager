@@ -70,16 +70,18 @@ module.exports = Vue.component('project-configure', {
     cancel: function (){
       this.show = false;
       this.submitError = '';
-
-      this.$broadcast('reset-form');
-      
       this.projectClone = util.clone(this.project);
+
+      // clean error
+      this.$broadcast('reset-error');
     }
   },
   events: {
     'configure-refresh': function (){
       this.submitError = '';
-      this.$broadcast('reset-form');
+
+      // clean error
+      this.$broadcast('reset-error');
     }
   },
   created: function (){

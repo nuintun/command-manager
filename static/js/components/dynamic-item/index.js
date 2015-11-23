@@ -91,9 +91,7 @@ module.exports = Vue.component('dynamic-item', {
     }
   },
   events: {
-    'reset-form': function (){
-      this.name = '';
-      this.value = '';
+    'reset-error': function (){
       this.nameError = '';
       this.valueError = '';
     }
