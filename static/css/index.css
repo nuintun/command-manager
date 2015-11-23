@@ -236,7 +236,7 @@ header [class*=" icon-"] {
   top: 31px;
   left: 5px;
   border: 1px solid #ccc;
-  z-index: 1;
+  z-index: 2;
   background-color: #fff;
   box-shadow: 0 0 5px 0 #a9a9a9;
 }
@@ -370,7 +370,8 @@ header [class*=" icon-"] {
 }
 .ui-command-popup {
   position: absolute;
-  top: 39px; right: 0;
+  top: 39px;
+  right: 0;
   background-color: #eee;
 }
 .ui-command-popup li {
