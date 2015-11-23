@@ -63,7 +63,6 @@ module.exports = Vue.component('dynamic-item', {
           this.nameError = '';
         }
       } else {
-
         this.nameError = '不能为空';
       }
 
