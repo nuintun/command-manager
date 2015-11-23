@@ -95,7 +95,7 @@ module.exports = Vue.component('dynamic-item', {
       this.nameError = '';
       this.valueError = '';
     },
-    'reset-input': function (){
+    'reset-item-input': function (){
       this.name = '';
       this.value = '';
     }
