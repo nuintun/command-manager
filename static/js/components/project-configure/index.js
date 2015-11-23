@@ -6,6 +6,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var util = require('../../util');
 var Vue = require('../../vue/vue');
 
 require('../project-base');
@@ -33,12 +34,13 @@ module.exports = Vue.component('project-configure', {
     return {
       nameError: '',
       pathError: '',
-      submitError: ''
+      submitError: '',
+      projectClone: null
     }
   },
-  computed: {
-    projectClone: function (){
-      return JSON.parse(JSON.stringify(this.project));
+  watch: {
+    project: function (project){
+      this.projectClone = util.clone(project);
     }
   },
   methods: {
@@ -55,33 +57,32 @@ module.exports = Vue.component('project-configure', {
         if (name !== originName && this.uniqueProjects[name]) {
           this.submitError = '项目已存在';
         } else {
+          this.show = false;
+
           // clean error
           this.submitError = '';
 
-          this.show = false;
           // send message
-          this.$dispatch('edit', this.projectClone);
+          this.$dispatch('edit', util.clone(this.projectClone));
         }
       }
     },
     cancel: function (){
-      var origin = JSON.parse(JSON.stringify(this.project));
-
       this.show = false;
-      this.project = JSON.parse(JSON.stringify(this.projectClone));
+      this.submitError = '';
 
-      this.$nextTick(function (){
-        this.project = origin;
-      });
+      this.$broadcast('reset-form');
+      
+      this.projectClone = util.clone(this.project);
     }
   },
   events: {
     'configure-refresh': function (){
       this.submitError = '';
-      this.$broadcast('clean-error');
+      this.$broadcast('reset-form');
     }
   },
   created: function (){
-    window.app = this;
+    this.projectClone = util.clone(this.project);
   }
 });

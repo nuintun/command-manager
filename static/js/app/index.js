@@ -35,8 +35,10 @@ window.addEventListener('DOMContentLoaded', function (){
         }
       },
       events: {
-        'change-active': function (index){
+        'change-active': function (index, setting){
           this.activeIndex = index;
+
+          this.$broadcast('setting-toggle', setting);
         },
         'save-configure': function (){
           ipc.send('app-configure', 'save', util.normalize(this.configure));

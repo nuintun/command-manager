@@ -46,10 +46,10 @@ module.exports = Vue.component('app-configure', {
       this.showPopup = !this.showPopup;
 
       if (!this.showPopup) {
-        this.name = '';
-        this.path = '';
         this.submitError = '';
-        this.$broadcast('clean-error');
+
+        // clean imput
+        this.$broadcast('reset-form');
       }
     },
     add: function (){
@@ -62,13 +62,13 @@ module.exports = Vue.component('app-configure', {
           this.showPopup = false;
           this.configure.projects.push({ name: this.name, path: this.path });
 
-          // clean imput
-          this.name = '';
-          this.path = '';
           this.submitError = '';
 
+          // clean imput
+          this.$broadcast('reset-form');
+
           // send message
-          this.$dispatch('change-active', this.configure.projects.length - 1);
+          this.$dispatch('change-active', this.configure.projects.length - 1, true);
           this.$dispatch('save-configure');
         }
       }

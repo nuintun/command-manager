@@ -5,6 +5,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var util = require('../../util');
 var Vue = require('../../vue/vue');
 
 require('../project-configure');
@@ -36,7 +37,7 @@ module.exports = Vue.component('app-main', {
   },
   computed: {
     project: function (){
-      var project = JSON.parse(JSON.stringify(this.projects[this.activeIndex]));
+      var project = util.clone(this.projects[this.activeIndex]);
 
       if (!project.env) {
         project.env = [];
@@ -65,10 +66,14 @@ module.exports = Vue.component('app-main', {
     remove: function (){
       this.projects.splice(this.activeIndex, 1);
       this.activeIndex = 0;
+
       this.$dispatch('save-configure');
     }
   },
   events: {
+    'setting-toggle': function (flag){
+      this.showSetting = flag;
+    },
     edit: function (project){
       this.projects.$set(this.activeIndex, project);
       this.$dispatch('save-configure');

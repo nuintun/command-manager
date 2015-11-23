@@ -38,7 +38,9 @@ module.exports = Vue.component('project-base', {
     }
   },
   events: {
-    'clean-error': function (){
+    'reset-form': function (){
+      this.name = '';
+      this.path = '';
       this.nameError = '';
       this.pathError = '';
     },
