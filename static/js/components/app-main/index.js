@@ -30,7 +30,8 @@ module.exports = Vue.component('app-main', {
   },
   data: function (){
     return {
-      showSetting: false
+      showSetting: false,
+      showMoreCommand: false
     };
   },
   computed: {
@@ -57,6 +58,9 @@ module.exports = Vue.component('app-main', {
   methods: {
     setting: function (){
       this.showSetting = true;
+    },
+    commandToggle: function (){
+      this.showMoreCommand = !this.showMoreCommand;
     },
     remove: function (){
       this.projects.splice(this.activeIndex, 1);

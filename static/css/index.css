@@ -372,14 +372,11 @@ header [class*=" icon-"] {
   position: absolute;
   top: 39px;
   right: 0;
+  line-height: 30px;
   background-color: #eee;
 }
 .ui-command-popup li {
   float: none;
-  line-height: 30px;
-}
-.ui-command-popup li a {
-  padding: 0 10px;
 }
 .ui-project-tree a,
 .ui-command li a,
