@@ -38,7 +38,7 @@ module.exports = Vue.component('dynamic-item', {
     };
   },
   computed: {
-    uniqueCache: function (){
+    uniqueItems: function (){
       var cache = {};
 
       this.items.forEach(function (item){
@@ -57,7 +57,7 @@ module.exports = Vue.component('dynamic-item', {
       // name error
       if (!this.name) {
         this.nameError = '不能为空';
-      } else if (this.uniqueCache[this.name]) {
+      } else if (this.uniqueItems[this.name]) {
         this.nameError = ' ' + this.name + ' 已存在';
       } else {
         this.nameError = '';
@@ -71,7 +71,7 @@ module.exports = Vue.component('dynamic-item', {
       }
 
       // add item
-      if (this.name && this.value && !this.uniqueCache[this.name]) {
+      if (this.name && this.value && !this.uniqueItems[this.name]) {
         // add item
         this.items.push({ name: this.name, value: this.value });
 

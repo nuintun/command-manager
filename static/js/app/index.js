@@ -25,7 +25,21 @@ window.addEventListener('DOMContentLoaded', function (){
       activeIndex: 0,
       configure: { projects: [] }
     },
+    computed: {
+      uniqueProjects: function (){
+        var cache = {};
+
+        this.configure.projects.forEach(function (project){
+          cache[project.name] = true;
+        });
+
+        return cache;
+      }
+    },
     events: {
+      'change-active': function (index){
+        this.activeIndex = index;
+      },
       'save-configure': function (){
         ipc.send('app-configure', 'save', normalize(this.configure));
       }

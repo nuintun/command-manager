@@ -16,6 +16,11 @@ module.exports = Vue.component('app-configure', {
       type: Object,
       twoWay: true,
       required: true
+    },
+    uniqueProjects: {
+      type: Object,
+      twoWay: true,
+      required: true
     }
   },
   data: function (){
@@ -24,17 +29,6 @@ module.exports = Vue.component('app-configure', {
       path: '',
       submitError: '',
       popup: false
-    }
-  },
-  computed: {
-    uniqueCache: function (){
-      var cache = {};
-
-      this.configure.projects.forEach(function (project){
-        cache[project.name] = true;
-      });
-
-      return cache;
     }
   },
   methods: {
@@ -59,10 +53,8 @@ module.exports = Vue.component('app-configure', {
     addProject: function (){
       this.$broadcast('submit');
 
-      console.log(this.uniqueCache[this.name]);
-
       if (this.name && this.path) {
-        if (this.uniqueCache[this.name]) {
+        if (this.uniqueProjects[this.name]) {
           this.submitError = '项目已存在';
         } else {
           this.popup = false;
@@ -73,6 +65,8 @@ module.exports = Vue.component('app-configure', {
           this.path = '';
           this.submitError = '';
 
+          // send message
+          this.$dispatch('change-active', this.configure.projects.length - 1);
           this.$dispatch('save-configure');
         }
       }
