@@ -71,8 +71,8 @@ module.exports = Vue.component('app-main', {
     }
   },
   events: {
-    'setting-toggle': function (flag){
-      this.showSetting = flag;
+    'setting-toggle': function (state){
+      this.showSetting = state;
     },
     edit: function (project){
       this.projects.$set(this.activeIndex, project);
