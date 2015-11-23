@@ -35,12 +35,7 @@ module.exports = Vue.component('app-main', {
   },
   computed: {
     project: function (){
-      var project = this.projects[this.activeIndex] || {
-          name: '',
-          path: '',
-          env: [],
-          command: []
-        };
+      var project = JSON.parse(JSON.stringify(this.projects[this.activeIndex]));
 
       if (!project.env) {
         project.env = [];
