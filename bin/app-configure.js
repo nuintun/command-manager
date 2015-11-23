@@ -62,26 +62,34 @@ function verifyConfigure(configure){
       return false;
     }
 
+    if (!project.path || typeof project.path !== 'string') {
+      return false;
+    }
+
     if (Array.isArray(project.env)) {
-      if (
-        !project.env.every(function (env){
-          return env.name && typeof env.name === 'string'
-            && env.value && typeof env.value === 'string';
-        })
-      ) {
+      var envValid = project.env.every(function (env){
+        return env.name && typeof env.name === 'string'
+          && env.value && typeof env.value === 'string';
+      });
+
+      if (!envValid) {
         return false;
       }
+    } else {
+      return false
     }
 
     if (Array.isArray(project.command)) {
-      if (
-        !project.command.every(function (command){
-          return command.name && typeof command.name === 'string'
-            && command.value && typeof command.value === 'string';
-        })
-      ) {
+      var commandValid = project.command.every(function (command){
+        return command.name && typeof command.name === 'string'
+          && command.value && typeof command.value === 'string';
+      });
+
+      if (commandValid) {
         return false;
       }
+    } else {
+      return false;
     }
 
     return true;

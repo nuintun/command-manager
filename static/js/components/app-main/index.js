@@ -37,17 +37,7 @@ module.exports = Vue.component('app-main', {
   },
   computed: {
     project: function (){
-      var project = util.clone(this.projects[this.activeIndex]);
-
-      if (!project.env) {
-        project.env = [];
-      }
-
-      if (!project.command) {
-        project.command = [];
-      }
-
-      return project;
+      return util.clone(this.projects[this.activeIndex]);
     },
     command: function (){
       return this.project.command.slice(0, 3);

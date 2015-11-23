@@ -60,7 +60,7 @@ module.exports = Vue.component('app-configure', {
           this.submitError = '项目已存在';
         } else {
           this.showPopup = false;
-          this.configure.projects.push({ name: this.name, path: this.path });
+          this.configure.projects.push({ name: this.name, path: this.path, env: [], command: [] });
 
           this.submitError = '';
 
