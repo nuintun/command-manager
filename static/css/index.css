@@ -294,7 +294,8 @@ header [class*=" icon-"] {
   height: calc(100% - 31px);
   overflow: auto;
 }
-.ui-project-tree li:nth-child(odd) {
+.ui-project-tree li:nth-child(odd),
+.ui-command-popup li:nth-child(odd) {
   background-color: #eee;
 }
 .ui-project-tree li {
@@ -355,6 +356,8 @@ header [class*=" icon-"] {
   float: left;
   font-size: 14px;
   color: #333;
+  height: 39px;
+  line-height: 39px;
 }
 .ui-command a {
   padding: 0 10px;
@@ -372,16 +375,23 @@ header [class*=" icon-"] {
   position: absolute;
   top: 39px;
   right: 0;
-  line-height: 30px;
-  background-color: #eee;
+  background-color: #fff;
+  border: 1px dashed #ccc;
+  border-top: none;
+  border-right: none;
+  background-clip: content-box;
 }
 .ui-command-popup li {
   float: none;
+  min-width: 67px;
 }
 .ui-project-tree a,
 .ui-command li a,
 .ui-command-popup li a {
   color: inherit;
+}
+.ui-command-popup li a {
+  width: 100%;
 }
 .ui-project-tree a:hover,
 .ui-project-tree .active,

@@ -5,6 +5,7 @@
 'use strict';
 
 var ipc = require('ipc-renderer');
+var util = require('../util');
 var Vue = require('../vue/vue');
 
 require('../components/app-configure');
@@ -38,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function (){
           this.activeIndex = index;
         },
         'save-configure': function (){
-          ipc.send('app-configure', 'save', JSON.parse(JSON.stringify(this.configure)));
+          ipc.send('app-configure', 'save', util.normalize(this.configure));
         }
       }
     });
