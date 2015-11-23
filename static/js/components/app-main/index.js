@@ -2,6 +2,7 @@
  * Created by nuintun on 2015/11/20.
  */
 
+'use strict';
 
 var fs = require('fs');
 var path = require('path');

@@ -12,6 +12,7 @@ require('../components/app-configure');
 require('../components/window-control');
 require('../components/app-nav');
 require('../components/app-main');
+require('../components/no-data');
 
 window.addEventListener('DOMContentLoaded', function (){
   var app;
