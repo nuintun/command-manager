@@ -31,7 +31,7 @@ module.exports = Vue.component('project-configure', {
   },
   data: function (){
     return {
-      clone: null
+      clone: util.clone(this.project)
     }
   },
   watch: {
@@ -71,8 +71,5 @@ module.exports = Vue.component('project-configure', {
       // clean
       this.reset();
     }
-  },
-  created: function (){
-    this.clone = util.clone(this.project);
   }
 });

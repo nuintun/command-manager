@@ -18,7 +18,13 @@
   <div class="ui-popup-content">
     <form @submit.prevent="add">
       <ul>
-        <li v-ref:base is="project-base" :name.sync="name" :path.sync="path" :unique="unique"></li>
+        <li
+          v-ref:base
+          is="project-base"
+          :origin-name.sync="name"
+          :path.sync="path"
+          :unique="unique">
+        </li>
         <li class="ui-popup-control">
           <input type="submit" class="ui-button" value="确定"/>
           <input @click.stop="hidePopup" type="button" class="ui-button ui-button-orange" value="取消"/>

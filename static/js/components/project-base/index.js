@@ -13,7 +13,12 @@ require('../directory');
 module.exports = Vue.component('project-base', {
   template: fs.readFileSync(path.join(__dirname, 'project-base.html')).toString(),
   props: {
-    name: {
+    originName: {
+      type: String,
+      twoWay: true,
+      default: ''
+    },
+    path: {
       type: String,
       twoWay: true,
       default: ''
@@ -21,18 +26,19 @@ module.exports = Vue.component('project-base', {
     unique: {
       type: Object,
       required: true
-    },
-    path: {
-      type: String,
-      twoWay: true,
-      default: ''
     }
   },
   data: function (){
     return {
+      name: this.originName,
       nameError: '',
       pathError: ''
     };
+  },
+  watch: {
+    originName: function (name){
+      this.name = name;
+    }
   },
   methods: {
     focus: function (key){
@@ -43,10 +49,11 @@ module.exports = Vue.component('project-base', {
       this.path = this.path.trim();
 
       if (this.name) {
-        if (this.unique[this.name]) {
+        if (this.originName && this.originName !== this.name && this.unique[this.name]) {
           this.nameError = '项目已存在';
         } else {
           this.nameError = '';
+          this.originName = this.name;
         }
       } else {
         this.nameError = '项目名称不能为空';
