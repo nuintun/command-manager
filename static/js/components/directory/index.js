@@ -14,7 +14,8 @@ module.exports = Vue.component('directory', {
   props: {
     label: {
       type: String,
-      required: true
+      required: true,
+      default: ''
     },
     path: {
       type: String,
