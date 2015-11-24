@@ -130,7 +130,7 @@ module.exports = Vue.component('app-main', {
         console.log(xterm);
 
         xterm.write(test);
-        xterm.scroll();
+        scroll(xtermNode);
 
         window.xterm = xterm;
 
@@ -140,14 +140,16 @@ module.exports = Vue.component('app-main', {
           xterm: xterm
         }
       } else {
-        runtime.xterm.writeln(test);
+        runtime.xterm.write(test);
         console.log('before', runtime.xterm.y);
+
         if (runtime.xterm.y > 10) {
           runtime.xterm.deleteLines([1]);
           console.log('after', runtime.xterm.y);
           //runtime.xterm.refresh(0, runtime.xterm.y);
         }
-        runtime.xterm.scroll();
+
+        scroll(xtermNode);
       }
     },
     setting: function (){
