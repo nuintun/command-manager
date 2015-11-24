@@ -49,6 +49,7 @@ module.exports = Vue.component('app-configure', {
       if (base.isValid()) {
         this.showPopup = false;
 
+        // add
         this.configure.projects.push({
           name: this.name,
           path: this.path,
@@ -56,10 +57,13 @@ module.exports = Vue.component('app-configure', {
           command: []
         });
 
-        // clean input
+        // active index
+        var index = Math.max(0, this.configure.projects.length - 1);
+
+        // clean
         base.$emit('reset-input');
         // send message
-        this.$dispatch('change-active', this.configure.projects.length - 1, true);
+        this.$dispatch('change-active', index, true);
         this.$dispatch('save-configure');
       }
     }
