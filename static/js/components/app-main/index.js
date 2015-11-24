@@ -119,7 +119,7 @@ module.exports = Vue.component('app-main', {
         '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
         new Date().toISOString()
-      ];
+      ].join('\r\n');
 
       if (!runtime) {
         var xterm = new Terminal();
@@ -129,10 +129,8 @@ module.exports = Vue.component('app-main', {
 
         console.log(xterm);
 
-        test.forEach(function (line){
-          xterm.write(line);
-          scroll(xtermNode);
-        });
+        xterm.write(test);
+        xterm.scroll();
 
         window.xterm = xterm;
 
@@ -142,14 +140,14 @@ module.exports = Vue.component('app-main', {
           xterm: xterm
         }
       } else {
-        test.forEach(function (line){
-          runtime.xterm.writeln(line);
-          console.log(runtime.xterm.rows);
-          if(runtime.xterm.y > 10){
-            runtime.xterm.eraseLine(0);
-          }
-          scroll(xtermNode);
-        });
+        runtime.xterm.writeln(test);
+        console.log('before', runtime.xterm.y);
+        if (runtime.xterm.y > 10) {
+          runtime.xterm.deleteLines([1]);
+          console.log('after', runtime.xterm.y);
+          //runtime.xterm.refresh(0, runtime.xterm.y);
+        }
+        runtime.xterm.scroll();
       }
     },
     setting: function (){

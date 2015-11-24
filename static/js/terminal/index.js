@@ -22,7 +22,7 @@ function Terminal(opts){
   this.y = 0;
   this.cursorState = 0;
   this.cursorHidden = false;
-  this.convertEol = false;
+  this.convertEol = true;
   this.state = states.normal;
   this.queue = '';
   this.scrollTop = 0;
