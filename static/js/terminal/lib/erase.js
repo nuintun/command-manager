@@ -6,8 +6,8 @@
 
 module.exports = function (Terminal){
   Terminal.prototype.eraseRight = function (x, y){
-    var line = this.lines[this.ybase + y],
-      ch = [this.curAttr, ' ']; // xterm
+    var line = this.lines[this.ybase + y];
+    var ch = [this.curAttr, ' ']; // xterm
 
     for (; x < this.cols; x++) {
       line[x] = ch;
@@ -17,10 +17,11 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.eraseLeft = function (x, y){
-    var line = this.lines[this.ybase + y],
-      ch = [this.curAttr, ' ']; // xterm
+    var line = this.lines[this.ybase + y];
+    var ch = [this.curAttr, ' ']; // xterm
 
     x++;
+
     while (x--) line[x] = ch;
 
     this.updateRange(y);
@@ -42,27 +43,33 @@ module.exports = function (Terminal){
   // Ps = 2 -> Selective Erase All.
   Terminal.prototype.eraseInDisplay = function (params){
     var j;
+
     switch (params[0]) {
       case 0:
         this.eraseRight(this.x, this.y);
+
         j = this.y + 1;
+
         for (; j < this.rows; j++) {
           this.eraseLine(j);
         }
         break;
       case 1:
         this.eraseLeft(this.x, this.y);
+
         j = this.y;
+
         while (j--) {
           this.eraseLine(j);
         }
         break;
       case 2:
         j = this.rows;
+
         while (j--) this.eraseLine(j);
         break;
       case 3:
-        ; // no saved lines
+        // no saved lines
         break;
     }
   };

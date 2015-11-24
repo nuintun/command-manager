@@ -5,7 +5,6 @@
 'use strict';
 
 module.exports = function (Terminal){
-
   // CSI Pm m Character Attributes (SGR).
   // Ps = 0 -> Normal (default).
   // Ps = 1 -> Bold.

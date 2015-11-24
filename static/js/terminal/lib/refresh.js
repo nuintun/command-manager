@@ -5,7 +5,6 @@
 'use strict';
 
 module.exports = function (Terminal){
-
   /**
    * Rendering Engine
    */
@@ -19,7 +18,6 @@ module.exports = function (Terminal){
     // Next 9 bits: foreground color (0-511).
     // Next 14 bits: a mask for misc. flags:
     // 1=bold, 2=underline, 4=inverse
-
   Terminal.prototype.refresh = function (start, end){
     var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row, parent;
 
@@ -28,8 +26,8 @@ module.exports = function (Terminal){
 
     for (; y <= end; y++) {
       row = y + this.ydisp;
-
       line = this.lines[row];
+
       if (!line) {
         // simple solution in case we have more lines than rows
         // could be improved to instead remove first line (and related html element)
@@ -57,6 +55,7 @@ module.exports = function (Terminal){
           if (attr !== this.defAttr) {
             out += '</span>';
           }
+
           if (data !== this.defAttr) {
             if (data === -1) {
               out += '<span class="reverse-video">';
@@ -71,6 +70,7 @@ module.exports = function (Terminal){
                 if (!Terminal.brokenBold) {
                   out += 'font-weight:bold;';
                 }
+                
                 // see: XTerm*boldColors
                 if (fgColor < 8) fgColor += 8;
               }

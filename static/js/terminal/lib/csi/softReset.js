@@ -7,7 +7,7 @@
 module.exports = function (Terminal){
   // CSI ! p Soft terminal reset (DECSTR).
   // http://vt100.net/docs/vt220-rm/table4-10.html
-  Terminal.prototype.softReset = function (params){
+  Terminal.prototype.softReset = function (){
     this.cursorHidden = false;
     this.insertMode = false;
     this.originMode = false;

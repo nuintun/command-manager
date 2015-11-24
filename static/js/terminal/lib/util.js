@@ -11,7 +11,7 @@ module.exports = function (Terminal){
 
   Terminal.prototype.is = function (term){
     var name = this.termName || Terminal.termName;
-    return (name + '')
-        .indexOf(term) === 0;
+
+    return (name + '').indexOf(term) === 0;
   };
 };

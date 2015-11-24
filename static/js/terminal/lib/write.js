@@ -19,41 +19,47 @@ function fixIndent(data){
     .split('\n')
     .map(function (line){
       var count = 0;
+
       while (line.charAt(0) === ' ') {
         line = line.slice(1);
         count++;
       }
+
       while (count--) {
         line = '&nbsp;' + line;
       }
+
       return line;
     })
     .join('\r\n');
 }
 
 module.exports = function (Terminal){
-
   Terminal.prototype.bell = function (){
     var snd = new Audio("bell.wav"); // buffers automatically when created
+
     snd.play();
 
     if (!Terminal.visualBell) return;
+
     var self = this;
+
     this.element.style.borderColor = 'white';
+
     setTimeout(function (){
       self.element.style.borderColor = '';
     }, 10);
+
     if (Terminal.popOnBell) this.focus();
   };
 
   Terminal.prototype.write = function (data){
-
     data = fixLinefeed(data);
     data = fixIndent(data);
 
-    var l = data.length,
-      i = 0,
-      cs, ch;
+    var l = data.length;
+    var i = 0;
+    var cs, ch;
 
     this.refreshStart = this.y;
     this.refreshEnd = this.y;
@@ -63,22 +69,16 @@ module.exports = function (Terminal){
       this.maxRange();
     }
 
-    // this.log(JSON.stringify(data.replace(/\x1b/g, '^[')));
-
     for (; i < l; i++) {
       ch = data[i];
+
       switch (this.state) {
         case states.normal:
           switch (ch) {
-            // '\0'
-            // case '\0':
-            // break;
-
             // '\a'
             case '\x07':
               this.bell();
               break;
-
             // '\n', '\v', '\f'
             case '\n':
             case '\x0b':
@@ -86,47 +86,42 @@ module.exports = function (Terminal){
               if (this.convertEol) {
                 this.x = 0;
               }
+
               this.y++;
               break;
-
             // '\r'
             case '\r':
               this.x = 0;
               break;
-
             // '\b'
             case '\x08':
               if (this.x > 0) {
                 this.x--;
               }
               break;
-
             // '\t'
             case '\t':
               this.x = this.nextStop();
               break;
-
             // shift out
             case '\x0e':
               this.setgLevel(1);
               break;
-
             // shift in
             case '\x0f':
               this.setgLevel(0);
               break;
-
             // '\e'
             case '\x1b':
               this.state = states.escaped;
               break;
-
             default:
               // ' '
               if (ch >= ' ') {
                 if (this.charset && this.charset[ch]) {
                   ch = this.charset[ch];
                 }
+
                 if (this.x >= this.cols) {
                   this.x = 0;
                   this.y++;
@@ -150,38 +145,32 @@ module.exports = function (Terminal){
               this.currentParam = 0;
               this.state = states.csi;
               break;
-
             // ESC ] Operating System Command ( OSC is 0x9d).
             case ']':
               this.params = [];
               this.currentParam = 0;
               this.state = states.osc;
               break;
-
             // ESC P Device Control String ( DCS is 0x90).
             case 'P':
               this.params = [];
               this.currentParam = 0;
               this.state = states.dcs;
               break;
-
             // ESC _ Application Program Command ( APC is 0x9f).
             case '_':
               this.stateType = 'apc';
               this.state = states.ignore;
               break;
-
             // ESC ^ Privacy Message ( PM is 0x9e).
             case '^':
               this.stateType = 'pm';
               this.state = states.ignore;
               break;
-
             // ESC c Full Reset (RIS).
             case 'c':
               this.reset();
               break;
-
             // ESC E Next Line ( NEL is 0x85).
             // ESC D Index ( IND is 0x84).
             case 'E':
@@ -190,22 +179,20 @@ module.exports = function (Terminal){
             case 'D':
               this.index();
               break;
-
             // ESC M Reverse Index ( RI is 0x8d).
             case 'M':
               this.reverseIndex();
               break;
-
             // ESC % Select default/utf-8 character set.
             // @ = default, G = utf-8
             case '%':
               //this.charset = null;
               this.setgLevel(0);
               this.setgCharset(0, Terminal.charsets.US);
+
               this.state = states.normal;
               i++;
               break;
-
             // ESC (,),*,+,-,. Designate G0-G2 Character Set.
             case '(':
             // <-- this seems to get all the attention
@@ -236,7 +223,6 @@ module.exports = function (Terminal){
               }
               this.state = states.charset;
               break;
-
             // Designate G3 Character Set (VT300).
             // A = ISO Latin-1 Supplemental.
             // Not implemented.
@@ -245,7 +231,6 @@ module.exports = function (Terminal){
               this.state = states.charset;
               i--;
               break;
-
             // ESC N
             // Single Shift Select of G2 Character Set
             // ( SS2 is 0x8e). This affects next character only.
@@ -281,51 +266,43 @@ module.exports = function (Terminal){
             case '~':
               this.setgLevel(1);
               break;
-
             // ESC 7 Save Cursor (DECSC).
             case '7':
               this.saveCursor();
               this.state = states.normal;
               break;
-
             // ESC 8 Restore Cursor (DECRC).
             case '8':
               this.restoreCursor();
               this.state = states.normal;
               break;
-
             // ESC # 3 DEC line height/width
             case '#':
               this.state = states.normal;
               i++;
               break;
-
             // ESC H Tab Set (HTS is 0x88).
             case 'H':
               this.tabSet();
               break;
-
             // ESC = Application Keypad (DECPAM).
             case '=':
               this.log('Serial port requested application keypad.');
               this.applicationKeypad = true;
               this.state = states.normal;
               break;
-
             // ESC > Normal Keypad (DECPNM).
             case '>':
               this.log('Switching back to normal keypad.');
               this.applicationKeypad = false;
               this.state = states.normal;
               break;
-
             default:
               this.state = states.normal;
               this.error('Unknown ESC control: %s.', ch);
               break;
           }
           break;
-
         case states.charset:
           switch (ch) {
             case '0':
@@ -393,11 +370,12 @@ module.exports = function (Terminal){
               cs = Terminal.charsets.US;
               break;
           }
+
           this.setgCharset(this.gcharset, cs);
+
           this.gcharset = null;
           this.state = states.normal;
           break;
-
         case states.osc:
           // OSC Ps ; Pt ST
           // OSC Ps ; Pt BEL
@@ -418,7 +396,6 @@ module.exports = function (Terminal){
                   if (this.handleTitle) {
                     this.handleTitle(this.title);
                   }
-
                 }
                 break;
               case 3:
@@ -483,7 +460,6 @@ module.exports = function (Terminal){
             }
           }
           break;
-
         case states.csi:
           // '?', '>', '!'
           if (ch === '?' || ch === '>' || ch === '!') {
@@ -517,51 +493,42 @@ module.exports = function (Terminal){
             case 'A':
               this.cursorUp(this.params);
               break;
-
             // CSI Ps B
             // Cursor Down Ps Times (default = 1) (CUD).
             case 'B':
               this.cursorDown(this.params);
               break;
-
             // CSI Ps C
             // Cursor Forward Ps Times (default = 1) (CUF).
             case 'C':
               this.cursorForward(this.params);
               break;
-
             // CSI Ps D
             // Cursor Backward Ps Times (default = 1) (CUB).
             case 'D':
               this.cursorBackward(this.params);
               break;
-
             // CSI Ps ; Ps H
             // Cursor Position [row;column] (default = [1,1]) (CUP).
             case 'H':
               this.cursorPos(this.params);
               break;
-
             // CSI Ps J Erase in Display (ED).
             case 'J':
               this.eraseInDisplay(this.params);
               break;
-
             // CSI Ps K Erase in Line (EL).
             case 'K':
               this.eraseInLine(this.params);
               break;
-
             // CSI Pm m Character Attributes (SGR).
             case 'm':
               this.charAttributes(this.params);
               break;
-
             // CSI Ps n Device Status Report (DSR).
             case 'n':
               this.deviceStatus(this.params);
               break;
-
           /**
            * Additions
            */
@@ -571,61 +538,51 @@ module.exports = function (Terminal){
             case '@':
               this.insertChars(this.params);
               break;
-
             // CSI Ps E
             // Cursor Next Line Ps Times (default = 1) (CNL).
             case 'E':
               this.cursorNextLine(this.params);
               break;
-
             // CSI Ps F
             // Cursor Preceding Line Ps Times (default = 1) (CNL).
             case 'F':
               this.cursorPrecedingLine(this.params);
               break;
-
             // CSI Ps G
             // Cursor Character Absolute [column] (default = [row,1]) (CHA).
             case 'G':
               this.cursorCharAbsolute(this.params);
               break;
-
             // CSI Ps L
             // Insert Ps Line(s) (default = 1) (IL).
             case 'L':
               this.insertLines(this.params);
               break;
-
             // CSI Ps M
             // Delete Ps Line(s) (default = 1) (DL).
             case 'M':
               this.deleteLines(this.params);
               break;
-
             // CSI Ps P
             // Delete Ps Character(s) (default = 1) (DCH).
             case 'P':
               this.deleteChars(this.params);
               break;
-
             // CSI Ps X
             // Erase Ps Character(s) (default = 1) (ECH).
             case 'X':
               this.eraseChars(this.params);
               break;
-
             // CSI Pm ` Character Position Absolute
             // [column] (default = [row,1]) (HPA).
             case '`':
               this.charPosAbsolute(this.params);
               break;
-
             // 141 61 a * HPR -
             // Horizontal Position Relative
             case 'a':
               this.HPositionRelative(this.params);
               break;
-
             // CSI P s c
             // Send Device Attributes (Primary DA).
             // CSI > P s c
@@ -633,37 +590,31 @@ module.exports = function (Terminal){
             case 'c':
               //- this.sendDeviceAttributes(this.params);
               break;
-
             // CSI Pm d
             // Line Position Absolute [row] (default = [1,column]) (VPA).
             case 'd':
               this.linePosAbsolute(this.params);
               break;
-
             // 145 65 e * VPR - Vertical Position Relative
             case 'e':
               this.VPositionRelative(this.params);
               break;
-
             // CSI Ps ; Ps f
             // Horizontal and Vertical Position [row;column] (default =
             // [1,1]) (HVP).
             case 'f':
               this.HVPosition(this.params);
               break;
-
             // CSI Pm h Set Mode (SM).
             // CSI ? Pm h - mouse escape codes, cursor escape codes
             case 'h':
               //- this.setMode(this.params);
               break;
-
             // CSI Pm l Reset Mode (RM).
             // CSI ? Pm l
             case 'l':
               //- this.resetMode(this.params);
               break;
-
             // CSI Ps ; Ps r
             // Set Scrolling Region [top;bottom] (default = full size of win-
             // dow) (DECSTBM).
@@ -671,19 +622,16 @@ module.exports = function (Terminal){
             case 'r':
               //- this.setScrollRegion(this.params);
               break;
-
             // CSI s
             // Save cursor (ANSI.SYS).
             case 's':
               this.saveCursor(this.params);
               break;
-
             // CSI u
             // Restore cursor (ANSI.SYS).
             case 'u':
               this.restoreCursor(this.params);
               break;
-
           /**
            * Lesser Used
            */
@@ -693,12 +641,10 @@ module.exports = function (Terminal){
             case 'I':
               this.cursorForwardTab(this.params);
               break;
-
             // CSI Ps S Scroll up Ps lines (default = 1) (SU).
             case 'S':
               //- this.scrollUp(this.params);
               break;
-
             // CSI Ps T Scroll down Ps lines (default = 1) (SD).
             // CSI Ps ; Ps ; Ps ; Ps ; Ps T
             // CSI > Ps; Ps T
@@ -707,18 +653,15 @@ module.exports = function (Terminal){
                 //- this.scrollDown(this.params);
               }
               break;
-
             // CSI Ps Z
             // Cursor Backward Tabulation Ps tab stops (default = 1) (CBT).
             case 'Z':
               this.cursorBackwardTab(this.params);
               break;
-
             // CSI Ps b Repeat the preceding graphic character Ps times (REP).
             case 'b':
               this.repeatPrecedingCharacter(this.params);
               break;
-
             // CSI Ps g Tab Clear (TBC).
             case 'g':
               this.tabClear(this.params);
@@ -730,7 +673,6 @@ module.exports = function (Terminal){
                   break;
               }
               break;
-
             default:
               this.error('Unknown CSI code: %s.', ch);
               break;
@@ -739,7 +681,6 @@ module.exports = function (Terminal){
           this.prefix = '';
           this.postfix = '';
           break;
-
         case states.dcs:
           if (ch === '\x1b' || ch === '\x07') {
             if (ch === '\x1b') i++;
@@ -748,47 +689,37 @@ module.exports = function (Terminal){
               // User-Defined Keys (DECUDK).
               case '':
                 break;
-
               // Request Status String (DECRQSS).
               // test: echo -e '\eP$q"p\e\\'
               case '$q':
                 var pt = this.currentParam,
                   valid = false;
-
                 switch (pt) {
                   // DECSCA
                   case '"q':
                     pt = '0"q';
                     break;
-
                   // DECSCL
                   case '"p':
                     pt = '61"p';
                     break;
-
                   // DECSTBM
                   case 'r':
                     pt = '' + (this.scrollTop + 1) + ';' + (this.scrollBottom + 1) + 'r';
                     break;
-
                   // SGR
                   case 'm':
                     pt = '0m';
                     break;
-
                   default:
                     this.error('Unknown DCS Pt: %s.', pt);
                     pt = '';
                     break;
                 }
-
-                //- this.send('\x1bP' + valid + '$r' + pt + '\x1b\\');
                 break;
-
               // Set Termcap/Terminfo Data (xterm, experimental).
               case '+p':
                 break;
-
               default:
                 this.error('Unknown DCS prefix: %s.', this.prefix);
                 break;
@@ -809,7 +740,6 @@ module.exports = function (Terminal){
             this.currentParam += ch;
           }
           break;
-
         case states.ignore:
           // For PM and APC.
           if (ch === '\x1b' || ch === '\x07') {
@@ -831,6 +761,7 @@ module.exports = function (Terminal){
   Terminal.prototype.writeln = function (data){
     // at times spaces appear in between escape chars and fixIndent fails us, so we fix it here
     data = data.replace(/ /g, '&nbsp;');
+
     // adding empty char before line break ensures that empty lines render properly
     this.write(data + ' \r\n');
   };

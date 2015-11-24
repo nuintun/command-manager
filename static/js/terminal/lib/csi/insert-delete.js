@@ -12,6 +12,7 @@ module.exports = function (Terminal){
     var param, row, j, ch;
 
     param = params[0];
+
     if (param < 1) param = 1;
 
     row = this.y + this.ybase;
@@ -30,9 +31,10 @@ module.exports = function (Terminal){
     var param, row, j;
 
     param = params[0];
-    if (param < 1) param = 1;
-    row = this.y + this.ybase;
 
+    if (param < 1) param = 1;
+
+    row = this.y + this.ybase;
     j = this.rows - 1 - this.scrollBottom;
     j = this.rows - 1 + this.ybase - j + 1;
 
@@ -54,9 +56,10 @@ module.exports = function (Terminal){
     var param, row, j;
 
     param = params[0];
-    if (param < 1) param = 1;
-    row = this.y + this.ybase;
 
+    if (param < 1) param = 1;
+
+    row = this.y + this.ybase;
     j = this.rows - 1 - this.scrollBottom;
     j = this.rows - 1 + this.ybase - j;
 
@@ -78,6 +81,7 @@ module.exports = function (Terminal){
     var param, row, ch;
 
     param = params[0];
+
     if (param < 1) param = 1;
 
     row = this.y + this.ybase;
@@ -95,6 +99,7 @@ module.exports = function (Terminal){
     var param, row, j, ch;
 
     param = params[0];
+
     if (param < 1) param = 1;
 
     row = this.y + this.ybase;
