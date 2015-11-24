@@ -141,11 +141,8 @@ module.exports = Vue.component('app-main', {
         }
       } else {
         runtime.xterm.write(test);
-        console.log('before', runtime.xterm.y);
-
         if (runtime.xterm.y > 10) {
           runtime.xterm.deleteLines([1]);
-          console.log('after', runtime.xterm.y);
           //runtime.xterm.refresh(0, runtime.xterm.y);
         }
 

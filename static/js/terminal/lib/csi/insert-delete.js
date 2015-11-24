@@ -5,7 +5,6 @@
 'use strict';
 
 module.exports = function (Terminal){
-
   // CSI Ps @
   // Insert Ps (Blank) Character(s) (default = 1) (ICH).
   Terminal.prototype.insertChars = function (params){
