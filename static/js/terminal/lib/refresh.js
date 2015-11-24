@@ -61,7 +61,6 @@ module.exports = function (Terminal){
               out += '<span class="reverse-video">';
             } else {
               out += '<span style="';
-
               bgColor = data & 0x1ff;
               fgColor = (data >> 9) & 0x1ff;
               flags = data >> 18;
@@ -70,7 +69,7 @@ module.exports = function (Terminal){
                 if (!Terminal.brokenBold) {
                   out += 'font-weight:bold;';
                 }
-                
+
                 // see: XTerm*boldColors
                 if (fgColor < 8) fgColor += 8;
               }

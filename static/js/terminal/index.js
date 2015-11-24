@@ -96,6 +96,10 @@ require('./lib/blankLine')(Terminal);
 require('./lib/range')(Terminal);
 require('./lib/util')(Terminal);
 
+require('./lib/cursor')(Terminal);
+
+require('./lib/scrollDisp')(Terminal);
+
 require('./lib/esc/index.js')(Terminal);
 require('./lib/esc/reset.js')(Terminal);
 require('./lib/esc/tabSet.js')(Terminal);
