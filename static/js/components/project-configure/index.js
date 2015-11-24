@@ -36,8 +36,9 @@ module.exports = Vue.component('project-configure', {
   },
   watch: {
     project: function (project){
-      this.reset();
       this.clone = util.clone(project);
+      // clean
+      this.reset();
     }
   },
   methods: {
@@ -59,8 +60,7 @@ module.exports = Vue.component('project-configure', {
 
         // send message
         this.$dispatch('edit', util.clone(this.clone));
-
-        // clean item input
+        // clean
         this.reset();
       }
     },
@@ -68,7 +68,7 @@ module.exports = Vue.component('project-configure', {
       this.show = false;
       this.clone = util.clone(this.project);
 
-      // clean item input
+      // clean
       this.reset();
     }
   },
