@@ -419,7 +419,7 @@ header [class*=" icon-"] {
   border-left: 1px solid #ccc;
 }
 .ui-project-terminal {
-  padding: 0 10px;
+  padding: 10px;
   background-color: #181818;
   border-left: 1px dashed #ccc;
   font-family: Consolas, sans-serif;
