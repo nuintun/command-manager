@@ -125,10 +125,10 @@ module.exports = Vue.component('app-main', {
         window.AppRuntime[this.project.name] = {
           name: name,
           command: command,
-          terminal: xterm
+          xterm: xterm
         }
       } else {
-        test.forEach(function (line){ runtime.terminal.writeln(line); });
+        test.forEach(function (line){ runtime.xterm.writeln(line); });
       }
     },
     setting: function (){
