@@ -494,8 +494,6 @@ header [class*=" icon-"] {
   height: calc(100% - 32px);
   background: url(../images/no-data.png) center no-repeat;
 }
-.ui-terminal-cursor {
-}
-.ui-terminal-cursor:after {
-  content: "_"
+.ui-terminal-cursor:before {
+  content: "_";
 }
