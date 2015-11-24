@@ -420,6 +420,7 @@ header [class*=" icon-"] {
 }
 .ui-project-terminal {
   padding: 10px;
+  color: #fff;
   background-color: #181818;
   border-left: 1px dashed #ccc;
   font-family: Consolas, sans-serif;

@@ -10,6 +10,11 @@ var util = require('../../util');
 var Vue = require('../../vue/vue');
 var Terminal = require('../../terminal');
 
+Terminal.defaultColors = {
+  bg: 'transparent',
+  fg: 'inherit'
+};
+
 const EMPTYPROJECT = {
   name: '',
   path: '',
@@ -119,6 +124,8 @@ module.exports = Vue.component('app-main', {
 
         xterm.open();
         this.$els.terminal.appendChild(xterm.element);
+
+        console.log(xterm);
 
         test.forEach(function (line){ xterm.writeln(line); });
 
