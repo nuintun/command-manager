@@ -36,7 +36,7 @@ function fixIndent(data){
 
 module.exports = function (Terminal){
   Terminal.prototype.bell = function (){
-    var snd = new Audio("bell.wav"); // buffers automatically when created
+    var snd = new Audio('bell.wav'); // buffers automatically when created
 
     snd.play();
 
