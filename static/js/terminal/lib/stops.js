@@ -1,3 +1,7 @@
+/**
+ * Created by nuintun on 2015/11/24.
+ */
+
 'use strict';
 // ignore warnings regarging == and != (coersion makes things work here appearently)
 
