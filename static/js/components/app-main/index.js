@@ -127,7 +127,10 @@ module.exports = Vue.component('app-main', {
 
         console.log(xterm);
 
-        test.forEach(function (line){ xterm.writeln(line); });
+        test.forEach(function (line){
+          xterm.writeln(line);
+          xterm.cursorNextLine([0]);
+        });
 
         window.AppRuntime[this.project.name] = {
           name: name,
@@ -135,7 +138,10 @@ module.exports = Vue.component('app-main', {
           xterm: xterm
         }
       } else {
-        test.forEach(function (line){ runtime.xterm.writeln(line); });
+        test.forEach(function (line){
+          runtime.xterm.writeln(line);
+          runtime.xterm.cursorNextLine([0]);
+        });
       }
     },
     setting: function (){

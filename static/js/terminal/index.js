@@ -6,7 +6,7 @@ module.exports = Terminal;
 
 function Terminal(opts){
   opts = opts || {};
-  
+
   if (!(this instanceof Terminal)) return new Terminal(opts);
 
   this.cols = opts.cols || 500;
@@ -77,6 +77,7 @@ require('./lib/options')(Terminal);
 require('./lib/open')(Terminal);
 require('./lib/destroy')(Terminal);
 require('./lib/refresh')(Terminal);
+require('./lib/scrollDisp')(Terminal);
 
 require('./lib/write')(Terminal);
 

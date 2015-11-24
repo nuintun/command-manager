@@ -424,6 +424,7 @@ header [class*=" icon-"] {
   background-color: #181818;
   border-left: 1px dashed #ccc;
   font-family: Consolas, sans-serif;
+  overflow: auto;
 }
 .ui-control-bar .ui-button-orange {
   margin: 0 10px 0 0;
