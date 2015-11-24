@@ -1821,7 +1821,7 @@ Terminal.prototype = {
       var termOffset = 2 + this.conf.frameWidth;
 
       if (this.globals.hasSubDivs) {
-        for (var r = 0; r < this.conf.rows; r++) {
+        for (r = 0; r < this.conf.rows; r++) {
           s += '<div id="' + divPrefix + r + '" style="position:absolute; top:'
             + (termOffset + r * this.conf.rowHeight) + 'px; left: ' + termOffset + 'px;" class="'
             + this.conf.fontClass + '"><\/div>\n';
@@ -3299,10 +3299,5 @@ Terminal.prototype = {
 
 // initialize global data
 Terminal.prototype.globals._initGlobals();
-// global entities for backward compatibility with termlib 1.x applications
-var TerminalDefaults = Terminal.prototype.Defaults;
-var termDefaultHandler = Terminal.prototype.defaultHandler;
-var TermGlobals = Terminal.prototype.globals;
-var termKey = Terminal.prototype.globals.termKey;
-var termDomKeyRef = Terminal.prototype.globals.termDomKeyRef;
 // eof
+module.exports = Terminal;

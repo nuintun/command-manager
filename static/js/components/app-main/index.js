@@ -8,6 +8,7 @@ var fs = require('fs');
 var path = require('path');
 var util = require('../../util');
 var Vue = require('../../vue/vue');
+var Terminal = require('../../terminal/termlib');
 
 const EMPTYPROJECT = {
   name: '',
@@ -78,6 +79,15 @@ module.exports = Vue.component('app-main', {
       console.log('run %s: %s', name, command);
 
       if (!window.AppRuntime[this.project.name]) {
+        var xterm = new Terminal({
+          x: 220,
+          y: 70,
+          termDiv: this.$els.terminal
+        });
+
+        xterm.open();
+        xterm.write('aasdsad');
+
         window.AppRuntime[this.project.name] = {
           name: name,
           command: command,
