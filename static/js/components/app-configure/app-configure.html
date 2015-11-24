@@ -1,5 +1,5 @@
 <div class="fn-left">
-  <a @click="popupToggle" title="添加项目" class="ui-project-add" href="javascript:;">
+  <a v-el:popup-trigger title="添加项目" class="ui-project-add" href="javascript:;">
     <i class="icon-plus"></i>
     <i class="icon-expand"></i>
   </a>
@@ -10,7 +10,7 @@
     <i class="icon-export"></i>
   </a>
 </div>
-<div v-show="showPopup" class="ui-popup">
+<div v-el:popup v-show="showPopup" class="ui-popup">
   <div class="ui-popup-arrow">
     <em></em>
     <span></span>
@@ -19,10 +19,10 @@
     <div v-show="submitError" class="ui-submit-tips">{{ submitError }}</div>
     <form @submit.prevent="add" @focusin="focus">
       <ul>
-        <li is="project-base" :name.sync="name" :path.sync="path"></li>
+        <li v-ref:base is="project-base" :name.sync="name" :path.sync="path"></li>
         <li class="ui-popup-control">
           <input type="submit" class="ui-button" value="确定"/>
-          <input @click="popupToggle" type="button" class="ui-button ui-button-orange" value="取消"/>
+          <input @click.stop="hidePopup" type="button" class="ui-button ui-button-orange" value="取消"/>
         </li>
       </ul>
     </form>

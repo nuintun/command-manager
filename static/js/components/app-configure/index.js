@@ -42,17 +42,14 @@ module.exports = Vue.component('app-configure', {
     appConfigure: function (command, configure){
       ipc.send('app-configure', command, configure);
     },
-    popupToggle: function (){
-      this.showPopup = !this.showPopup;
+    hidePopup: function (){
+      this.showPopup = false;
+      this.name = '';
+      this.path = '';
+      this.submitError = '';
 
-      if (!this.showPopup) {
-        this.name = '';
-        this.path = '';
-        this.submitError = '';
-
-        // clean error
-        this.$broadcast('reset-error');
-      }
+      // clean error
+      this.$broadcast('reset-error');
     },
     add: function (){
       this.$broadcast('submit');
@@ -77,5 +74,20 @@ module.exports = Vue.component('app-configure', {
         }
       }
     }
+  },
+  created: function (){
+    var context = this;
+
+    document.addEventListener('click', function (event){
+      var target = event.target;
+      var popup = context.$els.popup;
+      var trigger = context.$els.popupTrigger;
+
+      if (trigger.contains(target) || popup.contains(target)) {
+        context.showPopup = true;
+      } else {
+        context.hidePopup();
+      }
+    });
   }
 });
