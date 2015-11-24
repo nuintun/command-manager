@@ -6,6 +6,7 @@ module.exports = Terminal;
 
 function Terminal(opts){
   opts = opts || {};
+  
   if (!(this instanceof Terminal)) return new Terminal(opts);
 
   this.cols = opts.cols || 500;
@@ -37,13 +38,13 @@ function Terminal(opts){
   this.charsets = [null];
 
   // misc
-  this.element;
-  this.children;
-  this.refreshStart;
-  this.refreshEnd;
-  this.savedX;
-  this.savedY;
-  this.savedCols;
+  this.element = null;
+  this.children = null;
+  this.refreshStart = null;
+  this.refreshEnd = null;
+  this.savedX = null;
+  this.savedY = null;
+  this.savedCols = null;
 
   // stream
   this.readable = true;
@@ -58,12 +59,15 @@ function Terminal(opts){
   this.postfix = '';
 
   this.lines = [];
+
   var i = this.rows;
+
   while (i--) {
     this.lines.push(this.blankLine());
   }
 
-  this.tabs;
+  this.tabs = null;
+
   this.setupStops();
 }
 

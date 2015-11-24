@@ -419,8 +419,10 @@ header [class*=" icon-"] {
   border-left: 1px solid #ccc;
 }
 .ui-project-terminal {
+  padding: 0 10px;
   background-color: #181818;
   border-left: 1px dashed #ccc;
+  font-family: Consolas, sans-serif;
 }
 .ui-control-bar .ui-button-orange {
   margin: 0 10px 0 0;
