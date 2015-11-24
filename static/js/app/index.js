@@ -14,6 +14,10 @@ require('../components/app-nav');
 require('../components/app-main');
 require('../components/no-data');
 
+// app runtime
+window.AppRuntime = {};
+
+// add DOMContentLoaded event
 window.addEventListener('DOMContentLoaded', function (){
   var app;
 

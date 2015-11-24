@@ -71,6 +71,20 @@ module.exports = Vue.component('app-main', {
     }
   },
   methods: {
+    isRunning: function (){
+
+    },
+    exec: function (name, command){
+      console.log('run %s: %s', name, command);
+
+      if (!window.AppRuntime[this.project.name]) {
+        window.AppRuntime[this.project.name] = {
+          name: name,
+          command: command,
+          terminal: ''
+        }
+      }
+    },
     setting: function (){
       this.showSetting = true;
     },
