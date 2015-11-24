@@ -3,7 +3,7 @@
   :project="project"
   :unique.sync="unique">
 </project-configure>
-<div v-show="project.name && project.path" class="ui-project-stage">
+<div v-show="!project.empty" class="ui-project-stage">
   <div class="ui-control-bar fn-clear">
     <div class="ui-control-operate fn-left">
       <a title="删除项目" href="javascript:;" @click="remove"><i class="icon-trash"></i></a>
@@ -18,8 +18,8 @@
           </a>
         </li>
         <li v-if="moreCommand.length" class="ui-command-more">
-          <a v-el:expand-trigger href="javascript:;">更多&nbsp;<i class="icon-expand"></i></a>
-          <ul v-show="showMoreCommand" class="ui-command-popup">
+          <a v-el:expand-trigger title="更多" href="javascript:;">更多&nbsp;<i class="icon-expand"></i></a>
+          <ul v-show="expandCommand" class="ui-command-popup">
             <li v-for="moreCmd in moreCommand">
               <a :title="moreCmd.name" href="javascript:;">
                 <i class="icon-play"></i>

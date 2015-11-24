@@ -9,7 +9,25 @@ var path = require('path');
 var util = require('../../util');
 var Vue = require('../../vue/vue');
 
+const EMPTYPROJECT = {
+  name: '',
+  path: '',
+  env: [],
+  command: [],
+  empty: true
+};
+
 require('../project-configure');
+
+/**
+ * clone project
+ * @param projects
+ * @param index
+ * @returns {*}
+ */
+function clone(projects, index){
+  return util.clone(projects[index] || EMPTYPROJECT);
+}
 
 module.exports = Vue.component('app-main', {
   template: fs.readFileSync(path.join(__dirname, 'app-main.html')).toString(),
@@ -30,25 +48,26 @@ module.exports = Vue.component('app-main', {
     }
   },
   data: function (){
+    var project = clone(this.projects, this.activeIndex);
+
     return {
       showSetting: false,
-      showMoreCommand: false
+      expandCommand: false,
+      project: project,
+      command: project.command.slice(0, 3),
+      moreCommand: project.command.slice(3)
     };
   },
-  computed: {
+  watch: {
+    projects: function (){
+      this.project = clone(this.projects, this.activeIndex);
+    },
+    activeIndex: function (){
+      this.project = clone(this.projects, this.activeIndex);
+    },
     project: function (){
-      return util.clone(this.projects[this.activeIndex]) || {
-          name: '',
-          path: '',
-          env: [],
-          command: []
-        };
-    },
-    command: function (){
-      return this.project.command.slice(0, 3);
-    },
-    moreCommand: function (){
-      return this.project.command.slice(3);
+      this.command = this.project.command.slice(0, 3);
+      this.moreCommand = this.project.command.slice(3);
     }
   },
   methods: {
@@ -56,9 +75,13 @@ module.exports = Vue.component('app-main', {
       this.showSetting = true;
     },
     remove: function (){
+      // remove project
       this.projects.splice(this.activeIndex, 1);
+
+      // change active
       this.activeIndex = 0;
 
+      // save configure
       this.$dispatch('save-configure');
     }
   },
@@ -78,7 +101,7 @@ module.exports = Vue.component('app-main', {
       var target = event.target;
       var trigger = context.$els.expandTrigger;
 
-      context.showMoreCommand = !!trigger.contains(target);
-    });
+      context.expandCommand = trigger && trigger.contains(target);
+    }, false);
   }
 });
