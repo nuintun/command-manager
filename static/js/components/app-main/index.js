@@ -55,9 +55,6 @@ module.exports = Vue.component('app-main', {
     setting: function (){
       this.showSetting = true;
     },
-    commandToggle: function (){
-      this.showMoreCommand = !this.showMoreCommand;
-    },
     remove: function (){
       this.projects.splice(this.activeIndex, 1);
       this.activeIndex = 0;
@@ -73,5 +70,15 @@ module.exports = Vue.component('app-main', {
       this.projects.$set(this.activeIndex, project);
       this.$dispatch('save-configure');
     }
+  },
+  created: function (){
+    var context = this;
+
+    document.addEventListener('click', function (event){
+      var target = event.target;
+      var trigger = context.$els.expandTrigger;
+
+      context.showMoreCommand = !!trigger.contains(target);
+    });
   }
 });

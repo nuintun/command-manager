@@ -18,7 +18,7 @@
           </a>
         </li>
         <li v-if="moreCommand.length" class="ui-command-more">
-          <a href="javascript:;" @click="commandToggle">更多&nbsp;<i class="icon-expand"></i></a>
+          <a v-el:expand-trigger href="javascript:;">更多&nbsp;<i class="icon-expand"></i></a>
           <ul v-show="showMoreCommand" class="ui-command-popup">
             <li v-for="moreCmd in moreCommand">
               <a :title="moreCmd.name" href="javascript:;">
