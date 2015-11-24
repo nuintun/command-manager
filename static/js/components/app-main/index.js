@@ -35,6 +35,10 @@ function clone(projects, index){
   return util.clone(projects[index] || EMPTYPROJECT);
 }
 
+function scroll(element){
+  element.scrollTop = element.scrollHeight;
+}
+
 module.exports = Vue.component('app-main', {
   template: fs.readFileSync(path.join(__dirname, 'app-main.html')).toString(),
   props: {
@@ -83,6 +87,7 @@ module.exports = Vue.component('app-main', {
     exec: function (name, command){
       console.log('run %s: %s', name, command);
 
+      var xtermNode = this.$els.terminal;
       var runtime = window.AppRuntime[this.project.name];
 
       var test = [
@@ -113,24 +118,23 @@ module.exports = Vue.component('app-main', {
         '',
         '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        ''
+        new Date().toISOString()
       ];
 
       if (!runtime) {
-        var xterm = new Terminal({
-          cols: 220,
-          rows: 70
-        });
+        var xterm = new Terminal();
 
         xterm.open();
-        this.$els.terminal.appendChild(xterm.element);
+        xtermNode.appendChild(xterm.element);
 
         console.log(xterm);
 
         test.forEach(function (line){
-          xterm.writeln(line);
-          xterm.cursorNextLine([0]);
+          xterm.write(line);
+          scroll(xtermNode);
         });
+
+        window.xterm = xterm;
 
         window.AppRuntime[this.project.name] = {
           name: name,
@@ -140,7 +144,11 @@ module.exports = Vue.component('app-main', {
       } else {
         test.forEach(function (line){
           runtime.xterm.writeln(line);
-          runtime.xterm.cursorNextLine([0]);
+          console.log(runtime.xterm.rows);
+          if(runtime.xterm.y > 10){
+            runtime.xterm.eraseLine(0);
+          }
+          scroll(xtermNode);
         });
       }
     },

@@ -3,8 +3,8 @@
  */
 
 'use strict';
-// ignore warnings regarging == and != (coersion makes things work here appearently)
 
+// ignore warnings regarging == and != (coersion makes things work here appearently)
 module.exports = function (Terminal){
   Terminal.prototype.setupStops = function (i){
     if (i != null) {
