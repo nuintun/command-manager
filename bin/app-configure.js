@@ -190,6 +190,7 @@ AppConfigure.prototype = {
             event.sender.send('app-configure', 'refresh', configure);
           }, function (error){
             context.showMessageBox('配置文件' + error.message + '！', function (){
+              shell.showItemInFolder(CONFIGUREPATH);
               context.window.close();
             });
           });
