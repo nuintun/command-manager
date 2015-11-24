@@ -118,7 +118,7 @@ module.exports = Vue.component('app-main', {
         '',
         '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        new Date().toISOString()
+        new Date().toISOString() + '\r\n'
       ].join('\r\n');
 
       if (!runtime) {
@@ -126,8 +126,8 @@ module.exports = Vue.component('app-main', {
 
         xterm.open();
         xtermNode.appendChild(xterm.element);
-        xterm.showCursor();
-        xterm.startBlink();
+        xterm.focus();
+        //xterm.startBlink();
 
         console.log(xterm);
 

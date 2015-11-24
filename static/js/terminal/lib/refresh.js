@@ -58,7 +58,7 @@ module.exports = function (Terminal){
 
           if (data !== this.defAttr) {
             if (data === -1) {
-              out += '<span class="reverse-video">';
+              out += '<span class="ui-terminal-reverse ui-terminal-cursor">';
             } else {
               out += '<span style="';
               bgColor = data & 0x1ff;

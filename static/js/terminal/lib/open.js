@@ -33,7 +33,7 @@ module.exports = function (Terminal){
     var div;
 
     this.element = document.createElement('div');
-    this.element.className = 'terminal';
+    this.element.className = 'ui-terminal';
     this.children = [];
 
     for (; i < this.rows; i++) {

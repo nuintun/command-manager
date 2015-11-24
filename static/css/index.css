@@ -494,3 +494,7 @@ header [class*=" icon-"] {
   height: calc(100% - 32px);
   background: url(../images/no-data.png) center no-repeat;
 }
+.ui-terminal-cursor {
+  color: #181818;
+  background-color: #fff;
+}

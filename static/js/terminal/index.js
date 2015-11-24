@@ -97,6 +97,7 @@ require('./lib/range')(Terminal);
 require('./lib/util')(Terminal);
 
 require('./lib/cursor')(Terminal);
+require('./lib/focused')(Terminal);
 
 require('./lib/scrollDisp')(Terminal);
 
