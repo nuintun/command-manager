@@ -81,7 +81,6 @@ require('./lib/options')(Terminal);
 require('./lib/open')(Terminal);
 require('./lib/destroy')(Terminal);
 require('./lib/refresh')(Terminal);
-require('./lib/scrollDisp')(Terminal);
 
 require('./lib/write')(Terminal);
 
