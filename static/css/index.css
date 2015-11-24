@@ -478,15 +478,9 @@ header [class*=" icon-"] {
 .ui-sub-item .ui-item-error {
   margin: 5px 0 -10px;
 }
-.ui-submit-tips:before,
 .ui-item-error span:before {
   content: '* ';
   font-weight: bold;;
-}
-.ui-submit-tips {
-  color: #f00;
-  text-align: center;
-  padding: 0 0 15px;
 }
 .ui-no-data {
   position: absolute;

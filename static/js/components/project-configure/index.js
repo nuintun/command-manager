@@ -24,76 +24,55 @@ module.exports = Vue.component('project-configure', {
       type: Object,
       required: true
     },
-    uniqueProjects: {
+    unique: {
       type: Object,
-      twoWay: true,
       required: true
     }
   },
   data: function (){
     return {
-      nameError: '',
-      pathError: '',
-      submitError: '',
-      projectClone: null
+      clone: null
     }
   },
   watch: {
     project: function (project){
-      this.projectClone = util.clone(project);
+      this.reset();
+      this.clone = util.clone(project);
     }
   },
   methods: {
-    focus: function (event){
-      if (event.target.type === 'text') {
-        this.submitError = '';
-      }
+    reset: function (){
+      // clean item input
+      var base = this.$refs.base;
+      var env = this.$refs.env;
+      var command = this.$refs.command;
+
+      base.$emit('reset-error');
+      env.$emit('reset-error');
+      command.$emit('reset-error');
+      env.$emit('reset-input');
+      command.$emit('reset-input');
     },
     edit: function (){
-      var name = this.projectClone.name;
-      var originName = this.project.name;
+      if (this.$refs.base.isValid()) {
+        this.show = false;
 
-      if (this.projectClone.name && this.projectClone.path) {
-        if (name !== originName && this.uniqueProjects[name]) {
-          this.submitError = '项目已存在';
-        } else {
-          this.show = false;
+        // send message
+        this.$dispatch('edit', util.clone(this.clone));
 
-          // clean error
-          this.submitError = '';
-
-          // send message
-          this.$dispatch('edit', util.clone(this.projectClone));
-
-          // clean error
-          this.$broadcast('reset-error');
-          // clean input
-          this.$broadcast('reset-item-input');
-        }
+        // clean item input
+        this.reset();
       }
     },
     cancel: function (){
       this.show = false;
-      this.submitError = '';
-      this.projectClone = util.clone(this.project);
+      this.clone = util.clone(this.project);
 
-      // clean error
-      this.$broadcast('reset-error');
-      // clean input
-      this.$broadcast('reset-item-input');
-    }
-  },
-  events: {
-    'configure-refresh': function (){
-      this.submitError = '';
-
-      // clean error
-      this.$broadcast('reset-error');
-      // clean input
-      this.$broadcast('reset-item-input');
+      // clean item input
+      this.reset();
     }
   },
   created: function (){
-    this.projectClone = util.clone(this.project);
+    this.clone = util.clone(this.project);
   }
 });

@@ -11,7 +11,7 @@
     <header class="fn-clear">
       <app-configure
         :configure.sync="configure"
-        :unique-projects.sync="uniqueProjects">
+        :unique.sync="unique">
       </app-configure>
       <window-control></window-control>
     </header>
@@ -25,7 +25,7 @@
       <app-main
         :active-index.sync="activeIndex"
         :projects.sync="configure.projects"
-        :unique-projects.sync="uniqueProjects">
+        :unique.sync="unique">
       </app-main>
     </main>
     <no-data :projects="configure.projects"></no-data>

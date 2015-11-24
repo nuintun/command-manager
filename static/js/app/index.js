@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', function (){
         configure: configure
       },
       computed: {
-        uniqueProjects: function (){
+        unique: function (){
           var cache = {};
 
           this.configure.projects.forEach(function (project){
@@ -56,7 +56,8 @@ window.addEventListener('DOMContentLoaded', function (){
           configure.projects = configure.projects || [];
           app.configure = configure;
 
-          app.$broadcast('configure-refresh');
+          app.$broadcast('reset-input');
+          app.$broadcast('reset-error');
         } else {
           init(configure);
         }

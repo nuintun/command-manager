@@ -24,7 +24,7 @@ module.exports = Vue.component('app-main', {
       twoWay: true,
       required: true
     },
-    uniqueProjects: {
+    unique: {
       type: Object,
       required: true
     }

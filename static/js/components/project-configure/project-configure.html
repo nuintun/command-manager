@@ -1,5 +1,5 @@
 <div v-show="show" class="ui-project-setting">
-  <form @submit.prevent="edit" @focusin="focus">
+  <form @submit.prevent="edit">
     <div class="ui-control-bar fn-clear">
       <div class="fn-right">
         <input type="submit" class="ui-button" value="确认"/>
@@ -7,16 +7,31 @@
       </div>
     </div>
     <div class="ui-project-configure">
-      <div v-show="submitError" class="ui-submit-tips">{{ submitError }}</div>
       <ul>
-        <li is="project-base" :name.sync="projectClone.name" :path.sync="projectClone.path"></li>
+        <li
+          v-ref:base
+          is="project-base"
+          :name.sync="clone.name"
+          :path.sync="clone.path"
+          :unique="unique">
+        </li>
         <li class="ui-sub-item">
           <label>环境变量：</label>
-          <dynamic-item name-label="变量名" value-label="变量值" :items.sync="projectClone.env"></dynamic-item>
+          <dynamic-item
+            v-ref:env
+            name-label="变量名"
+            value-label="变量值"
+            :items.sync="clone.env">
+          </dynamic-item>
         </li>
         <li id="add-cmd" class="ui-sub-item">
           <label>项目命令：</label>
-          <dynamic-item name-label="名称" value-label="命令" :items.sync="projectClone.command"></dynamic-item>
+          <dynamic-item
+            v-ref:command
+            name-label="名称"
+            value-label="命令"
+            :items.sync="clone.command">
+          </dynamic-item>
         </li>
       </ul>
     </div>

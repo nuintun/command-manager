@@ -18,6 +18,10 @@ module.exports = Vue.component('project-base', {
       twoWay: true,
       default: ''
     },
+    unique: {
+      type: Object,
+      required: true
+    },
     path: {
       type: String,
       twoWay: true,
@@ -31,23 +35,19 @@ module.exports = Vue.component('project-base', {
     };
   },
   methods: {
-    focus: function (key, event){
-      if (event.target.type === 'text') {
-        this[key] = '';
-      }
-    }
-  },
-  events: {
-    'reset-error': function (){
-      this.nameError = '';
-      this.pathError = '';
+    focus: function (key){
+      this[key] = '';
     },
-    'submit': function (){
+    isValid: function (){
       this.name = this.name.trim();
       this.path = this.path.trim();
 
       if (this.name) {
-        this.nameError = '';
+        if (this.unique[this.name]) {
+          this.nameError = '项目已存在';
+        } else {
+          this.nameError = '';
+        }
       } else {
         this.nameError = '项目名称不能为空';
       }
@@ -57,6 +57,18 @@ module.exports = Vue.component('project-base', {
       } else {
         this.pathError = '项目路径不能为空';
       }
+
+      return !this.nameError && !this.pathError;
+    }
+  },
+  events: {
+    'reset-error': function (){
+      this.nameError = '';
+      this.pathError = '';
+    },
+    'reset-input': function (){
+      this.name = '';
+      this.path = '';
     }
   }
 });

@@ -19,7 +19,7 @@ module.exports = Vue.component('app-configure', {
       twoWay: true,
       required: true
     },
-    uniqueProjects: {
+    unique: {
       type: Object,
       required: true
     }
@@ -28,49 +28,39 @@ module.exports = Vue.component('app-configure', {
     return {
       name: '',
       path: '',
-      submitError: '',
       showPopup: false
     }
   },
   methods: {
-    focus: function (event){
-      if (event.target.type === 'text') {
-        this.submitError = '';
-      }
-    },
     appConfigure: function (command, configure){
       ipc.send('app-configure', command, configure);
     },
     hidePopup: function (){
       this.showPopup = false;
-      this.name = '';
-      this.path = '';
-      this.submitError = '';
+      // clean input
+      var base = this.$refs.base;
 
-      // clean error
-      this.$broadcast('reset-error');
+      base.$emit('reset-input');
+      base.$emit('reset-error');
     },
     add: function (){
-      this.$broadcast('submit');
+      var base = this.$refs.base;
 
-      if (this.name && this.path) {
-        if (this.uniqueProjects[this.name]) {
-          this.submitError = '项目已存在';
-        } else {
-          this.showPopup = false;
-          this.configure.projects.push({ name: this.name, path: this.path, env: [], command: [] });
+      if (base.isValid()) {
+        this.showPopup = false;
 
-          this.name = '';
-          this.path = '';
-          this.submitError = '';
+        this.configure.projects.push({
+          name: this.name,
+          path: this.path,
+          env: [],
+          command: []
+        });
 
-          // clean error
-          this.$broadcast('reset-error');
-
-          // send message
-          this.$dispatch('change-active', this.configure.projects.length - 1, true);
-          this.$dispatch('save-configure');
-        }
+        // clean input
+        base.$emit('reset-input');
+        // send message
+        this.$dispatch('change-active', this.configure.projects.length - 1, true);
+        this.$dispatch('save-configure');
       }
     }
   },
