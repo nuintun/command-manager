@@ -111,8 +111,8 @@ module.exports = Vue.component('app-main', {
         '',
         '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        new Date().toISOString() + '\r\n'
-      ].join('\r\n');
+        '2015-11-25T07:58:11.061Z'
+      ].join('\n');
 
       if (!runtime) {
         var xterm = new Terminal({
@@ -128,7 +128,7 @@ module.exports = Vue.component('app-main', {
 
         //console.log(xterm);
 
-        xterm.write(test);
+        xterm.write('2015-11-25T07:58:11.061Z');
         //scroll(xtermNode);
 
         window.xterm = xterm;

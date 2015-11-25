@@ -6,10 +6,6 @@
 
 var states = require('./states');
 
-function fixLinefeed(data){
-  return data.replace(/([^\r])\n/g, '$1\r\n');
-}
-
 module.exports = function (Terminal){
   Terminal.prototype.send = function (data){
     var context = this;
@@ -44,8 +40,6 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.write = function (data){
-    data = fixLinefeed(data);
-
     var l = data.length;
     var i = 0;
     var ch = null;
