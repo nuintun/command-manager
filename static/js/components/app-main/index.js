@@ -121,7 +121,6 @@ module.exports = Vue.component('app-main', {
         '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
         new Date().toISOString(),
-        ''
       ].join('\r\n');
 
       if (!runtime) {
