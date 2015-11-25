@@ -549,7 +549,7 @@ module.exports = function (Terminal){
               break;
             // CSI Ps n Device Status Report (DSR).
             case 'n':
-              if (typeof deviceStatus === 'function') {
+              if (!this.prefix) {
                 this.deviceStatus(this.params);
               }
               break;
@@ -807,9 +807,6 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.writeln = function (data){
-    // at times spaces appear in between escape chars and fixIndent fails us, so we fix it here
-    data = data.replace(/ /g, '&nbsp;');
-
     // adding empty char before line break ensures that empty lines render properly
     this.write(data + ' \r\n');
   };
