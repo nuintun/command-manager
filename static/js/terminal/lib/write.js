@@ -40,7 +40,7 @@ module.exports = function (Terminal){
 
     snd.play();
 
-    if (!Terminal.visualBell) return;
+    if (!this.visualBell) return;
 
     var self = this;
 
@@ -50,7 +50,7 @@ module.exports = function (Terminal){
       self.element.style.borderColor = '';
     }, 10);
 
-    if (Terminal.popOnBell) this.focus();
+    if (this.popOnBell) this.focus();
   };
 
   Terminal.prototype.write = function (data){
@@ -149,7 +149,7 @@ module.exports = function (Terminal){
                     this.lines[j][this.x - 1] = [this.curAttr, ' '];
                     break;
                   }
-                  
+
                   this.lines[j][this.x] = [this.curAttr, ' '];
                   this.x++;
                 }
