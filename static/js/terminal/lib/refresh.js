@@ -136,6 +136,8 @@ module.exports = function (Terminal){
               if (this.isWide(ch)) i++;
 
               out += ch;
+            } else {
+              if (data === -1)  out += '&nbsp;';
             }
             break;
         }
