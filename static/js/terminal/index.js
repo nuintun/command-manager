@@ -56,7 +56,7 @@ function Terminal(options){
   options.handler = typeof options.handler === 'function' ? options.handler : function (){};
   this.handler = options.handler;
 
-  options.convertEol = options.convertEol !== false;
+  options.convertEol = options.convertEol === true;
   this.convertEol = options.convertEol;
 
   this.options = options;
