@@ -14,4 +14,15 @@ module.exports = function (Terminal){
   Terminal.screenKeys = false;
   Terminal.programFeatures = false;
   Terminal.debug = false;
+
+  Terminal.defaults = {
+    termName: Terminal.termName,
+    cursorBlink: Terminal.cursorBlink,
+    visualBell: Terminal.visualBell,
+    popOnBell: Terminal.popOnBell,
+    scrollback: Terminal.scrollback,
+    screenKeys: Terminal.screenKeys,
+    programFeatures: Terminal.programFeatures,
+    debug: Terminal.debug
+  };
 };

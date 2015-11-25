@@ -107,11 +107,11 @@ module.exports = function (Terminal){
               }
 
               if (bgColor !== 256) {
-                out += 'background-color:' + Terminal.colors[bgColor] + ';';
+                out += 'background-color:' + this.colors[bgColor] + ';';
               }
 
               if (fgColor !== 257) {
-                out += 'color:' + Terminal.colors[fgColor] + ';';
+                out += 'color:' + this.colors[fgColor] + ';';
               }
 
               out += '">';

@@ -8,13 +8,47 @@ var states = require('./lib/states');
 
 module.exports = Terminal;
 
-function Terminal(opts){
-  opts = opts || {};
+function iterator(from, iterator, context){
+  for (var key in from) {
+    if (from.hasOwnProperty(key)) {
+      iterator.call(context, key, from[key]);
+    }
+  }
+}
 
-  if (!(this instanceof Terminal)) return new Terminal(opts);
+function Terminal(options){
+  options = options || {};
 
-  this.cols = opts.cols || 500;
-  this.rows = opts.rows || 100;
+  if (!(this instanceof Terminal)) return new Terminal(options);
+
+  iterator(Terminal.defaults, function (key, value){
+    console.log(key);
+
+    if (options.hasOwnProperty(options)) {
+      this[key] = options[key];
+    } else {
+      this[key] = value;
+    }
+  }, this);
+
+  if (Array.isArray(options.colors)) {
+    if (options.colors.length === 8) {
+      this.colors = options.colors.concat(Terminal.colors.slice(8));
+    } else if (options.colors.length === 16) {
+      this.colors = options.colors.concat(Terminal.colors.slice(16));
+    } else if (options.colors.length === 10) {
+      this.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(8, -2), options.colors.slice(-2));
+    } else if (options.colors.length === 18) {
+      this.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(16, -2), options.colors.slice(-2));
+    } else {
+      this.colors = Terminal.colors;
+    }
+  } else {
+    this.colors = Terminal.colors;
+  }
+
+  this.cols = options.cols || Terminal.geometry[0];
+  this.rows = options.rows || Terminal.geometry[1];
 
   this.ybase = 0;
   this.ydisp = 0;

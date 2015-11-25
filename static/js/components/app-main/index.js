@@ -129,7 +129,7 @@ module.exports = Vue.component('app-main', {
         xterm.focus();
         xterm.startBlink();
 
-        console.log(xterm);
+        //console.log(xterm);
 
         xterm.write(test);
         //scroll(xtermNode);

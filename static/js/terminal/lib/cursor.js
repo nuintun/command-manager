@@ -5,7 +5,7 @@
 'use strict';
 
 module.exports = function (Terminal){
-  Terminal.prototype.cursorBlink = function (){
+  Terminal.prototype.blinkCursor = function (){
     if (Terminal.focus !== this) return;
 
     this.cursorState ^= 1;
@@ -20,19 +20,19 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.startBlink = function (){
-    if (!Terminal.cursorBlink) return;
+    if (!this.cursorBlink) return;
 
     var self = this;
 
     this._blinker = function (){
-      self.cursorBlink();
+      self.blinkCursor();
     };
 
     this._blink = setInterval(this._blinker, 500);
   };
 
   Terminal.prototype.refreshBlink = function (){
-    if (!Terminal.cursorBlink) return;
+    if (!this.cursorBlink) return;
 
     clearInterval(this._blink);
 
