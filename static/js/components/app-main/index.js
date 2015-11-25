@@ -92,7 +92,7 @@ module.exports = Vue.component('app-main', {
       var xtermNode = this.$els.terminal;
       var runtime = window.AppRuntime[this.project.name];
 
-      var test = [
+      var code = [
         '\u001b[92m\'use strict\'\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[90m/*jshint browser:true */\u001b[39m',
         '',
@@ -134,7 +134,7 @@ module.exports = Vue.component('app-main', {
         xterm.open();
         xtermNode.appendChild(xterm.element);
 
-        xterm.write(test);
+        xterm.write(code);
         scroll(xterm);
 
         window.xterm = xterm;
@@ -145,7 +145,7 @@ module.exports = Vue.component('app-main', {
           xterm: xterm
         }
       } else {
-        runtime.xterm.write('\r\n' + test);
+        runtime.xterm.write('\r\n' + code);
         scroll(runtime.xterm);
       }
     },
