@@ -10,8 +10,9 @@ module.exports = function (Terminal){
     this.children = [];
     this.readable = false;
     this.writable = false;
-    this.handler = function (){};
     this.write = function (){};
+    this.handler = function (){};
+    this.handlerTitle = function (){};
 
     if (this.element) {
       var parent = this.element.parentNode;
