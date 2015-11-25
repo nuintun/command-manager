@@ -6,8 +6,8 @@
 
 module.exports = function (Terminal){
   Terminal.prototype.blankLine = function (cur){
-    var attr = cur ? this.curAttr : this.defAttr;
-    var ch = [attr, ''];
+    var attr = cur ? this.eraseAttr() : this.defAttr;
+    var ch = [attr, ' '];
     var line = [];
     var i = 0;
 

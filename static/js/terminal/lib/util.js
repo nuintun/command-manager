@@ -7,7 +7,7 @@
 module.exports = function (Terminal){
   Terminal.prototype.isWide = function isWide(ch){
     if (ch <= '\uff00') return false;
-    
+
     return (ch >= '\uff01' && ch <= '\uffbe')
       || (ch >= '\uffc2' && ch <= '\uffc7')
       || (ch >= '\uffca' && ch <= '\uffcf')
@@ -18,11 +18,11 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.ch = function (cur){
-    return cur ? [this.curAttr, ' '] : [this.defAttr, ' '];
+    return cur ? [this.eraseAttr(), ' '] : [this.defAttr, ' '];
   };
 
   Terminal.prototype.is = function (term){
-    var name = this.termName || Terminal.termName;
+    var name = this.termName;
 
     return (name + '').indexOf(term) === 0;
   };
