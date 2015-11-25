@@ -121,17 +121,17 @@ module.exports = function (Terminal){
 
         switch (ch) {
           case '&':
-            out += '&';
+            out += '&amp;';
             break;
           case '<':
-            out += '<';
+            out += '&lt;';
             break;
           case '>':
             out += '>';
             break;
           default:
             if (ch <= ' ') {
-              out += '&nbsp;';
+              out += '&gt;';
             } else {
               if (this.isWide(ch)) i++;
 

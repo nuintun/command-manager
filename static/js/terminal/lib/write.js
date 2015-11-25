@@ -10,30 +10,6 @@ function fixLinefeed(data){
   return data.replace(/([^\r])\n/g, '$1\r\n');
 }
 
-function fixIndent(data){
-  if (!/(^|\n) /.test(data)) return data;
-
-  // not very efficient, but works and would only become a problem
-  // once we render huge amounts of data
-  return data
-    .split('\n')
-    .map(function (line){
-      var count = 0;
-
-      while (line.charAt(0) === ' ') {
-        line = line.slice(1);
-        count++;
-      }
-
-      while (count--) {
-        line = '&nbsp;' + line;
-      }
-
-      return line;
-    })
-    .join('\r\n');
-}
-
 module.exports = function (Terminal){
   Terminal.prototype.bell = function (){
     var snd = new Audio('bell.wav'); // buffers automatically when created
@@ -55,7 +31,6 @@ module.exports = function (Terminal){
 
   Terminal.prototype.write = function (data){
     data = fixLinefeed(data);
-    data = fixIndent(data);
 
     var l = data.length;
     var i = 0;
