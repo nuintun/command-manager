@@ -7,13 +7,13 @@
 // ignore warnings regarging == and != (coersion makes things work here appearently)
 module.exports = function (Terminal){
   Terminal.prototype.setupStops = function (i){
-    if (i != null) {
+    if (i !== null) {
       if (!this.tabs[i]) {
         i = this.prevStop(i);
       }
     } else {
-      this.tabs = {};
       i = 0;
+      this.tabs = {};
     }
 
     for (; i < this.cols; i += 8) {
@@ -22,7 +22,7 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.prevStop = function (x){
-    if (x == null) x = this.x;
+    if (x === null) x = this.x;
 
     while (!this.tabs[--x] && x > 0) {}
 
@@ -30,7 +30,7 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.nextStop = function (x){
-    if (x == null) x = this.x;
+    if (x === null) x = this.x;
 
     while (!this.tabs[++x] && x < this.cols) {}
 

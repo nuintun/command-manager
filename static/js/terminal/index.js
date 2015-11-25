@@ -56,6 +56,9 @@ function Terminal(options){
   options.handler = typeof options.handler === 'function' ? options.handler : function (){};
   this.handler = options.handler;
 
+  options.convertEol = options.convertEol === false;
+  this.convertEol = options.convertEol;
+
   this.options = options;
 
   this.ybase = 0;
@@ -64,7 +67,6 @@ function Terminal(options){
   this.y = 0;
   this.cursorState = 0;
   this.cursorHidden = false;
-  this.convertEol = true;
   this.state = states.normal;
   this.queue = '';
   this.scrollTop = 0;

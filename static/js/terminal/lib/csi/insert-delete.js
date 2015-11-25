@@ -78,10 +78,10 @@ module.exports = function (Terminal){
   // Insert P s Column(s) (default = 1) (DECIC), VT420 and up.
   // NOTE: xterm doesn't enable this code by default.
   Terminal.prototype.insertColumns = function (params){
+    var i;
     var param = params[0];
     var l = this.ybase + this.rows;
     var ch = [this.eraseAttr(), ' ']; // xterm
-    var i;
 
     while (param--) {
       for (i = this.ybase; i < l; i++) {
@@ -97,10 +97,10 @@ module.exports = function (Terminal){
   // Delete P s Column(s) (default = 1) (DECDC), VT420 and up
   // NOTE: xterm doesn't enable this code by default.
   Terminal.prototype.deleteColumns = function (params){
+    var i;
     var param = params[0];
     var l = this.ybase + this.rows;
     var ch = [this.eraseAttr(), ' ']; // xterm
-    var i;
 
     while (param--) {
       for (i = this.ybase; i < l; i++) {
