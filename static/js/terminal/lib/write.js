@@ -709,6 +709,7 @@ module.exports = function (Terminal){
                     break;
                   default:
                     this.error('Unknown DCS Pt: %s.', pt);
+                    
                     pt = '';
                     break;
                 }
