@@ -6,6 +6,7 @@
 
 module.exports = function (Terminal){
   Terminal.charsets = {};
+
   // DEC Special Character and Line Drawing Set.
   // http://vt100.net/docs/vt102-ug/table5-13.html
   // A lot of curses apps use this if they see TERM=xterm.
@@ -47,6 +48,7 @@ module.exports = function (Terminal){
     '}': '\u00a3', // '£'
     '~': '\u00b7' // '·'
   };
+  
   Terminal.charsets.UK = null; // (A
   Terminal.charsets.US = null; // (B (USASCII)
   Terminal.charsets.Dutch = null; // (4
