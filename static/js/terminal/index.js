@@ -26,6 +26,7 @@ function Terminal(options){
       this[key] = options[key];
     } else {
       this[key] = value;
+      options[key] = value;
     }
   }, this);
 
@@ -52,7 +53,7 @@ function Terminal(options){
   this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
   this.fgColor = options.bgColor || Terminal.defaultColors.fgColor;
 
-  this.options = options;
+  this.resetOptions = options;
 
   this.ybase = 0;
   this.ydisp = 0;
