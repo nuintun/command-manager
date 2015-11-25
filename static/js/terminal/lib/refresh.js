@@ -16,13 +16,22 @@ module.exports = function (Terminal){
     // Second value:
     // Next 9 bits: background color (0-511).
     // Next 9 bits: foreground color (0-511).
-    // Next 14 bits: a mask for misc. flags:
-    // 1=bold, 2=underline, 4=inverse
+    // Next 14 bits: a mask for misc.
+    // flags: 1=bold, 2=underline, 4=blink, 8=inverse, 16=invisible
   Terminal.prototype.refresh = function (start, end){
-    var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row, parent;
+    var parent = this.element.parentNode;
+    var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row;
+
+    if (parent && end - start >= this.rows / 2) {
+      parent.removeChild(this.element);
+    }
 
     width = this.cols;
     y = start;
+
+    if (end >= this.lines.length) {
+      end = this.lines.length - 1;
+    }
 
     for (; y <= end; y++) {
       row = y + this.ydisp;
@@ -65,7 +74,8 @@ module.exports = function (Terminal){
               fgColor = (data >> 9) & 0x1ff;
               flags = data >> 18;
 
-              if (flags & 1) {
+              // bold
+              if ((flags & 1)) {
                 if (!Terminal.brokenBold) {
                   out += 'font-weight:bold;';
                 }
@@ -74,8 +84,33 @@ module.exports = function (Terminal){
                 if (fgColor < 8) fgColor += 8;
               }
 
-              if (flags & 2) {
+              // underline
+              if ((flags & 2)) {
                 out += 'text-decoration:underline;';
+              }
+
+              // blink
+              if ((flags & 4)) {
+                if ((flags & 2)) {
+                  out = out.slice(0, -1);
+                  out += ' blink;';
+                } else {
+                  out += 'text-decoration:blink;';
+                }
+              }
+
+              // inverse
+              if ((flags & 8)) {
+                bgColor = (data >> 9) & 0x1ff;
+                fgColor = data & 0x1ff;
+                // Should inverse just be before the
+                // above boldColors effect instead?
+                if ((flags & 1) && fgColor < 8) fgColor += 8;
+              }
+
+              // invisible
+              if ((flags & 16)) {
+                out += 'visibility:hidden;';
               }
 
               if (bgColor !== 256) {
@@ -105,6 +140,8 @@ module.exports = function (Terminal){
             if (ch <= ' ') {
               out += ' ';
             } else {
+              if (this.isWide(ch)) i++;
+
               out += ch;
             }
             break;

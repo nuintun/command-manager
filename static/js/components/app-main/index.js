@@ -132,7 +132,7 @@ module.exports = Vue.component('app-main', {
         console.log(xterm);
 
         xterm.write(test);
-        scroll(xtermNode);
+        //scroll(xtermNode);
 
         window.xterm = xterm;
 
@@ -143,12 +143,8 @@ module.exports = Vue.component('app-main', {
         }
       } else {
         runtime.xterm.write(test);
-        if (runtime.xterm.lines.length > 10) {
-          runtime.xterm.deleteLines([10]);
-          runtime.xterm.refresh(0, runtime.xterm.lines.length - 1);
-        }
 
-        scroll(xtermNode);
+        //scroll(xtermNode);
       }
     },
     setting: function (){

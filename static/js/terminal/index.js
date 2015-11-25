@@ -112,5 +112,6 @@ require('./lib/csi/cursor')(Terminal);
 require('./lib/csi/repeatPrecedingCharacter')(Terminal);
 require('./lib/csi/tabClear')(Terminal);
 require('./lib/csi/softReset')(Terminal);
+require('./lib/csi/scroll')(Terminal);
 
 require('./lib/charsets.js')(Terminal);

@@ -5,6 +5,10 @@
 'use strict';
 
 module.exports = function (Terminal){
+  Terminal.prototype.eraseAttr = function (){
+    return (this.defAttr & ~0x1ff) | (this.curAttr & 0x1ff);
+  };
+
   Terminal.prototype.eraseRight = function (x, y){
     var line = this.lines[this.ybase + y];
     var ch = [this.curAttr, ' ']; // xterm

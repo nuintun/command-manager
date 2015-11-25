@@ -87,7 +87,13 @@ module.exports = function (Terminal){
                 this.x = 0;
               }
 
+              // TODO: Implement eat_newline_glitch.
               this.y++;
+
+              if (this.y > this.scrollBottom) {
+                this.y--;
+                this.scroll();
+              }
               break;
             // '\r'
             case '\r':
@@ -128,11 +134,25 @@ module.exports = function (Terminal){
                 }
 
                 // FIXME: this prevents errors from being thrown, but needs a proper fix
-                if (this.lines[this.y + this.ybase])
+                if (this.lines[this.y + this.ybase]) {
                   this.lines[this.y + this.ybase][this.x] = [this.curAttr, ch];
+                }
 
                 this.x++;
+
                 this.updateRange(this.y);
+
+                if (this.isWide(ch)) {
+                  var j = this.y + this.ybase;
+
+                  if (this.cols < 2 || this.x >= this.cols) {
+                    this.lines[j][this.x - 1] = [this.curAttr, ' '];
+                    break;
+                  }
+                  
+                  this.lines[j][this.x] = [this.curAttr, ' '];
+                  this.x++;
+                }
               }
               break;
           }
@@ -453,6 +473,7 @@ module.exports = function (Terminal){
                 this.currentParam = this.currentParam * 10 + ch.charCodeAt(0) - 48;
               } else if (ch === ';') {
                 this.params.push(this.currentParam);
+
                 this.currentParam = '';
               }
             } else {
@@ -643,14 +664,14 @@ module.exports = function (Terminal){
               break;
             // CSI Ps S Scroll up Ps lines (default = 1) (SU).
             case 'S':
-              //- this.scrollUp(this.params);
+              this.scrollUp(this.params);
               break;
             // CSI Ps T Scroll down Ps lines (default = 1) (SD).
             // CSI Ps ; Ps ; Ps ; Ps ; Ps T
             // CSI > Ps; Ps T
             case 'T':
               if (this.params.length < 2 && !this.prefix) {
-                //- this.scrollDown(this.params);
+                this.scrollDown(this.params);
               }
               break;
             // CSI Ps Z
