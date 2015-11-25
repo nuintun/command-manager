@@ -17,6 +17,7 @@ module.exports = function (Terminal){
     if (!this.queue) {
       setTimeout(function (){
         context.handler(context.queue);
+        
         context.queue = '';
       }, 1);
     }
