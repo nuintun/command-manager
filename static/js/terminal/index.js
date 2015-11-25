@@ -22,8 +22,6 @@ function Terminal(options){
   if (!(this instanceof Terminal)) return new Terminal(options);
 
   iterator(Terminal.defaults, function (key, value){
-    console.log(key);
-
     if (options.hasOwnProperty(options)) {
       this[key] = options[key];
     } else {
@@ -49,6 +47,8 @@ function Terminal(options){
 
   this.cols = options.cols || Terminal.geometry[0];
   this.rows = options.rows || Terminal.geometry[1];
+  this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
+  this.fgColor = options.bgColor || Terminal.defaultColors.fgColor;
 
   this.ybase = 0;
   this.ydisp = 0;

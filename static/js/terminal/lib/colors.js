@@ -12,7 +12,7 @@ module.exports = function (Terminal){
     // bright:
     '#555753', '#ef2929', '#8ae234', '#fce94f', '#729fcf', '#ad7fa8', '#34e2e2', '#eeeeec'
   ];
-  
+
   // Colors 16-255
   // Much thanks to TooTallNate for writing this.
   Terminal.colors = (function (){
@@ -50,10 +50,10 @@ module.exports = function (Terminal){
 
   // Default BG/FG
   Terminal.defaultColors = {
-    bg: '#000000',
-    fg: '#f0f0f0'
+    bgColor: '#000000',
+    fgColor: '#f0f0f0'
   };
 
-  Terminal.colors[256] = Terminal.defaultColors.bg;
-  Terminal.colors[257] = Terminal.defaultColors.fg;
+  Terminal.colors[256] = Terminal.defaultColors.bgColor;
+  Terminal.colors[257] = Terminal.defaultColors.fgColor;
 };

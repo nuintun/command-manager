@@ -51,7 +51,7 @@ module.exports = function (Terminal){
     }
 
     // sync default bg/fg colors
-    this.element.style.backgroundColor = Terminal.defaultColors.bg;
-    this.element.style.color = Terminal.defaultColors.fg;
+    this.element.style.backgroundColor = this.bgColor;
+    this.element.style.color = this.fgColor;
   };
 };
