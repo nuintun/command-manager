@@ -145,6 +145,8 @@ require('./lib/focused')(Terminal);
 
 require('./lib/scrollDisp')(Terminal);
 
+require('./lib/resize')(Terminal);
+
 require('./lib/esc/index.js')(Terminal);
 require('./lib/esc/reset.js')(Terminal);
 require('./lib/esc/tabSet.js')(Terminal);
