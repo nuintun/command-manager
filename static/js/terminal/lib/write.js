@@ -546,7 +546,7 @@ module.exports = function (Terminal){
               break;
             // CSI Ps n Device Status Report (DSR).
             case 'n':
-              // -this.deviceStatus(this.params);
+              this.deviceStatus(this.params);
               break;
           /**
            * Additions
@@ -607,7 +607,7 @@ module.exports = function (Terminal){
             // CSI > P s c
             // Send Device Attributes (Secondary DA)
             case 'c':
-              //- this.sendDeviceAttributes(this.params);
+              this.sendDeviceAttributes(this.params);
               break;
             // CSI Pm d
             // Line Position Absolute [row] (default = [1,column]) (VPA).
