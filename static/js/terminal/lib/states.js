@@ -11,5 +11,6 @@ module.exports = {
   osc: 3,
   charset: 4,
   dcs: 5,
-  ignore: 6
+  ignore: 6,
+  udk: { type: 'udk' }
 };

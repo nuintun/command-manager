@@ -48,7 +48,8 @@ module.exports = function (Terminal){
 
     var l = data.length;
     var i = 0;
-    var cs, ch;
+    var ch = null;
+    var cs, lch;
 
     this.refreshStart = this.y;
     this.refreshEnd = this.y;
@@ -58,7 +59,7 @@ module.exports = function (Terminal){
       this.maxRange();
     }
 
-    for (; i < l; i++) {
+    for (lch = ch; i < l; i++) {
       ch = data[i];
 
       switch (this.state) {
@@ -165,7 +166,7 @@ module.exports = function (Terminal){
             case 'P':
               this.params = [];
               this.prefix = '';
-              this.currentParam = 0;
+              this.currentParam = '';
               this.state = states.dcs;
               break;
             // ESC _ Application Program Command ( APC is 0x9f).
@@ -400,8 +401,14 @@ module.exports = function (Terminal){
           // OSC Ps ; Pt ST
           // OSC Ps ; Pt BEL
           // Set Text Parameters.
-          if (ch === '\x1b' || ch === '\x07') {
-            if (ch === '\x1b') i++;
+          if ((lch === '\x1b' && ch === '\\') || ch === '\x07') {
+            if (lch === '\x1b') {
+              if (typeof this.currentParam === 'string') {
+                this.currentParam = this.currentParam.slice(0, -1);
+              } else if (typeof this.currentParam == 'number') {
+                this.currentParam = (this.currentParam - ('\x1b'.charCodeAt(0) - 48)) / 10;
+              }
+            }
 
             this.params.push(this.currentParam);
 
@@ -706,39 +713,58 @@ module.exports = function (Terminal){
           this.postfix = '';
           break;
         case states.dcs:
-          if (ch === '\x1b' || ch === '\x07') {
-            if (ch === '\x1b') i++;
+          if ((lch === '\x1b' && ch === '\\') || ch === '\x07') {
+            // Workarounds:
+            if (this.prefix === 'tmux;\x1b') {
+              // Tmux only accepts ST, not BEL:
+              if (ch === '\x07') {
+                this.currentParam += ch;
+                continue;
+              }
+            }
+
+            if (lch === '\x1b') {
+              if (typeof this.currentParam === 'string') {
+                this.currentParam = this.currentParam.slice(0, -1);
+              } else if (typeof this.currentParam == 'number') {
+                this.currentParam = (this.currentParam - ('\x1b'.charCodeAt(0) - 48)) / 10;
+              }
+            }
+
+            this.params.push(this.currentParam);
+
+            var pt = this.params[this.params.length - 1];
 
             switch (this.prefix) {
               // User-Defined Keys (DECUDK).
-              case '':
+              case states.udk:
                 break;
               // Request Status String (DECRQSS).
               // test: echo -e '\eP$q"p\e\\'
               case '$q':
                 var valid = 0;
-                var pt = this.currentParam;
 
                 switch (pt) {
                   // DECSCA
                   case '"q':
-                    pt = '0"q';
                     valid = 1;
+                    pt = '0"q';
                     break;
                   // DECSCL
                   case '"p':
-                    pt = '61"p';
                     valid = 1;
+                    pt = '61"p';
                     break;
                   // DECSTBM
                   case 'r':
-                    pt = '' + (this.scrollTop + 1) + ';' + (this.scrollBottom + 1) + 'r';
                     valid = 1;
+                    pt = '' + (this.scrollTop + 1) + ';' + (this.scrollBottom + 1) + 'r';
                     break;
                   // SGR
                   case 'm':
-                    pt = '0m';
-                    valid = 1;
+                    // TODO: Parse this.curAttr here.
+                    // Not implemented.
+                    valid = 0;
                     break;
                   default:
                     this.error('Unknown DCS Pt: %s.', pt);
@@ -759,7 +785,7 @@ module.exports = function (Terminal){
               // DCS + q Pt ST
               // test: echo -ne '\eP+q6b64\e\\'
               case '+q':
-                valid = 0;
+                valid = false;
 
                 this.send('\x1bP' + valid + '+r' + pt + '\x1b\\');
                 break;
@@ -776,27 +802,29 @@ module.exports = function (Terminal){
             this.currentParam = 0;
             this.prefix = '';
             this.state = states.normal;
-          } else if (!this.currentParam) {
-            if (!this.prefix && ch !== '$' && ch !== '+') {
-              this.currentParam = ch;
-            } else if (this.prefix.length === 2) {
-              this.currentParam = ch;
-            } else {
-              this.prefix += ch;
-            }
           } else {
             this.currentParam += ch;
+
+            if (!this.prefix) {
+              if (/^\d*;\d*\|/.test(this.currentParam)) {
+                this.prefix = states.udk;
+                this.params = this.currentParam.split(/[;|]/).map(function (n){
+                  if (!n.length) return 0;
+                  return +n;
+                }).slice(0, -1);
+                this.currentParam = '';
+              } else if (/^[$+][a-zA-Z]/.test(this.currentParam)
+                || /^\w+;\x1b/.test(this.currentParam)) {
+                this.prefix = this.currentParam;
+                this.currentParam = '';
+              }
+            }
           }
           break;
         case states.ignore:
           // For PM and APC.
-          if (ch === '\x1b' || ch === '\x07') {
-            if (ch === '\x1b') i++;
-            this.stateData = '';
+          if ((lch === '\x1b' && ch === '\\') || ch === '\x07') {
             this.state = states.normal;
-          } else {
-            if (!this.stateData) this.stateData = '';
-            this.stateData += ch;
           }
           break;
       }
