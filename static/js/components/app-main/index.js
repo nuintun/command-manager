@@ -10,11 +10,6 @@ var util = require('../../util');
 var Vue = require('../../vue/vue');
 var Terminal = require('../../terminal');
 
-Terminal.defaultColors = {
-  bg: 'transparent',
-  fg: 'inherit'
-};
-
 const EMPTYPROJECT = {
   name: '',
   path: '',
@@ -85,8 +80,6 @@ module.exports = Vue.component('app-main', {
 
     },
     exec: function (name, command){
-      console.log('run %s: %s', name, command);
-
       var xtermNode = this.$els.terminal;
       var runtime = window.AppRuntime[this.project.name];
 
@@ -122,7 +115,11 @@ module.exports = Vue.component('app-main', {
       ].join('\r\n');
 
       if (!runtime) {
-        var xterm = new Terminal();
+        var xterm = new Terminal({
+          debug: true,
+          bgColor: 'transparent',
+          fgColor: 'inherit'
+        });
 
         xterm.open();
         xtermNode.appendChild(xterm.element);

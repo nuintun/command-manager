@@ -6,7 +6,7 @@
 
 module.exports = function (Terminal){
   Terminal.prototype.log = function (){
-    if (!Terminal.debug) return;
+    if (!this.debug) return;
 
     if (!window.console || !window.console.log) return;
 
@@ -16,7 +16,7 @@ module.exports = function (Terminal){
   };
 
   Terminal.prototype.error = function (){
-    if (!Terminal.debug) return;
+    if (!this.debug) return;
 
     if (!window.console || !window.console.error) return;
 
