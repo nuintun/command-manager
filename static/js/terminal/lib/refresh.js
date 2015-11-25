@@ -34,7 +34,9 @@ module.exports = function (Terminal){
     }
 
     for (; y <= end; y++) {
+      i = 0;
       out = '';
+      attr = this.defAttr;
       row = y + this.ydisp;
       line = this.lines[row];
 
@@ -43,9 +45,6 @@ module.exports = function (Terminal){
       } else {
         x = -1;
       }
-
-      attr = this.defAttr;
-      i = 0;
 
       for (; i < width; i++) {
         data = line[i][0];
