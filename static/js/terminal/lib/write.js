@@ -18,12 +18,12 @@ module.exports = function (Terminal){
 
     if (!this.visualBell) return;
 
-    var self = this;
+    var context = this;
 
     this.element.style.borderColor = 'white';
 
     setTimeout(function (){
-      self.element.style.borderColor = '';
+      context.element.style.borderColor = '';
     }, 10);
 
     if (this.popOnBell) this.focus();
@@ -695,31 +695,39 @@ module.exports = function (Terminal){
               // Request Status String (DECRQSS).
               // test: echo -e '\eP$q"p\e\\'
               case '$q':
-                var pt = this.currentParam,
-                  valid = false;
+                var valid = 0;
+                var pt = this.currentParam;
+
                 switch (pt) {
                   // DECSCA
                   case '"q':
                     pt = '0"q';
+                    valid = 1;
                     break;
                   // DECSCL
                   case '"p':
                     pt = '61"p';
+                    valid = 1;
                     break;
                   // DECSTBM
                   case 'r':
                     pt = '' + (this.scrollTop + 1) + ';' + (this.scrollBottom + 1) + 'r';
+                    valid = 1;
                     break;
                   // SGR
                   case 'm':
                     pt = '0m';
+                    valid = 1;
                     break;
                   default:
                     this.error('Unknown DCS Pt: %s.', pt);
 
+                    valid = 0;
                     pt = '';
                     break;
                 }
+
+                // -this.send('\x1bP' + valid + '$r' + pt + '\x1b\\');
                 break;
               // Set Termcap/Terminfo Data (xterm, experimental).
               case '+p':

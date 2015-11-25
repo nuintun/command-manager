@@ -22,10 +22,10 @@ module.exports = function (Terminal){
   Terminal.prototype.startBlink = function (){
     if (!this.cursorBlink) return;
 
-    var self = this;
+    var context = this;
 
     this._blinker = function (){
-      self.blinkCursor();
+      context.blinkCursor();
     };
 
     this._blink = setInterval(this._blinker, 500);

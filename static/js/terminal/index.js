@@ -53,6 +53,9 @@ function Terminal(options){
   this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
   this.fgColor = options.fgColor || Terminal.defaultColors.fgColor;
 
+  options.handler = typeof options.handler === 'function' ? options.handler : function (){};
+  this.handler = options.handler;
+
   this.options = options;
 
   this.ybase = 0;
