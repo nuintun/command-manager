@@ -48,6 +48,21 @@ module.exports = function (Terminal){
     return colors;
   })();
 
+  Terminal.vcolors = (function (){
+    var color;
+    var i = 0;
+    var out = [];
+    var colors = Terminal.colors;
+
+    for (; i < 256; i++) {
+      color = parseInt(colors[i].substring(1), 16);
+
+      out.push([(color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff]);
+    }
+
+    return out;
+  })();
+
   // Default BG/FG
   Terminal.defaultColors = {
     bgColor: '#000000',

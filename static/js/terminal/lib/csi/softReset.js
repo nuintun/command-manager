@@ -11,14 +11,15 @@ module.exports = function (Terminal){
     this.cursorHidden = false;
     this.insertMode = false;
     this.originMode = false;
-    this.wraparoundMode = false; // autowrap
-    this.applicationKeypad = false; // ?
+    // autowrap
+    this.wraparoundMode = false;
+    this.applicationKeypad = false;
     this.scrollTop = 0;
     this.scrollBottom = this.rows - 1;
     this.curAttr = this.defAttr;
-    this.x = this.y = 0; // ?
+    this.x = this.y = 0;
     this.charset = null;
-    this.glevel = 0; // ??
-    this.charsets = [null]; // ??
+    this.glevel = 0;
+    this.charsets = [null];
   };
 };
