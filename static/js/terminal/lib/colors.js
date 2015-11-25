@@ -16,9 +16,9 @@ module.exports = function (Terminal){
   // Colors 16-255
   // Much thanks to TooTallNate for writing this.
   Terminal.colors = (function (){
+    var i;
     var colors = Terminal.colors;
     var r = [0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff];
-    var i;
 
     // 16-231
     i = 0;
