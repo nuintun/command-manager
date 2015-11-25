@@ -8,8 +8,11 @@ module.exports = function (Terminal){
   Terminal.prototype.destroy = function (){
     this.readable = false;
     this.writable = false;
-    this._events = {};
     this.handler = function (){};
     this.write = function (){};
+
+    if (this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element);
+    }
   };
 };

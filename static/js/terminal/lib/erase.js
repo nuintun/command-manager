@@ -11,7 +11,7 @@ module.exports = function (Terminal){
 
   Terminal.prototype.eraseRight = function (x, y){
     var line = this.lines[this.ybase + y];
-    var ch = [this.curAttr, ' ']; // xterm
+    var ch = [this.eraseAttr(), ' '];
 
     for (; x < this.cols; x++) {
       line[x] = ch;
@@ -22,7 +22,7 @@ module.exports = function (Terminal){
 
   Terminal.prototype.eraseLeft = function (x, y){
     var line = this.lines[this.ybase + y];
-    var ch = [this.curAttr, ' ']; // xterm
+    var ch = [this.eraseAttr(), ' '];
 
     x++;
 

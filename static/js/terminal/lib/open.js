@@ -29,11 +29,21 @@ module.exports = function (Terminal){
    * Open Terminal
    */
   Terminal.prototype.open = function (){
-    var i = 0;
     var div;
+    var i = 0;
 
     this.element = document.createElement('div');
     this.element.className = 'ui-terminal';
+    this.element.style.outline = 'none';
+
+    this.element.setAttribute('tabindex', '0');
+    this.element.setAttribute('spellcheck', 'false');
+    
+    // sync default bg/fg colors
+    this.element.style.backgroundColor = this.bgColor;
+    this.element.style.color = this.fgColor;
+
+    // Create the lines for our terminal.
     this.children = [];
 
     for (; i < this.rows; i++) {
@@ -49,9 +59,5 @@ module.exports = function (Terminal){
     if (Terminal.brokenBold === null) {
       Terminal.brokenBold = isBoldBroken();
     }
-
-    // sync default bg/fg colors
-    this.element.style.backgroundColor = this.bgColor;
-    this.element.style.color = this.fgColor;
   };
 };
