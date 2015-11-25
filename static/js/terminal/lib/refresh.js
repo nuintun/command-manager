@@ -130,14 +130,12 @@ module.exports = function (Terminal){
             out += '&gt;';
             break;
           default:
-            if (ch === ' ') {
+            if (ch <= ' ') {
               out += '&nbsp;';
-            } else if (ch > ' ') {
+            } else {
               if (this.isWide(ch)) i++;
 
               out += ch;
-            } else {
-              if (data === -1)  out += '&nbsp;';
             }
             break;
         }
