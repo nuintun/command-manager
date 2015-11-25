@@ -412,11 +412,7 @@ module.exports = function (Terminal){
               case 2:
                 if (this.params[1]) {
                   this.title = this.params[1];
-
-                  //handlers could not be installed
-                  if (typeof this.handleTitle === 'function') {
-                    this.handleTitle(this.title);
-                  }
+                  this.handleTitle(this.title);
                 }
                 break;
               case 3:
