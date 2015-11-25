@@ -13,7 +13,7 @@ module.exports = function (Terminal){
       this.lines.splice(this.ybase + this.scrollTop, 1);
       this.lines.splice(this.ybase + this.scrollBottom, 0, this.blankLine());
     }
-    
+
     this.updateRange(this.scrollTop);
     this.updateRange(this.scrollBottom);
   };
@@ -29,5 +29,18 @@ module.exports = function (Terminal){
 
     this.updateRange(this.scrollTop);
     this.updateRange(this.scrollBottom);
+  };
+
+  // CSI Ps ; Ps r
+  //   Set Scrolling Region [top;bottom] (default = full size of win-
+  //   dow) (DECSTBM).
+  // CSI ? Pm r
+  Terminal.prototype.setScrollRegion = function (params){
+    if (this.prefix) return;
+
+    this.x = 0;
+    this.y = 0;
+    this.scrollTop = (params[0] || 1) - 1;
+    this.scrollBottom = (params[1] || this.rows) - 1;
   };
 };

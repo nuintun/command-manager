@@ -651,7 +651,7 @@ module.exports = function (Terminal){
             // dow) (DECSTBM).
             // CSI ? Pm r
             case 'r':
-              //- this.setScrollRegion(this.params);
+              this.setScrollRegion(this.params);
               break;
             // CSI s
             // Save cursor (ANSI.SYS).
