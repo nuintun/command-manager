@@ -53,7 +53,7 @@ function Terminal(options){
   this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
   this.fgColor = options.bgColor || Terminal.defaultColors.fgColor;
 
-  this.resetOptions = options;
+  this.options = options;
 
   this.ybase = 0;
   this.ydisp = 0;
