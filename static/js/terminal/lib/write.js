@@ -50,6 +50,7 @@ module.exports = function (Terminal){
 
     if (this.ybase !== this.ydisp) {
       this.ydisp = this.ybase;
+
       this.maxRange();
     }
 
@@ -76,6 +77,7 @@ module.exports = function (Terminal){
 
               if (this.y > this.scrollBottom) {
                 this.y--;
+                
                 this.scroll();
               }
               break;
