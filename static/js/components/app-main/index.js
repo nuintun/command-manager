@@ -84,7 +84,6 @@ module.exports = Vue.component('app-main', {
       var runtime = window.AppRuntime[this.project.name];
 
       var test = [
-        '',
         '\u001b[92m\'use strict\'\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[90m/*jshint browser:true */\u001b[39m',
         '',
@@ -112,7 +111,8 @@ module.exports = Vue.component('app-main', {
         '',
         '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
         '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        new Date().toISOString()
+        new Date().toISOString(),
+        ''
       ].join('\r\n');
 
       if (!runtime) {
@@ -124,8 +124,6 @@ module.exports = Vue.component('app-main', {
 
         xterm.open();
         xtermNode.appendChild(xterm.element);
-        xterm.focus();
-        xterm.startBlink();
 
         xterm.write(test);
         scroll(xtermNode);
