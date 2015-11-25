@@ -15,7 +15,7 @@ module.exports = function (Terminal){
   Terminal.prototype.showCursor = function (){
     if (!this.cursorState) {
       this.cursorState = 1;
-      
+
       this.refresh(this.y, this.y);
     }
   };
