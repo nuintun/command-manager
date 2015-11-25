@@ -17,7 +17,7 @@ module.exports = function (Terminal){
     if (!this.queue) {
       setTimeout(function (){
         context.handler(context.queue);
-        
+
         context.queue = '';
       }, 1);
     }
@@ -120,15 +120,16 @@ module.exports = function (Terminal){
                 if (this.x >= this.cols) {
                   this.x = 0;
                   this.y++;
+
+                  if (this.y > this.scrollBottom) {
+                    this.y--;
+
+                    this.scroll();
+                  }
                 }
 
-                // FIXME: this prevents errors from being thrown, but needs a proper fix
-                if (this.lines[this.y + this.ybase]) {
-                  this.lines[this.y + this.ybase][this.x] = [this.curAttr, ch];
-                }
-
+                this.lines[this.y + this.ybase][this.x] = [this.curAttr, ch];
                 this.x++;
-
                 this.updateRange(this.y);
 
                 if (this.isWide(ch)) {
@@ -163,6 +164,7 @@ module.exports = function (Terminal){
             // ESC P Device Control String ( DCS is 0x90).
             case 'P':
               this.params = [];
+              this.prefix = '';
               this.currentParam = 0;
               this.state = states.dcs;
               break;
@@ -195,11 +197,11 @@ module.exports = function (Terminal){
             // ESC % Select default/utf-8 character set.
             // @ = default, G = utf-8
             case '%':
-              //this.charset = null;
               this.setgLevel(0);
               this.setgCharset(0, Terminal.charsets.US);
 
               this.state = states.normal;
+
               i++;
               break;
             // ESC (,),*,+,-,. Designate G0-G2 Character Set.
@@ -230,6 +232,7 @@ module.exports = function (Terminal){
                   this.gcharset = 2;
                   break;
               }
+
               this.state = states.charset;
               break;
             // Designate G3 Character Set (VT300).
@@ -238,6 +241,7 @@ module.exports = function (Terminal){
             case '/':
               this.gcharset = 3;
               this.state = states.charset;
+
               i--;
               break;
             // ESC N
@@ -290,6 +294,7 @@ module.exports = function (Terminal){
             // ESC # 3 DEC line height/width
             case '#':
               this.state = states.normal;
+
               i++;
               break;
             // ESC H Tab Set (HTS is 0x88).
@@ -298,9 +303,10 @@ module.exports = function (Terminal){
               break;
             // ESC = Application Keypad (DECPAM).
             case '=':
-              this.log('Serial port requested application keypad.');
               this.applicationKeypad = true;
               this.state = states.normal;
+
+              this.log('Serial port requested application keypad.');
               break;
             // ESC > Normal Keypad (DECPNM).
             case '>':
@@ -376,6 +382,7 @@ module.exports = function (Terminal){
             case '/':
               // ISOLatin (actually /A)
               cs = Terminal.charsets.ISOLatin;
+              
               i++;
               break;
             default:

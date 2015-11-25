@@ -6,7 +6,7 @@
 
 module.exports = function (Terminal){
   Terminal.termName = 'xterm';
-  Terminal.geometry = [80, 24];
+  Terminal.geometry = [10, 24];
   Terminal.cursorBlink = true;
   Terminal.visualBell = true;
   Terminal.popOnBell = true;
