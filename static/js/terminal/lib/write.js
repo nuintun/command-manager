@@ -629,12 +629,12 @@ module.exports = function (Terminal){
             // CSI Pm h Set Mode (SM).
             // CSI ? Pm h - mouse escape codes, cursor escape codes
             case 'h':
-              //- this.setMode(this.params);
+              this.setMode(this.params);
               break;
             // CSI Pm l Reset Mode (RM).
             // CSI ? Pm l
             case 'l':
-              //- this.resetMode(this.params);
+              this.resetMode(this.params);
               break;
             // CSI Ps ; Ps r
             // Set Scrolling Region [top;bottom] (default = full size of win-
