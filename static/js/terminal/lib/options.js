@@ -6,11 +6,11 @@
 
 module.exports = function (Terminal){
   Terminal.termName = 'xterm';
-  Terminal.geometry = [10, 24];
+  Terminal.geometry = [120, 100];
   Terminal.cursorBlink = true;
   Terminal.visualBell = true;
   Terminal.popOnBell = true;
-  Terminal.scrollback = 1000;
+  Terminal.scrollback = 600;
   Terminal.screenKeys = false;
   Terminal.programFeatures = false;
   Terminal.debug = false;
