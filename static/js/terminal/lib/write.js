@@ -264,11 +264,13 @@ module.exports = function (Terminal){
             // ESC 7 Save Cursor (DECSC).
             case '7':
               this.saveCursor();
+
               this.state = states.normal;
               break;
             // ESC 8 Restore Cursor (DECRC).
             case '8':
               this.restoreCursor();
+
               this.state = states.normal;
               break;
             // ESC # 3 DEC line height/width
@@ -288,12 +290,14 @@ module.exports = function (Terminal){
               break;
             // ESC > Normal Keypad (DECPNM).
             case '>':
-              this.log('Switching back to normal keypad.');
               this.applicationKeypad = false;
               this.state = states.normal;
+
+              this.log('Switching back to normal keypad.');
               break;
             default:
               this.state = states.normal;
+
               this.error('Unknown ESC control: %s.', ch);
               break;
           }
@@ -388,7 +392,7 @@ module.exports = function (Terminal){
                   this.title = this.params[1];
 
                   //handlers could not be installed
-                  if (this.handleTitle) {
+                  if (typeof this.handleTitle === 'function') {
                     this.handleTitle(this.title);
                   }
                 }
@@ -476,6 +480,7 @@ module.exports = function (Terminal){
           }
 
           this.params.push(this.currentParam);
+
           this.currentParam = 0;
 
           // ';'
@@ -523,7 +528,9 @@ module.exports = function (Terminal){
               break;
             // CSI Ps n Device Status Report (DSR).
             case 'n':
-              this.deviceStatus(this.params);
+              if (typeof deviceStatus === 'function') {
+                this.deviceStatus(this.params);
+              }
               break;
           /**
            * Additions
@@ -709,7 +716,7 @@ module.exports = function (Terminal){
                     break;
                   default:
                     this.error('Unknown DCS Pt: %s.', pt);
-                    
+
                     pt = '';
                     break;
                 }
