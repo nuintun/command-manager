@@ -30,8 +30,20 @@ function clone(projects, index){
   return util.clone(projects[index] || EMPTYPROJECT);
 }
 
-function scroll(element){
-  element.scrollTop = element.scrollHeight;
+/**
+ * srcoll
+ * @param xterm
+ */
+function scroll(xterm){
+  var parent = xterm.element.parentNode;
+
+  if (parent) {
+    var viewHeight = xterm.element.parentNode.clientHeight;
+
+    if (viewHeight < xterm.y * 18) {
+      xterm.children[xterm.y].scrollIntoView();
+    }
+  }
 }
 
 module.exports = Vue.component('app-main', {
@@ -76,9 +88,6 @@ module.exports = Vue.component('app-main', {
     }
   },
   methods: {
-    isRunning: function (){
-
-    },
     exec: function (name, command){
       var xtermNode = this.$els.terminal;
       var runtime = window.AppRuntime[this.project.name];
@@ -126,7 +135,7 @@ module.exports = Vue.component('app-main', {
         xtermNode.appendChild(xterm.element);
 
         xterm.write(test);
-        scroll(xtermNode);
+        scroll(xterm);
 
         window.xterm = xterm;
 
@@ -137,7 +146,7 @@ module.exports = Vue.component('app-main', {
         }
       } else {
         runtime.xterm.write(test);
-        scroll(xtermNode);
+        scroll(runtime.xterm);
       }
     },
     setting: function (){
