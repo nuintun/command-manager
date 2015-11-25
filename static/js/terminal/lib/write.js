@@ -382,7 +382,7 @@ module.exports = function (Terminal){
             case '/':
               // ISOLatin (actually /A)
               cs = Terminal.charsets.ISOLatin;
-              
+
               i++;
               break;
             default:
