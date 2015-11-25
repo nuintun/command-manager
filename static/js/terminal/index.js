@@ -51,7 +51,7 @@ function Terminal(options){
 
   this.colors = options.colors;
   this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
-  this.fgColor = options.bgColor || Terminal.defaultColors.fgColor;
+  this.fgColor = options.fgColor || Terminal.defaultColors.fgColor;
 
   this.options = options;
 

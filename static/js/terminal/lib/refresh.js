@@ -127,11 +127,11 @@ module.exports = function (Terminal){
             out += '&lt;';
             break;
           case '>':
-            out += '>';
+            out += '&gt;';
             break;
           default:
             if (ch <= ' ') {
-              out += '&gt;';
+              out += '&nbsp;';
             } else {
               if (this.isWide(ch)) i++;
 

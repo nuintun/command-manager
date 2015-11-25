@@ -13,8 +13,6 @@ module.exports = function (Terminal){
       this.lines = this.lines.slice(-(this.ybase + this.rows) + 1);
     }
 
-    console.log(this.ybase, this.scrollback);
-
     this.ydisp = this.ybase;
 
     // last line
