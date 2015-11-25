@@ -90,7 +90,7 @@ function Terminal(options){
 
   // misc
   this.element = null;
-  this.children = null;
+  this.children = [];
   this.refreshStart = null;
   this.refreshEnd = null;
   this.savedX = null;
@@ -126,8 +126,8 @@ require('./lib/colors')(Terminal);
 require('./lib/options')(Terminal);
 
 require('./lib/open')(Terminal);
-require('./lib/destroy')(Terminal);
 require('./lib/refresh')(Terminal);
+require('./lib/close')(Terminal);
 
 require('./lib/write')(Terminal);
 
@@ -149,11 +149,11 @@ require('./lib/focused')(Terminal);
 require('./lib/scrollDisp')(Terminal);
 
 require('./lib/resize')(Terminal);
-
 require('./lib/esc/index.js')(Terminal);
 require('./lib/esc/reset.js')(Terminal);
 require('./lib/esc/tabSet.js')(Terminal);
 
+require('./lib/charsets.js')(Terminal);
 require('./lib/csi/charAttributes')(Terminal);
 require('./lib/csi/insert-delete')(Terminal);
 require('./lib/csi/position')(Terminal);
@@ -163,5 +163,3 @@ require('./lib/csi/tabClear')(Terminal);
 require('./lib/csi/softReset')(Terminal);
 require('./lib/csi/scroll')(Terminal);
 require('./lib/csi/device')(Terminal);
-
-require('./lib/charsets.js')(Terminal);

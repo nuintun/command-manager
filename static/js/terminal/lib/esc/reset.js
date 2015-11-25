@@ -7,10 +7,23 @@
 module.exports = function (Terminal){
   // ESC c Full Reset (RIS).
   Terminal.prototype.reset = function (){
-    this.options.rows = this.rows;
-    this.options.cols = this.cols;
+    var parent;
+
+    if (this.element) {
+      parent = this.element.parentNode;
+
+      if (parent) {
+        parent.removeChild(this.element);
+      }
+    }
 
     Terminal.call(this, this.options);
+
+    this.open();
     this.refresh(0, this.rows - 1);
+
+    if (parent) {
+      parent.appendChild(this.element);
+    }
   };
 };
