@@ -54,7 +54,7 @@ module.exports = function (Terminal){
       this.maxRange();
     }
 
-    for (lch = ch; i < l; i++) {
+    for (; i < l; i++, lch = ch) {
       ch = data[i];
 
       switch (this.state) {

@@ -134,7 +134,7 @@ module.exports = Vue.component('app-main', {
         xterm.open();
         xtermNode.appendChild(xterm.element);
 
-        xterm.write(code);
+        xterm.write('Terminal ready\r\n' + code);
         scroll(xterm);
 
         window.xterm = xterm;
