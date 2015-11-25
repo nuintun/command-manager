@@ -11,6 +11,19 @@ function fixLinefeed(data){
 }
 
 module.exports = function (Terminal){
+  Terminal.prototype.send = function (data){
+    var context = this;
+
+    if (!this.queue) {
+      setTimeout(function (){
+        context.handler(context.queue);
+        context.queue = '';
+      }, 1);
+    }
+
+    this.queue += data;
+  };
+
   Terminal.prototype.bell = function (){
     var snd = new Audio('bell.wav'); // buffers automatically when created
 
@@ -727,10 +740,25 @@ module.exports = function (Terminal){
                     break;
                 }
 
-                // -this.send('\x1bP' + valid + '$r' + pt + '\x1b\\');
+                this.send('\x1bP' + valid + '$r' + pt + '\x1b\\');
                 break;
               // Set Termcap/Terminfo Data (xterm, experimental).
               case '+p':
+                break;
+              // Request Termcap/Terminfo String (xterm, experimental)
+              // Regular xterm does not even respond to this sequence.
+              // This can cause a small glitch in vim.
+              // DCS + q Pt ST
+              // test: echo -ne '\eP+q6b64\e\\'
+              case '+q':
+                valid = 0;
+
+                this.send('\x1bP' + valid + '+r' + pt + '\x1b\\');
+                break;
+              // Implement tmux sequence forwarding is
+              // someone uses term.js for a multiplexer.
+              // DCS tmux; ESC Pt ST
+              case 'tmux;\x1b':
                 break;
               default:
                 this.error('Unknown DCS prefix: %s.', this.prefix);
