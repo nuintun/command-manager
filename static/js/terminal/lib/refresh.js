@@ -131,7 +131,7 @@ module.exports = function (Terminal){
             break;
           default:
             if (ch <= ' ') {
-              out += ' ';
+              out += '&nbsp;';
             } else {
               if (this.isWide(ch)) i++;
 

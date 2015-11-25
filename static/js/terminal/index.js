@@ -31,24 +31,28 @@ function Terminal(options){
 
   if (Array.isArray(options.colors)) {
     if (options.colors.length === 8) {
-      this.colors = options.colors.concat(Terminal.colors.slice(8));
+      options.colors = options.colors.concat(Terminal.colors.slice(8));
     } else if (options.colors.length === 16) {
-      this.colors = options.colors.concat(Terminal.colors.slice(16));
+      options.colors = options.colors.concat(Terminal.colors.slice(16));
     } else if (options.colors.length === 10) {
-      this.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(8, -2), options.colors.slice(-2));
+      options.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(8, -2), options.colors.slice(-2));
     } else if (options.colors.length === 18) {
-      this.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(16, -2), options.colors.slice(-2));
+      options.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(16, -2), options.colors.slice(-2));
     } else {
-      this.colors = Terminal.colors;
+      options.colors = Terminal.colors;
     }
   } else {
-    this.colors = Terminal.colors;
+    options.colors = Terminal.colors;
   }
 
   this.cols = options.cols || Terminal.geometry[0];
   this.rows = options.rows || Terminal.geometry[1];
+
+  this.colors = options.colors;
   this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
   this.fgColor = options.bgColor || Terminal.defaultColors.fgColor;
+
+  this.options = options;
 
   this.ybase = 0;
   this.ydisp = 0;
