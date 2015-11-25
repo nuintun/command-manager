@@ -144,7 +144,7 @@ module.exports = Vue.component('app-main', {
           xterm: xterm
         }
       } else {
-        runtime.xterm.write(test);
+        runtime.xterm.write('\r\n' + test);
         scroll(runtime.xterm);
       }
     },
