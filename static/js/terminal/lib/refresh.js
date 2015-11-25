@@ -34,9 +34,9 @@ module.exports = function (Terminal){
     }
 
     for (; y <= end; y++) {
+      out = '';
       row = y + this.ydisp;
       line = this.lines[row];
-      out = '';
 
       if (y === this.y && this.cursorState && this.ydisp === this.ybase && !this.cursorHidden) {
         x = this.x;
