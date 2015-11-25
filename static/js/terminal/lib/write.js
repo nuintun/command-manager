@@ -546,9 +546,7 @@ module.exports = function (Terminal){
               break;
             // CSI Ps n Device Status Report (DSR).
             case 'n':
-              // -if (!this.prefix) {
-              // -  this.deviceStatus(this.params);
-              // -}
+              // -this.deviceStatus(this.params);
               break;
           /**
            * Additions
