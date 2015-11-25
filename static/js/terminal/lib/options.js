@@ -6,6 +6,7 @@
 
 module.exports = function (Terminal){
   Terminal.termName = 'xterm';
+  Terminal.debug = false;
   Terminal.geometry = [100, 80];
   Terminal.cursorBlink = true;
   Terminal.visualBell = true;
@@ -13,16 +14,15 @@ module.exports = function (Terminal){
   Terminal.scrollback = 640;
   Terminal.screenKeys = false;
   Terminal.programFeatures = false;
-  Terminal.debug = false;
 
   Terminal.defaults = {
+    debug: Terminal.debug,
     termName: Terminal.termName,
     cursorBlink: Terminal.cursorBlink,
     visualBell: Terminal.visualBell,
     popOnBell: Terminal.popOnBell,
     scrollback: Terminal.scrollback,
     screenKeys: Terminal.screenKeys,
-    programFeatures: Terminal.programFeatures,
-    debug: Terminal.debug
+    programFeatures: Terminal.programFeatures
   };
 };
