@@ -77,7 +77,7 @@ module.exports = function (Terminal){
 
               if (this.y > this.scrollBottom) {
                 this.y--;
-                
+
                 this.scroll();
               }
               break;
@@ -167,12 +167,10 @@ module.exports = function (Terminal){
               break;
             // ESC _ Application Program Command ( APC is 0x9f).
             case '_':
-              this.stateType = 'apc';
               this.state = states.ignore;
               break;
             // ESC ^ Privacy Message ( PM is 0x9e).
             case '^':
-              this.stateType = 'pm';
               this.state = states.ignore;
               break;
             // ESC c Full Reset (RIS).
