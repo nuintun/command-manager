@@ -15,6 +15,7 @@ module.exports = function (Terminal){
   Terminal.screenKeys = false;
   Terminal.programFeatures = false;
 
+  // terminal defaults
   Terminal.defaults = {
     debug: Terminal.debug,
     termName: Terminal.termName,
