@@ -87,10 +87,14 @@ module.exports = {
               event.sender.send('emulator', type, project, data);
             };
 
-            var env = process.env;
+            var env = {};
+
+            Object.keys(process.env).forEach(function (key){
+              env[key] = process.env[key];
+            });
 
             project.env.forEach(function (item){
-              env[item.name] = item.value
+              env[item.name] = item.value;
             });
 
             emulator = new Emulator({

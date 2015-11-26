@@ -138,7 +138,7 @@ module.exports = Vue.component('app-main', {
       ipc.send('emulator', {
         name: this.project.name,
         path: this.project.path,
-        env: this.project.env,
+        env: util.normalize(this.project.env),
         command: {
           name: name,
           value: command
@@ -195,6 +195,7 @@ module.exports = Vue.component('app-main', {
     var step = 0;
 
     ipc.on('emulator', function (event, type, project, data){
+      var delay = step * 16;
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
@@ -216,7 +217,7 @@ module.exports = Vue.component('app-main', {
         setTimeout(function (){
           runtime.xterm.write(data + '');
           scroll(runtime.xterm);
-        }, 10 * step);
+        }, delay);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
