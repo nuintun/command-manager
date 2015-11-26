@@ -74,7 +74,8 @@ function createXTerm(name, xtermNode){
     refresh(runtime.xterm);
   } else {
     var xterm = new Terminal({
-      scrollback: 80,
+      rows: 66,
+      scrollback: 66,
       convertEol: true,
       fgColor: 'inherit',
       bgColor: 'transparent'
