@@ -35,5 +35,6 @@ module.exports = function (Terminal){
     }
 
     this.refresh(0, this.rows - 1);
+    this.focus();
   };
 };
