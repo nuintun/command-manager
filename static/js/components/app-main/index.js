@@ -53,7 +53,6 @@ function scroll(xterm, parent){
  * @param xtermNode
  */
 function createXTerm(name, xtermNode){
-  var timer;
   var runtime = window.AppRuntime[name];
 
   if (runtime) {
