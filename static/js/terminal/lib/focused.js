@@ -8,6 +8,14 @@ module.exports = function (Terminal){
   Terminal.focus = null;
 
   /**
+   * isFocused
+   * @returns {boolean}
+   */
+  Terminal.prototype.isFocused = function (){
+    return Terminal.focus === this;
+  };
+
+  /**
    * focus
    */
   Terminal.prototype.focus = function (){

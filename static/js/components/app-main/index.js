@@ -66,7 +66,7 @@ function createXTerm(name, xtermNode){
       fgColor: 'inherit',
       bgColor: 'transparent',
       onscreen: function (screen){
-        if (Terminal.focus === this) {
+        if (this.isFocused()) {
           clearTimeout(timer);
 
           timer = setTimeout(function (){
