@@ -38,10 +38,12 @@ function scroll(xterm){
   var parent = xterm.element.parentNode;
 
   if (parent) {
-    var viewHeight = xterm.element.parentNode.clientHeight;
+    var height = (xterm.y + 2) * 18;
+    var scrollTop = parent.scrollTop;
+    var viewHeight = parent.clientHeight;
 
-    if (viewHeight < xterm.y * 18) {
-      xterm.children[xterm.y].scrollIntoView();
+    if (scrollTop > height || height > scrollTop + viewHeight) {
+      parent.scrollTop = Math.max(0, height - viewHeight);
     }
   }
 }
@@ -62,7 +64,7 @@ function createXTerm(name, xtermNode){
 
       xterm.focus();
       xtermNode.appendChild(xterm.element);
-      xterm.children[xterm.y].scrollIntoView();
+      scroll(xterm);
     }
   }
 
