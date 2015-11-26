@@ -60,8 +60,8 @@ function createXTerm(name, xtermNode){
   } else {
     var xterm = new Terminal({
       rows: 66,
-      cursor: false,
       scrollback: 66,
+      cursorBlink: false,
       convertEOL: true,
       fgColor: 'inherit',
       bgColor: 'transparent'

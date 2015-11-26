@@ -495,5 +495,6 @@ header [class*=" icon-"] {
   background: url(../images/no-data.png) center no-repeat;
 }
 .ui-terminal-cursor {
-  text-decoration: underline;
+  background: #fff;
+  color: #181818;
 }
