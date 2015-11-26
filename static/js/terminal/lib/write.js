@@ -16,7 +16,7 @@ module.exports = function (Terminal){
 
     if (!this.queue) {
       setTimeout(function (){
-        context.handler(context.queue);
+        context.ondata.call(context, context.queue);
 
         context.queue = '';
       }, 1);
@@ -30,19 +30,9 @@ module.exports = function (Terminal){
    */
   Terminal.prototype.bell = function (){
     // buffers automatically when created
-    var snd = new Audio('bell.wav');
+    var bell = new Audio('bell.wav');
 
-    snd.play();
-
-    if (!this.visualBell) return;
-
-    var context = this;
-
-    this.element.style.borderColor = 'white';
-
-    setTimeout(function (){
-      context.element.style.borderColor = '';
-    }, 10);
+    bell.play();
 
     if (this.popOnBell) this.focus();
   };
@@ -80,7 +70,7 @@ module.exports = function (Terminal){
             case '\n':
             case '\x0b':
             case '\x0c':
-              if (this.convertEol) {
+              if (this.convertEOL) {
                 this.x = 0;
               }
 
@@ -424,7 +414,7 @@ module.exports = function (Terminal){
               case 2:
                 if (this.params[1]) {
                   this.title = this.params[1];
-                  this.handleTitle(this.title);
+                  this.ontitle.call(this, this.title);
                 }
                 break;
               case 3:

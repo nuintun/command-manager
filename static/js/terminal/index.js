@@ -70,17 +70,21 @@ function Terminal(options){
   this.cols = options.cols;
   this.rows = options.rows;
 
-  // set handler
-  options.handler = typeof options.handler === 'function' ? options.handler : function (){};
-  this.handler = options.handler;
+  // set ondata
+  options.ondata = typeof options.ondata === 'function' ? options.ondata : function (){};
+  this.ondata = options.ondata;
 
-  // set handle title
-  options.handleTitle = typeof options.handleTitle === 'function' ? options.handleTitle : function (){};
-  this.handleTitle = options.handleTitle;
+  // set ontitle
+  options.ontitle = typeof options.ontitle === 'function' ? options.ontitle : function (){};
+  this.ontitle = options.ontitle;
+
+  // set onscreen
+  options.onscreen = typeof options.onscreen === 'function' ? options.onscreen : function (){};
+  this.onscreen = options.onscreen;
 
   // set convert eol
-  options.convertEol = options.convertEol === true;
-  this.convertEol = options.convertEol;
+  options.convertEOL = options.convertEOL === true;
+  this.convertEOL = options.convertEOL;
 
   // set options
   this.options = options;

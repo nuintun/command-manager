@@ -15,7 +15,7 @@ module.exports = function (Terminal){
     this.readable = false;
     this.writable = false;
     this.write = function (){};
-    this.handler = function (){};
-    this.handlerTitle = function (){};
+    this.ondata = function (){};
+    this.ontitle = function (){};
   };
 };

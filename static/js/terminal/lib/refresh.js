@@ -156,5 +156,7 @@ module.exports = function (Terminal){
     }
 
     this.screen = screen(this.fgColor, this.bgColor, this.screenLines.join(''));
+
+    this.onscreen.call(this, this.screen);
   };
 };
