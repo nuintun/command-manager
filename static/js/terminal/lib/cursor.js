@@ -9,7 +9,7 @@ module.exports = function (Terminal){
    * showCursor
    */
   Terminal.prototype.showCursor = function (){
-    if (this.cursor) {
+    if (this.cursor && !this._cursor) {
       this._cursor = true;
       this.cursorState = 1;
 
