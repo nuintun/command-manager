@@ -14,6 +14,10 @@ module.exports = function (Terminal){
       this.cursorState = 1;
 
       this.refresh(this.y, this.y);
+
+      if (this.cursorBlink && this._blink && this._blinker) {
+        this._blink = setInterval(this._blinker, this.cursorBlinkSpeed);
+      }
     }
   };
 
@@ -28,8 +32,10 @@ module.exports = function (Terminal){
 
       clearInterval(this._blink);
 
-      delete this._blink;
-      delete this._blinker;
+      if (!this.cursorBlink) {
+        delete this._blink;
+        delete this._blinker;
+      }
 
       this.refresh(this.y, this.y);
     }
@@ -39,7 +45,7 @@ module.exports = function (Terminal){
    * startBlink
    */
   Terminal.prototype.startBlink = function (){
-    if (this.cursor && this.cursorBlink && Terminal.focus === this) {
+    if (this.cursor && this._cursor && this.cursorBlink && Terminal.focus === this) {
       var context = this;
 
       clearInterval(this._blink);
