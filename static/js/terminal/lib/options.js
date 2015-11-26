@@ -8,7 +8,9 @@ module.exports = function (Terminal){
   Terminal.termName = 'xterm';
   Terminal.debug = false;
   Terminal.geometry = [100, 80];
+  Terminal.cursor = true;
   Terminal.cursorBlink = true;
+  Terminal.cursorBlinkSpeed = 500;
   Terminal.visualBell = true;
   Terminal.popOnBell = true;
   Terminal.scrollback = 640;
@@ -19,7 +21,9 @@ module.exports = function (Terminal){
   Terminal.defaults = {
     debug: Terminal.debug,
     termName: Terminal.termName,
+    cursor: Terminal.cursor,
     cursorBlink: Terminal.cursorBlink,
+    cursorBlinkSpeed: Terminal.cursorBlinkSpeed,
     visualBell: Terminal.visualBell,
     popOnBell: Terminal.popOnBell,
     scrollback: Terminal.scrollback,

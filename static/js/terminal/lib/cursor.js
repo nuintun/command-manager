@@ -5,38 +5,73 @@
 'use strict';
 
 module.exports = function (Terminal){
-  Terminal.prototype.blinkCursor = function (){
-    if (Terminal.focus !== this) return;
-
-    this.cursorState ^= 1;
-    this.refresh(this.y, this.y);
-  };
-
+  /**
+   * showCursor
+   */
   Terminal.prototype.showCursor = function (){
-    if (!this.cursorState) {
+    if (this.cursor) {
+      this._cursor = true;
       this.cursorState = 1;
 
       this.refresh(this.y, this.y);
     }
   };
 
-  Terminal.prototype.startBlink = function (){
-    if (!this.cursorBlink) return;
+  /**
+   * hideCursor
+   */
+  Terminal.prototype.hideCursor = function (){
+    if (this._cursor) {
+      delete this._cursor;
 
-    var context = this;
+      this.cursorState = 0;
 
-    this._blinker = function (){
-      context.blinkCursor();
-    };
+      if (this._blink && this._blinker) {
+        clearInterval(this._blink);
 
-    this._blink = setInterval(this._blinker, 500);
+        delete this._blink;
+        delete this._blinker;
+      }
+
+      this.refresh(this.y, this.y);
+    }
   };
 
-  Terminal.prototype.refreshBlink = function (){
-    if (!this.cursorBlink) return;
+  /**
+   * startBlink
+   */
+  Terminal.prototype.startBlink = function (){
+    if (this.cursor && this.cursorBlink && Terminal.focus === this) {
+      var context = this;
 
-    clearInterval(this._blink);
+      this.stopBlink();
+      this._blinker = function (){
+        context.cursorState ^= 1;
 
-    this._blink = setInterval(this._blinker, 500);
+        context.refresh(this.y, this.y);
+      };
+
+      this._blink = setInterval(this._blinker, this.cursorBlinkSpeed);
+    }
+  };
+
+  /**
+   * stopBlink
+   */
+  Terminal.prototype.stopBlink = function (){
+    if (this._blink && this._blinker) {
+      clearInterval(this._blink);
+
+      delete this._blink;
+      delete this._blinker;
+
+      if (this.cursor && this._cursor) {
+        this.cursorState = 1;
+      } else {
+        this.cursorState = 0;
+      }
+
+      this.refresh(this.y, this.y);
+    }
   };
 };

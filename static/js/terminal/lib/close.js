@@ -5,6 +5,9 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * close
+   */
   Terminal.prototype.close = function (){
     this.lines = [];
     this.children = [];

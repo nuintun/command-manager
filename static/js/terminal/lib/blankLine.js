@@ -5,6 +5,11 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * blankLine
+   * @param cur
+   * @returns {Array}
+   */
   Terminal.prototype.blankLine = function (cur){
     var attr = cur ? this.eraseAttr() : this.defAttr;
     var ch = [attr, ' '];

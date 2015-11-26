@@ -8,6 +8,12 @@ var states = require('./lib/states');
 
 module.exports = Terminal;
 
+/**
+ * iterator
+ * @param from
+ * @param iterator
+ * @param context
+ */
 function iterator(from, iterator, context){
   for (var key in from) {
     if (from.hasOwnProperty(key)) {
@@ -16,11 +22,18 @@ function iterator(from, iterator, context){
   }
 }
 
+/**
+ * Terminal
+ * @param options
+ * @returns {Terminal}
+ * @constructor
+ */
 function Terminal(options){
   options = options || {};
 
   if (!(this instanceof Terminal)) return new Terminal(options);
 
+  // inherits
   iterator(Terminal.defaults, function (key, value){
     if (options.hasOwnProperty(options)) {
       this[key] = options[key];
@@ -30,6 +43,7 @@ function Terminal(options){
     }
   }, this);
 
+  // set colors
   if (Array.isArray(options.colors)) {
     if (options.colors.length === 8) {
       options.colors = options.colors.concat(Terminal.colors.slice(8));
@@ -46,36 +60,43 @@ function Terminal(options){
     options.colors = Terminal.colors;
   }
 
-  this.cols = options.cols || Terminal.geometry[0];
-  this.rows = options.rows || Terminal.geometry[1];
-
   this.colors = options.colors;
   this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
   this.fgColor = options.fgColor || Terminal.defaultColors.fgColor;
 
+  // set screen size
+  options.cols = options.cols || Terminal.geometry[0];
+  options.rows = options.rows || Terminal.geometry[1];
+  this.cols = options.cols;
+  this.rows = options.rows;
+
+  // set handler
   options.handler = typeof options.handler === 'function' ? options.handler : function (){};
   this.handler = options.handler;
 
+  // set handle title
   options.handleTitle = typeof options.handleTitle === 'function' ? options.handleTitle : function (){};
   this.handleTitle = options.handleTitle;
 
+  // set convert eol
   options.convertEol = options.convertEol === true;
   this.convertEol = options.convertEol;
 
+  // set options
   this.options = options;
 
-  this.ybase = 0;
-  this.ydisp = 0;
+  // set property
   this.x = 0;
   this.y = 0;
+  this.ybase = 0;
+  this.ydisp = 0;
   this.cursorState = 0;
-  this.cursorHidden = false;
   this.state = states.normal;
   this.queue = '';
   this.scrollTop = 0;
   this.scrollBottom = this.rows - 1;
 
-  // modes
+  // Modes
   this.applicationKeypad = false;
   this.originMode = false;
   this.insertMode = false;
@@ -101,23 +122,27 @@ function Terminal(options){
   this.readable = true;
   this.writable = true;
 
+  // set attr
   this.defAttr = (257 << 9) | 256;
   this.curAttr = this.defAttr;
 
+  // set params
   this.params = [];
   this.currentParam = 0;
   this.prefix = '';
   this.postfix = '';
 
+  // set lines
   this.lines = [];
+
+  // set tabs
+  this.tabs = null;
 
   var i = this.rows;
 
   while (i--) {
     this.lines.push(this.blankLine());
   }
-
-  this.tabs = null;
 
   this.setupStops();
 }

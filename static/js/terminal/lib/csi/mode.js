@@ -189,7 +189,9 @@ module.exports = function (Terminal){
           break;
         // show cursor
         case 25:
-          this.cursorHidden = false;
+          this.cursor = true;
+
+          this.showCursor();
           break;
         // alt screen buffer cursor
         case 1049:
@@ -382,7 +384,9 @@ module.exports = function (Terminal){
           break;
         // hide cursor
         case 25:
-          this.cursorHidden = true;
+          this.cursor = false;
+
+          this.hideCursor();
           break;
         // alt screen buffer cursor
         case 1049:

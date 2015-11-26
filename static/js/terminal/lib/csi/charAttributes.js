@@ -5,6 +5,13 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * matchColor
+   * @param r1
+   * @param g1
+   * @param b1
+   * @returns {*}
+   */
   function matchColor(r1, g1, b1){
     var hash = (r1 << 16) | (g1 << 8) | b1;
 

@@ -40,7 +40,7 @@ module.exports = function (Terminal){
       row = y + this.ydisp;
       line = this.lines[row];
 
-      if (y === this.y && this.cursorState && this.ydisp === this.ybase && !this.cursorHidden) {
+      if (y === this.y && this.cursor && this.cursorState && this.ydisp === this.ybase) {
         x = this.x;
       } else {
         x = -1;

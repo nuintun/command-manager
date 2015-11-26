@@ -6,6 +6,10 @@
 
 // ignore warnings regarging == and != (coersion makes things work here appearently)
 module.exports = function (Terminal){
+  /**
+   * setupStops
+   * @param i
+   */
   Terminal.prototype.setupStops = function (i){
     if (arguments.length) {
       if (!this.tabs[i]) {
@@ -21,6 +25,11 @@ module.exports = function (Terminal){
     }
   };
 
+  /**
+   * prevStop
+   * @param x
+   * @returns {number}
+   */
   Terminal.prototype.prevStop = function (x){
     if (!arguments.length) x = this.x;
 
@@ -29,6 +38,11 @@ module.exports = function (Terminal){
     return x >= this.cols ? this.cols - 1 : x < 0 ? 0 : x;
   };
 
+  /**
+   * nextStop
+   * @param x
+   * @returns {number}
+   */
   Terminal.prototype.nextStop = function (x){
     if (!arguments.length) x = this.x;
 

@@ -48,7 +48,7 @@ module.exports = function (Terminal){
     '}': '\u00a3', // '£'
     '~': '\u00b7' // '·'
   };
-  
+
   Terminal.charsets.UK = null; // (A
   Terminal.charsets.US = null; // (B (USASCII)
   Terminal.charsets.Dutch = null; // (4

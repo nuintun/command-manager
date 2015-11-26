@@ -22,8 +22,7 @@ module.exports = function (Terminal){
   Terminal.prototype.blur = function (){
     if (Terminal.focus !== this) return;
 
-    this.cursorState = 0;
-    this.refresh(this.y, this.y);
+    this.hideCursor();
 
     Terminal.focus = null;
   };
