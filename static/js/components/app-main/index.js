@@ -208,12 +208,8 @@ module.exports = Vue.component('app-main', {
             break;
         }
 
-        console.log(data);
-
-        setTimeout(function (){
-          runtime.xterm.write(data + '');
-          scroll(runtime.xterm);
-        }, 100);
+        runtime.xterm.write(data + '');
+        scroll(runtime.xterm);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
