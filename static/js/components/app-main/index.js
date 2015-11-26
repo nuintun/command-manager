@@ -79,7 +79,6 @@ function createXTerm(name, xtermNode){
     });
 
     xterm.open();
-    xterm.focus();
 
     window.AppRuntime[name] = {
       xterm: xterm
