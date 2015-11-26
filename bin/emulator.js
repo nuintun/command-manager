@@ -34,8 +34,6 @@ Emulator.prototype = {
   exec: function (){
     var parsed = normalizeExecArgs.apply(null, arguments);
 
-    console.log(JSON.stringify(parsed, null, 2));
-
     return spawn(parsed.shell, parsed.args, parsed.options);
   }
 };
@@ -94,10 +92,6 @@ module.exports = {
             project.env.forEach(function (item){
               env[item.name] = item.value
             });
-
-            env['COLORTERM'] = 'true';
-            env['DEBUG_FD'] = '1';
-            env['DEBUG_COLORS'] = 'true';
 
             emulator = new Emulator({
               env: env,

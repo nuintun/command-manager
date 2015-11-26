@@ -23,9 +23,10 @@ module.exports = function (Terminal){
    */
   Terminal.prototype.refresh = function (start, end){
     var parent = this.element ? this.element.parentNode : null;
+    var optimize = parent && end - start >= this.rows / 2;
     var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row;
 
-    if (parent && end - start >= this.rows / 2) {
+    if (optimize) {
       parent.removeChild(this.element);
     }
 
@@ -152,6 +153,8 @@ module.exports = function (Terminal){
       this.children[y].innerHTML = out;
     }
 
-    if (parent) parent.appendChild(this.element);
+    if (optimize) {
+      parent.appendChild(this.element);
+    }
   };
 };

@@ -192,6 +192,8 @@ module.exports = Vue.component('app-main', {
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
 
+    var step = 0;
+
     ipc.on('emulator', function (event, type, project, data){
       var runtime = window.AppRuntime[project.name];
 
@@ -199,17 +201,22 @@ module.exports = Vue.component('app-main', {
         switch (type) {
           case 'data':
             data += '';
+            step++;
             break;
           case 'error':
             data = '执行出现错误: ' + data;
+            step = 0;
             break;
           case 'close':
             data = '\u001b[32m命令执行完毕\u001b[39m\r\n';
+            step = 0;
             break;
         }
 
-        runtime.xterm.write(data + '');
-        scroll(runtime.xterm);
+        setTimeout(function (){
+          runtime.xterm.write(data + '');
+          scroll(runtime.xterm);
+        }, 10 * step);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
