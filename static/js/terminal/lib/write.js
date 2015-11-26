@@ -7,6 +7,10 @@
 var states = require('./states');
 
 module.exports = function (Terminal){
+  /**
+   * send
+   * @param data
+   */
   Terminal.prototype.send = function (data){
     var context = this;
 
@@ -21,8 +25,12 @@ module.exports = function (Terminal){
     this.queue += data;
   };
 
+  /**
+   * bell
+   */
   Terminal.prototype.bell = function (){
-    var snd = new Audio('bell.wav'); // buffers automatically when created
+    // buffers automatically when created
+    var snd = new Audio('bell.wav');
 
     snd.play();
 
@@ -39,6 +47,10 @@ module.exports = function (Terminal){
     if (this.popOnBell) this.focus();
   };
 
+  /**
+   * write
+   * @param data
+   */
   Terminal.prototype.write = function (data){
     var l = data.length;
     var i = 0;

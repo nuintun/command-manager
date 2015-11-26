@@ -26,7 +26,7 @@ function isBoldBroken(){
 
 module.exports = function (Terminal){
   /**
-   * Open Terminal
+   * open
    */
   Terminal.prototype.open = function (){
     var div;
@@ -38,7 +38,7 @@ module.exports = function (Terminal){
 
     this.element.setAttribute('tabindex', '0');
     this.element.setAttribute('spellcheck', 'false');
-    
+
     // sync default bg/fg colors
     this.element.style.backgroundColor = this.bgColor;
     this.element.style.color = this.fgColor;

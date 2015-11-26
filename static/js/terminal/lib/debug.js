@@ -5,6 +5,9 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * log
+   */
   Terminal.prototype.log = function (){
     if (!this.debug) return;
 
@@ -15,6 +18,9 @@ module.exports = function (Terminal){
     window.console.log.apply(window.console, args);
   };
 
+  /**
+   * error
+   */
   Terminal.prototype.error = function (){
     if (!this.debug) return;
 

@@ -5,6 +5,9 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * scroll
+   */
   Terminal.prototype.scroll = function (){
     var row;
 
@@ -45,6 +48,10 @@ module.exports = function (Terminal){
     this.updateRange(this.scrollBottom);
   };
 
+  /**
+   * scrollDisp
+   * @param disp
+   */
   Terminal.prototype.scrollDisp = function (disp){
     this.ydisp += disp;
 

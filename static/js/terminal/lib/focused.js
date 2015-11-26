@@ -7,6 +7,9 @@
 module.exports = function (Terminal){
   Terminal.focus = null;
 
+  /**
+   * focus
+   */
   Terminal.prototype.focus = function (){
     if (Terminal.focus === this) return;
 
@@ -25,6 +28,9 @@ module.exports = function (Terminal){
     Terminal.focus = this;
   };
 
+  /**
+   * blur
+   */
   Terminal.prototype.blur = function (){
     if (Terminal.focus !== this) return;
 

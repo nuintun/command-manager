@@ -5,11 +5,16 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * resize
+   * @param x
+   * @param y
+   */
   Terminal.prototype.resize = function (x, y){
     var line, element, i, j, ch;
 
     if (x < 1) x = 1;
-    
+
     if (y < 1) y = 1;
 
     // resize cols

@@ -5,19 +5,22 @@
 'use strict';
 
 module.exports = function (Terminal){
-  /**
-   * Rendering Engine
-   */
+  // Rendering Engine
+  // In the screen buffer, each character
+  // is stored as a an array with a character
+  // and a 32-bit integer.
+  // First value: a utf-16 character.
+  // Second value:
+  // Next 9 bits: background color (0-511).
+  // Next 9 bits: foreground color (0-511).
+  // Next 14 bits: a mask for misc.
+  // flags: 1=bold, 2=underline, 4=blink, 8=inverse, 16=invisible
 
-    // In the screen buffer, each character
-    // is stored as a an array with a character
-    // and a 32-bit integer.
-    // First value: a utf-16 character.
-    // Second value:
-    // Next 9 bits: background color (0-511).
-    // Next 9 bits: foreground color (0-511).
-    // Next 14 bits: a mask for misc.
-    // flags: 1=bold, 2=underline, 4=blink, 8=inverse, 16=invisible
+  /**
+   * refresh
+   * @param start
+   * @param end
+   */
   Terminal.prototype.refresh = function (start, end){
     var parent = this.element.parentNode;
     var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row;

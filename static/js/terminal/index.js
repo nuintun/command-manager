@@ -180,6 +180,7 @@ require('./lib/esc/tabSet.js')(Terminal);
 
 require('./lib/charsets.js')(Terminal);
 require('./lib/csi/charAttributes')(Terminal);
+require('./lib/csi/erase')(Terminal);
 require('./lib/csi/insert-delete')(Terminal);
 require('./lib/csi/position')(Terminal);
 require('./lib/csi/cursor')(Terminal);

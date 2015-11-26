@@ -5,6 +5,11 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * setgCharset
+   * @param g
+   * @param charset
+   */
   Terminal.prototype.setgCharset = function (g, charset){
     this.charsets[g] = charset;
     
