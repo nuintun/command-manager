@@ -46,10 +46,8 @@ module.exports = function (Terminal){
    * startBlink
    */
   Terminal.prototype.startBlink = function (){
-    if (this.cursor && this.cursorBlink) {
+    if (this.cursor && this.cursorBlink && !this._blink) {
       var context = this;
-
-      clearInterval(this._blink);
 
       this._blinker = function (){
         if (context._cursor) {
