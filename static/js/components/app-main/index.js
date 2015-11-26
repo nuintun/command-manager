@@ -35,18 +35,15 @@ function clone(projects, index){
 /**
  * srcoll
  * @param xterm
+ * @param parent
  */
-function scroll(xterm){
-  var parent = xterm.element.parentNode;
+function scroll(xterm, parent){
+  var height = (xterm.y + 2) * 18;
+  var scrollTop = parent.scrollTop;
+  var viewHeight = parent.clientHeight;
 
-  if (parent) {
-    var height = (xterm.y + 2) * 18;
-    var scrollTop = parent.scrollTop;
-    var viewHeight = parent.clientHeight;
-
-    if (scrollTop > height || height > scrollTop + viewHeight) {
-      parent.scrollTop = Math.max(0, height - viewHeight);
-    }
+  if (scrollTop > height || height > scrollTop + viewHeight) {
+    parent.scrollTop = Math.max(0, height - viewHeight);
   }
 }
 
@@ -56,34 +53,25 @@ function scroll(xterm){
  * @param xtermNode
  */
 function createXTerm(name, xtermNode){
+  var timer;
   var runtime = window.AppRuntime[name];
 
-  function refresh(xterm){
-    if (xtermNode.firstChild !== xterm.element) {
-      if (xtermNode.firstChild) {
-        xtermNode.removeChild(xtermNode.firstChild);
-      }
-
-      xterm.focus();
-      xtermNode.appendChild(xterm.element);
-      scroll(xterm);
-    }
-  }
-
   if (runtime) {
-    refresh(runtime.xterm);
+    runtime.xterm.focus();
   } else {
     var xterm = new Terminal({
       rows: 66,
+      cursor: false,
       scrollback: 66,
-      convertEol: true,
+      convertEOL: true,
       fgColor: 'inherit',
       bgColor: 'transparent'
     });
 
     xterm.open();
+    xterm.focus();
 
-    refresh(xterm);
+    xtermNode.innerHTML = xterm.screen;
 
     window.AppRuntime[name] = {
       xterm: xterm
@@ -193,21 +181,9 @@ module.exports = Vue.component('app-main', {
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
 
-    var step = 0;
-    var timestamp = Date.now();
+    var timer;
 
     ipc.on('emulator', function (event, type, project, data){
-      var now = Date.now();
-
-      if (now - timestamp > 1000) {
-        step = 0;
-      }
-
-      timestamp = now;
-
-      step++;
-
-      var delay = step * 16;
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
@@ -223,10 +199,18 @@ module.exports = Vue.component('app-main', {
             break;
         }
 
-        setTimeout(function (){
-          runtime.xterm.write(data);
-          scroll(runtime.xterm);
-        }, delay);
+        clearTimeout(timer);
+        runtime.xterm.write(data);
+
+        if (project.name === context.project.name) {
+          timer = setTimeout(function (){
+            var xtermNode = context.$els.terminal;
+
+            xtermNode.innerHTML = runtime.xterm.screen;
+
+            scroll(runtime.xterm, xtermNode);
+          }, 0);
+        }
       } else {
         event.sender.send('emulator', project, 'stop');
       }
