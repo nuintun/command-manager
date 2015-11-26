@@ -7,6 +7,7 @@
 var ipc = require('ipc-main');
 
 var spawn = require('child_process').spawn;
+var Terminal = require('./terminal');
 
 /**
  * Emulator
@@ -71,23 +72,32 @@ function normalizeExecArgs(command, options){
   };
 }
 
-var cache = {};
+var emulators = {};
 
 module.exports = {
   Emulator: Emulator,
   start: function (){
     ipc.on('emulator', function (event, project, action){
       var key = project.name + '-' + project.command.name;
-      var emulator = cache[key];
+      var emulator = emulators[key];
 
       switch (action) {
         case 'start':
           if (!emulator) {
-            var send = function (type, data){
-              event.sender.send('emulator', type, project, data);
-            };
-
+            var type;
             var env = {};
+            var terminal = new Terminal({
+              rows: 66,
+              scrollback: 66,
+              convertEOL: true,
+              fgColor: 'inherit',
+              bgColor: 'transparent',
+              onscreen: function (screen){
+                event.sender.send('emulator', type, project, screen);
+              }
+            });
+
+            terminal.open();
 
             Object.keys(process.env).forEach(function (key){
               env[key] = process.env[key];
@@ -106,29 +116,39 @@ module.exports = {
             var stream = emulator.start();
 
             stream.stdout.on('data', function (data){
-              send('data', data);
+              type = 'data';
+
+              terminal.write(data + '');
             });
 
             stream.stderr.on('error', function (error){
-              send('error', error + '\r\n');
+              type = 'error';
 
+              terminal.write(error + '\r\n');
               emulator.stop();
 
-              delete cache[key];
+              delete emulators[key];
             });
 
             stream.on('close', function (signal){
-              send('close', signal + '\r\n');
+              type = 'close';
 
-              delete cache[key];
+              terminal.write(signal + '\r\n');
+              terminal.close();
+
+              delete emulators[key];
             });
 
-            cache[key] = emulator;
+            emulators[key] = {
+              service: emulator,
+              terminal: terminal
+            };
           }
           break;
         case 'stop':
           if (emulator) {
-            emulator.stop();
+            emulator.service.stop();
+            emulator.terminal.close();
           }
           break;
       }

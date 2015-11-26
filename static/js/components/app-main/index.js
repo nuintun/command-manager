@@ -53,37 +53,35 @@ function scroll(xterm, parent){
  * @param xtermNode
  */
 function createXTerm(name, xtermNode){
-  var timer;
-  var runtime = window.AppRuntime[name];
+  //var timer;
+  //var runtime = window.AppRuntime[name];
 
-  if (runtime) {
-    runtime.xterm.focus();
-  } else {
-    var xterm = new Terminal({
-      rows: 66,
-      scrollback: 66,
-      convertEOL: true,
-      fgColor: 'inherit',
-      bgColor: 'transparent',
-      onscreen: function (screen){
-        if (this.isFocused()) {
-          clearTimeout(timer);
+  //if (runtime) {
+  //  runtime.xterm.focus();
+  //} else {
+  //  var xterm = new Terminal({
+  //    rows: 66,
+  //    scrollback: 66,
+  //    convertEOL: true,
+  //    fgColor: 'inherit',
+  //    bgColor: 'transparent',
+  //    onscreen: function (screen){
+  //      if (this.isFocused()) {
+  //        clearTimeout(timer);
+  //
+  //        timer = setTimeout(function (){
+  //          //xtermNode.innerHTML = screen;
+  //
+  //          scroll(xterm, xtermNode);
+  //        }, 10);
+  //      }
+  //    }
+  //  });
+  //
+  //  xterm.open();
 
-          timer = setTimeout(function (){
-            //xtermNode.innerHTML = screen;
-
-            scroll(xterm, xtermNode);
-          }, 10);
-        }
-      }
-    });
-
-    xterm.open();
-
-    window.AppRuntime[name] = {
-      xterm: xterm
-    };
-  }
+  window.AppRuntime[name] = true;
+  //}
 }
 
 module.exports = Vue.component('app-main', {
@@ -192,19 +190,9 @@ module.exports = Vue.component('app-main', {
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
-        switch (type) {
-          case 'data':
-            data += '';
-            break;
-          case 'error':
-            data = '执行出现错误: ' + data;
-            break;
-          case 'close':
-            data = '\u001b[32m命令执行完毕\u001b[39m\r\n';
-            break;
+        if (project.name === context.project.name) {
+          context.$els.terminal.innerHTML = data;
         }
-
-        runtime.xterm.write(data);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
