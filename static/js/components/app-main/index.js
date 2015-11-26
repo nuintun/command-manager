@@ -200,5 +200,7 @@ module.exports = Vue.component('app-main', {
   },
   ready: function (){
     createXTerm(this.project.name, this.$els.terminal);
+
+    new Worker('static/js/components/app-main/worker.js');
   }
 });
