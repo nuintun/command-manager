@@ -16,6 +16,7 @@ var BrowserWindow = require('browser-window');
 var windowControl = require('./bin/window-control');
 var openDirectory = require('./bin/open-directory');
 var AppConfigure = require('./bin/app-configure');
+var emulator = require('./bin/emulator');
 
 // keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed
@@ -87,4 +88,7 @@ app.on('ready', function (){
 
   // app configure
   new AppConfigure(mainWindow, mainTray);
+
+  // emulator start
+  emulator.start();
 });

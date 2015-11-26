@@ -164,10 +164,13 @@ AppConfigure.prototype = {
   init: function (){
     var context = this;
 
-    this.create();
-
     ipc.on('app-configure', function (event, command, configure){
       switch (command) {
+        case 'ready':
+          context.create(function (){
+            event.sender.send('app-configure', 'ready');
+          });
+          break;
         case 'import':
           context.import(function (configure){
             this.showMessageBox('配置文件导入成功！', { type: 'info' });
@@ -185,7 +188,7 @@ AppConfigure.prototype = {
             this.showMessageBox('配置文件导出失败！');
           });
           break;
-        case 'refresh':
+        case 'read':
           context.read(function (configure){
             event.sender.send('app-configure', 'refresh', configure);
           }, function (error){
@@ -204,16 +207,18 @@ AppConfigure.prototype = {
 
     });
   },
-  create: function (){
+  create: function (done){
     var context = this;
 
     fs.stat(CONFIGUREPATH, function (error, stats){
       if (error || !stats.isFile()) {
-        context.save(DEFAULTCONFIGURE, null, function (){
+        context.save(DEFAULTCONFIGURE, done, function (){
           context.showMessageBox('配置文件创建失败，请用管理员模式运行重试！', function (){
             context.window.close();
           });
         });
+      } else {
+        done.call(this);
       }
     });
   },

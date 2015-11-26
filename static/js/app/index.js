@@ -54,6 +54,9 @@ window.addEventListener('DOMContentLoaded', function (){
 
   ipc.on('app-configure', function (event, command, configure){
     switch (command) {
+      case 'ready':
+        ipc.send('app-configure', 'read');
+        break;
       case 'refresh':
         if (app) {
           app.activeIndex = 0;
@@ -69,5 +72,5 @@ window.addEventListener('DOMContentLoaded', function (){
     }
   });
 
-  ipc.send('app-configure', 'refresh');
+  ipc.send('app-configure', 'ready');
 }, false);
