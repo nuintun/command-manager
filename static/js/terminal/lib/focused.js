@@ -17,6 +17,8 @@ module.exports = function (Terminal){
       Terminal.focus.blur();
     }
 
+    Terminal.focus = this;
+
     if (this.cursor) {
       this.showCursor();
     }
@@ -24,8 +26,6 @@ module.exports = function (Terminal){
     if (this.cursorBlink) {
       this.startBlink();
     }
-
-    Terminal.focus = this;
   };
 
   /**
