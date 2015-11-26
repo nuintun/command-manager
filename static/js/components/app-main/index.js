@@ -57,6 +57,7 @@ function createXTerm(name, xtermNode){
 
   if (runtime) {
     runtime.xterm.focus();
+    xtermNode.innerHTML = runtime.xterm.screen;
   } else {
     var xterm = new Terminal({
       rows: 66,
