@@ -4,6 +4,8 @@
 
 'use strict';
 
+var ipc = require('ipc-renderer');
+
 var fs = require('fs');
 var path = require('path');
 var util = require('../../util');
@@ -72,9 +74,9 @@ function createXTerm(name, xtermNode){
     refresh(runtime.xterm);
   } else {
     var xterm = new Terminal({
-      debug: true,
-      bgColor: 'transparent',
-      fgColor: 'inherit'
+      convertEol: true,
+      fgColor: 'inherit',
+      bgColor: 'transparent'
     });
 
     xterm.open();
@@ -132,12 +134,15 @@ module.exports = Vue.component('app-main', {
   },
   methods: {
     exec: function (name, command){
-      var runtime = window.AppRuntime[this.project.name];
-
-      runtime.xterm.writeln('运行命令： \u001b[32m' + name + '\u001b[39m 在 \u001b[32m'
-        + (new Date().toLocaleString()) + '\u001b[39m');
-      scroll(runtime.xterm);
-
+      ipc.send('emulator', {
+        name: this.project.name,
+        path: this.project.path,
+        env: this.project.env,
+        command: {
+          name: name,
+          value: command
+        }
+      }, 'start');
     },
     setting: function (){
       this.showSetting = true;
@@ -185,6 +190,29 @@ module.exports = Vue.component('app-main', {
 
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
+
+    ipc.on('emulator', function (event, type, project, data){
+      var runtime = window.AppRuntime[project.name];
+
+      if (runtime) {
+        switch (type) {
+          case 'data':
+            data += '';
+            break;
+          case 'error':
+            data = '执行出现错误: ' + data;
+            break;
+          case 'close':
+            data = '\u001b[32m命令执行完毕\u001b[39m\r\n';
+            break;
+        }
+
+        runtime.xterm.write(data + '');
+        scroll(runtime.xterm);
+      } else {
+        event.sender.send('emulator', project, 'stop');
+      }
+    });
   },
   ready: function (){
     createXTerm(this.project.name, this.$els.terminal);

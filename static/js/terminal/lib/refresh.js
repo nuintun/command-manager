@@ -22,7 +22,7 @@ module.exports = function (Terminal){
    * @param end
    */
   Terminal.prototype.refresh = function (start, end){
-    var parent = this.element.parentNode;
+    var parent = this.element ? this.element.parentNode : null;
     var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row;
 
     if (parent && end - start >= this.rows / 2) {
