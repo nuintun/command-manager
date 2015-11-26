@@ -196,7 +196,7 @@ module.exports = Vue.component('app-main', {
     var step = 0;
 
     ipc.on('emulator', function (event, type, project, data){
-      var delay = step * 20;
+      var delay = step * 16;
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
