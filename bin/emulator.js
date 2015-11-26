@@ -95,6 +95,10 @@ module.exports = {
               env[item.name] = item.value
             });
 
+            env['COLORTERM'] = 'true';
+            env['DEBUG_FD'] = '1';
+            env['DEBUG_COLORS'] = 'true';
+
             emulator = new Emulator({
               env: env,
               cwd: project.path,

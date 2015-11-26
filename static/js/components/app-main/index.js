@@ -74,6 +74,7 @@ function createXTerm(name, xtermNode){
     refresh(runtime.xterm);
   } else {
     var xterm = new Terminal({
+      scrollback: 80,
       convertEol: true,
       fgColor: 'inherit',
       bgColor: 'transparent'
@@ -207,8 +208,12 @@ module.exports = Vue.component('app-main', {
             break;
         }
 
-        runtime.xterm.write(data + '');
-        scroll(runtime.xterm);
+        console.log(data);
+
+        setTimeout(function (){
+          runtime.xterm.write(data + '');
+          scroll(runtime.xterm);
+        }, 100);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
