@@ -46,6 +46,43 @@ function scroll(xterm){
   }
 }
 
+/**
+ * createXTerm
+ * @param name
+ * @param xtermNode
+ */
+function createXTerm(name, xtermNode){
+  var runtime = window.AppRuntime[name];
+
+  function refresh(xterm){
+    if (xtermNode.firstChild !== xterm.element) {
+      if (xtermNode.firstChild) {
+        xtermNode.removeChild(xtermNode.firstChild);
+      }
+
+      xtermNode.appendChild(xterm.element);
+    }
+  }
+
+  if (runtime) {
+    refresh(runtime.xterm);
+  } else {
+    var xterm = new Terminal({
+      debug: true,
+      bgColor: 'transparent',
+      fgColor: 'inherit'
+    });
+
+    xterm.open();
+
+    refresh(xterm);
+
+    window.AppRuntime[name] = {
+      xterm: xterm
+    };
+  }
+}
+
 module.exports = Vue.component('app-main', {
   template: fs.readFileSync(path.join(__dirname, 'app-main.html')).toString(),
   props: {
@@ -82,77 +119,33 @@ module.exports = Vue.component('app-main', {
     activeIndex: function (){
       this.project = clone(this.projects, this.activeIndex);
     },
-    project: function (){
-      this.command = this.project.command.slice(0, 3);
-      this.moreCommand = this.project.command.slice(3);
+    project: function (project){
+      this.command = project.command.slice(0, 3);
+      this.moreCommand = project.command.slice(3);
+
+      createXTerm(project.name, this.$els.terminal);
     }
   },
   methods: {
     exec: function (name, command){
-      var xtermNode = this.$els.terminal;
       var runtime = window.AppRuntime[this.project.name];
 
-      var code = [
-        '\u001b[92m\'use strict\'\u001b[39m\u001b[90m;\u001b[39m',
-        '\u001b[90m/*jshint browser:true */\u001b[39m',
-        '',
-        '\u001b[32mvar\u001b[39m \u001b[37mTerminal\u001b[39m \u001b[93m=\u001b[39m \u001b[37mrequire\u001b[39m\u001b[90m(\u001b[39m\u001b[92m\'./term\'\u001b[39m\u001b[90m)\u001b[39m\u001b[32m,\u001b[39m',
-        '  \u001b[37mthrough\u001b[39m \u001b[93m=\u001b[39m \u001b[37mrequire\u001b[39m\u001b[90m(\u001b[39m\u001b[92m\'through\'\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '\u001b[37mmodule\u001b[39m\u001b[32m.\u001b[39m\u001b[37mexports\u001b[39m \u001b[93m=\u001b[39m \u001b[94mfunction\u001b[39m \u001b[90m(\u001b[39m\u001b[37mcols\u001b[39m\u001b[32m,\u001b[39m \u001b[37mrows\u001b[39m\u001b[32m,\u001b[39m \u001b[37mhandler\u001b[39m\u001b[90m)\u001b[39m \u001b[33m{\u001b[39m',
-        '  \u001b[32mvar\u001b[39m \u001b[37mterm\u001b[39m \u001b[93m=\u001b[39m \u001b[31mnew\u001b[39m \u001b[37mTerminal\u001b[39m\u001b[90m(\u001b[39m\u001b[37mcols\u001b[39m\u001b[32m,\u001b[39m \u001b[37mrows\u001b[39m\u001b[32m,\u001b[39m \u001b[37mhandler\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '  \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mopen\u001b[39m\u001b[90m(\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '  ',
-        '  \u001b[32mvar\u001b[39m \u001b[37mhypernal\u001b[39m \u001b[93m=\u001b[39m \u001b[37mthrough\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwrite\u001b[39m\u001b[32m.\u001b[39m\u001b[37mbind\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[90m)\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '  \u001b[37mhypernal\u001b[39m\u001b[32m.\u001b[39m\u001b[37mappendTo\u001b[39m \u001b[93m=\u001b[39m \u001b[94mfunction\u001b[39m \u001b[90m(\u001b[39m\u001b[37melem\u001b[39m\u001b[90m)\u001b[39m \u001b[33m{\u001b[39m',
-        '    \u001b[94mif\u001b[39m \u001b[90m(\u001b[39m\u001b[94mtypeof\u001b[39m \u001b[37melem\u001b[39m \u001b[93m===\u001b[39m \u001b[92m\'string\'\u001b[39m\u001b[90m)\u001b[39m \u001b[37melem\u001b[39m \u001b[93m=\u001b[39m \u001b[37mdocument\u001b[39m\u001b[32m.\u001b[39m\u001b[37mquerySelector\u001b[39m\u001b[90m(\u001b[39m\u001b[37melem\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '    \u001b[37melem\u001b[39m\u001b[32m.\u001b[39m\u001b[37mappendChild\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37melement\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '    \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37melement\u001b[39m\u001b[32m.\u001b[39m\u001b[37mstyle\u001b[39m\u001b[32m.\u001b[39m\u001b[37mposition\u001b[39m \u001b[93m=\u001b[39m \u001b[92m\'relative\'\u001b[39m\u001b[90m;\u001b[39m',
-        '  \u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '  \u001b[37mhypernal\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwriteln\u001b[39m \u001b[93m=\u001b[39m \u001b[94mfunction\u001b[39m \u001b[90m(\u001b[39m\u001b[37mline\u001b[39m\u001b[90m)\u001b[39m \u001b[33m{\u001b[39m',
-        '    \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwriteln\u001b[39m\u001b[90m(\u001b[39m\u001b[37mline\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '  \u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '  \u001b[37mhypernal\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwrite\u001b[39m \u001b[93m=\u001b[39m \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwrite\u001b[39m\u001b[32m.\u001b[39m\u001b[37mbind\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
-        '',
-        '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
-        '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
-        new Date().toISOString(),
-      ].join('\r\n');
+      runtime.xterm.write('运行命令： ' + name);
+      scroll(runtime.xterm);
 
-      if (!runtime) {
-        var xterm = new Terminal({
-          debug: true,
-          bgColor: 'transparent',
-          fgColor: 'inherit'
-        });
-
-        xterm.open();
-        xtermNode.appendChild(xterm.element);
-
-        xterm.write('Terminal ready\r\n' + code);
-        scroll(xterm);
-
-        window.xterm = xterm;
-
-        window.AppRuntime[this.project.name] = {
-          name: name,
-          command: command,
-          xterm: xterm
-        }
-      } else {
-        runtime.xterm.write('\r\n' + code);
-        scroll(runtime.xterm);
-      }
     },
     setting: function (){
       this.showSetting = true;
     },
     remove: function (){
+      var runtime = window.AppRuntime[this.project.name];
+
+      if (runtime) {
+        runtime.xterm.close();
+
+        delete window.AppRuntime[this.project.name];
+      }
+
       // remove project
       this.projects.splice(this.activeIndex, 1);
 
@@ -168,6 +161,12 @@ module.exports = Vue.component('app-main', {
       this.showSetting = state;
     },
     edit: function (project){
+      if (project.name !== this.project.name) {
+        window.AppRuntime[project.name] = window.AppRuntime[this.project.name];
+
+        delete window.AppRuntime[this.project.name];
+      }
+
       this.projects.$set(this.activeIndex, project);
       this.$dispatch('save-configure');
     }
@@ -181,5 +180,8 @@ module.exports = Vue.component('app-main', {
 
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
+  },
+  ready: function (){
+    createXTerm(this.project.name, this.$els.terminal);
   }
 });
