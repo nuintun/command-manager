@@ -26,12 +26,10 @@ module.exports = function (Terminal){
 
       this.cursorState = 0;
 
-      if (this._blink && this._blinker) {
-        clearInterval(this._blink);
+      clearInterval(this._blink);
 
-        delete this._blink;
-        delete this._blinker;
-      }
+      delete this._blink;
+      delete this._blinker;
 
       this.refresh(this.y, this.y);
     }
@@ -44,11 +42,12 @@ module.exports = function (Terminal){
     if (this.cursor && this.cursorBlink && Terminal.focus === this) {
       var context = this;
 
-      this.stopBlink();
+      clearInterval(this._blink);
+
       this._blinker = function (){
         context.cursorState ^= 1;
 
-        context.refresh(this.y, this.y);
+        context.refresh(context.y, context.y);
       };
 
       this._blink = setInterval(this._blinker, this.cursorBlinkSpeed);
