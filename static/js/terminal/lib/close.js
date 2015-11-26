@@ -10,21 +10,12 @@ module.exports = function (Terminal){
    */
   Terminal.prototype.close = function (){
     this.lines = [];
-    this.children = [];
+    this.screen = '';
+    this.screenLines = [];
     this.readable = false;
     this.writable = false;
     this.write = function (){};
     this.handler = function (){};
     this.handlerTitle = function (){};
-
-    if (this.element) {
-      var parent = this.element.parentNode;
-
-      if (parent) {
-        parent.removeChild(this.element);
-      }
-
-      this.element = null;
-    }
   };
 };

@@ -7,7 +7,7 @@
 module.exports = function (Terminal){
   /**
    * blankLine
-   * @param cur
+   * @param [cur]
    * @returns {Array}
    */
   Terminal.prototype.blankLine = function (cur){

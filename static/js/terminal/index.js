@@ -110,8 +110,8 @@ function Terminal(options){
   this.charsets = [null];
 
   // misc
-  this.element = null;
-  this.children = [];
+  this.screen = '';
+  this.screenLines = [];
   this.refreshStart = null;
   this.refreshEnd = null;
   this.savedX = null;
