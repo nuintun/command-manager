@@ -60,7 +60,9 @@ function createXTerm(name, xtermNode){
         xtermNode.removeChild(xtermNode.firstChild);
       }
 
+      xterm.focus();
       xtermNode.appendChild(xterm.element);
+      xterm.children[xterm.y].scrollIntoView();
     }
   }
 
@@ -130,7 +132,8 @@ module.exports = Vue.component('app-main', {
     exec: function (name, command){
       var runtime = window.AppRuntime[this.project.name];
 
-      runtime.xterm.write('运行命令： ' + name);
+      runtime.xterm.writeln('运行命令： \u001b[32m' + name + '\u001b[39m 在 \u001b[32m'
+        + (new Date().toLocaleString()) + '\u001b[39m');
       scroll(runtime.xterm);
 
     },
