@@ -70,10 +70,10 @@ function createXTerm(name, xtermNode){
           clearTimeout(timer);
 
           timer = setTimeout(function (){
-            xtermNode.innerHTML = screen;
+            //xtermNode.innerHTML = screen;
 
             scroll(xterm, xtermNode);
-          }, 0);
+          }, 10);
         }
       }
     });

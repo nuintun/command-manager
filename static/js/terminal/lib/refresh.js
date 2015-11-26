@@ -5,6 +5,21 @@
 'use strict';
 
 module.exports = function (Terminal){
+  /**
+   * screen
+   * @param foreground
+   * @param background
+   * @param content
+   * @returns {string}
+   */
+  function screen(foreground, background, content){
+    var intro = '<div class="ui-terminal" tabindex="0" spellcheck="false" '
+      + 'style="outline:none;background-color:' + background + ' ; color:' + foreground + ';">';
+    var outro = '</div>';
+
+    return intro + content + outro;
+  }
+
   // Rendering Engine
   // In the screen buffer, each character
   // is stored as a an array with a character
@@ -15,14 +30,6 @@ module.exports = function (Terminal){
   // Next 9 bits: foreground color (0-511).
   // Next 14 bits: a mask for misc.
   // flags: 1=bold, 2=underline, 4=blink, 8=inverse, 16=invisible
-
-  function screen(foreground, background, content){
-    var intro = '<div class="ui-terminal" tabindex="0" spellcheck="false" '
-      + 'style="outline:none;background-color:' + background + ' ; color:' + foreground + ';">';
-    var outro = '</div>';
-
-    return intro + content + outro;
-  }
 
   /**
    * refresh
