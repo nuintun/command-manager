@@ -35,7 +35,7 @@ function Terminal(options){
 
   // inherits
   iterator(Terminal.defaults, function (key, value){
-    if (options.hasOwnProperty(options)) {
+    if (options.hasOwnProperty(key)) {
       this[key] = options[key];
     } else {
       this[key] = value;
