@@ -83,6 +83,7 @@ module.exports = {
       switch (action) {
         case 'start':
           if (!emulator) {
+            var stream;
             var env = {};
 
             Object.keys(process.env).forEach(function (key){
@@ -99,14 +100,14 @@ module.exports = {
               command: project.command.value
             });
 
-            var stream = emulator.start();
+            stream = emulator.start();
 
             stream.stdout.on('data', function (data){
-              event.sender.send('data', project, data);
+              event.sender.send('emulator', 'data', project, data);
             });
 
             stream.stderr.on('error', function (error){
-              event.sender.send('error', project, error);
+              event.sender.send('emulator', 'error', project, error);
 
               emulator.stop();
 
@@ -114,7 +115,7 @@ module.exports = {
             });
 
             stream.on('close', function (signal){
-              event.sender.send('close', project, signal);
+              event.sender.send('emulator', 'close', project, signal);
 
               delete emulators[key];
             });

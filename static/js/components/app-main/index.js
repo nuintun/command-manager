@@ -53,35 +53,41 @@ function scroll(xterm, parent){
  * @param xtermNode
  */
 function createXTerm(name, xtermNode){
-  //var timer;
-  //var runtime = window.AppRuntime[name];
+  var timer;
+  var runtime = window.AppRuntime[name];
 
-  //if (runtime) {
-  //  runtime.xterm.focus();
-  //} else {
-  //  var xterm = new Terminal({
-  //    rows: 66,
-  //    scrollback: 66,
-  //    convertEOL: true,
-  //    fgColor: 'inherit',
-  //    bgColor: 'transparent',
-  //    onscreen: function (screen){
-  //      if (this.isFocused()) {
-  //        clearTimeout(timer);
-  //
-  //        timer = setTimeout(function (){
-  //          //xtermNode.innerHTML = screen;
-  //
-  //          scroll(xterm, xtermNode);
-  //        }, 10);
-  //      }
-  //    }
-  //  });
-  //
-  //  xterm.open();
+  if (runtime) {
+    runtime.xterm.focus();
+  } else {
+    var xterm = new Terminal({
+      rows: 66,
+      scrollback: 66,
+      convertEOL: true,
+      fgColor: 'inherit',
+      bgColor: 'transparent',
+      onscreen: function (screen){
+        if (this.isFocused()) {
+          setImmediate(function (){
+            xtermNode.innerHTML = screen;
+            scroll(xterm, xtermNode);
+          });
+          //clearTimeout(timer);
 
-  window.AppRuntime[name] = true;
-  //}
+          //timer = setTimeout(function (){
+          //  xtermNode.innerHTML = screen;
+          //}, 0);
+          //
+          //scroll(xterm, xtermNode);
+        }
+      }
+    });
+
+    xterm.open();
+
+    window.AppRuntime[name] = {
+      xterm: xterm
+    };
+  }
 }
 
 module.exports = Vue.component('app-main', {
@@ -190,9 +196,7 @@ module.exports = Vue.component('app-main', {
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
-        if (project.name === context.project.name) {
-          context.$els.terminal.innerHTML = data;
-        }
+        runtime.xterm.write(data + '');
       } else {
         event.sender.send('emulator', project, 'stop');
       }
@@ -200,7 +204,5 @@ module.exports = Vue.component('app-main', {
   },
   ready: function (){
     createXTerm(this.project.name, this.$els.terminal);
-
-    new Worker('static/js/components/app-main/worker.js');
   }
 });
