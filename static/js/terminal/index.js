@@ -47,22 +47,28 @@ function Terminal(options){
   if (Array.isArray(options.colors)) {
     if (options.colors.length === 8) {
       options.colors = options.colors.concat(Terminal.colors.slice(8));
+      this.vcolors = Terminal.makeVcolors(options.colors);
     } else if (options.colors.length === 16) {
       options.colors = options.colors.concat(Terminal.colors.slice(16));
+      this.vcolors = Terminal.makeVcolors(options.colors);
     } else if (options.colors.length === 10) {
       options.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(8, -2), options.colors.slice(-2));
+      this.vcolors = Terminal.makeVcolors(options.colors);
     } else if (options.colors.length === 18) {
       options.colors = options.colors.slice(0, -2).concat(Terminal.colors.slice(16, -2), options.colors.slice(-2));
+      this.vcolors = Terminal.makeVcolors(options.colors);
     } else {
-      options.colors = Terminal.colors;
+      options.colors = Terminal.colors.slice();
+      this.vcolors = Terminal.vcolors.slice();
     }
   } else {
-    options.colors = Terminal.colors;
+    options.colors = Terminal.colors.slice();
+    this.vcolors = Terminal.vcolors.slice();
   }
 
   this.colors = options.colors;
-  this.bgColor = options.bgColor || Terminal.defaultColors.bgColor;
-  this.fgColor = options.fgColor || Terminal.defaultColors.fgColor;
+  this.background = options.background || Terminal.defaultColors.background;
+  this.foreground = options.foreground || Terminal.defaultColors.foreground;
 
   // set screen size
   options.cols = options.cols || Terminal.geometry[0];

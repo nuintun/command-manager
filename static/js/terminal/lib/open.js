@@ -40,17 +40,18 @@ module.exports = function (Terminal){
     this.screen.setAttribute('spellcheck', 'false');
 
     // sync default bg/fg colors
-    this.screen.style.backgroundColor = this.bgColor;
-    this.screen.style.color = this.fgColor;
+    this.screen.style.backgroundColor = this.background;
+    this.screen.style.color = this.foreground;
 
     // Create the lines for our terminal.
     this.children = [];
 
     for (; i < this.rows; i++) {
       div = document.createElement('div');
+      div.className = 'ui-terminal-row';
 
-      this.screen.appendChild(div);
       this.children.push(div);
+      this.screen.appendChild(div);
     }
 
     // XXX - hack, move this somewhere else.

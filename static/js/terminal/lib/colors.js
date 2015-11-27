@@ -5,20 +5,43 @@
 'use strict';
 
 module.exports = function (Terminal){
-  // Colors 0-15
-  Terminal.colors = [
-    // dark:
-    '#2e3436', '#cc0000', '#4e9a06', '#c4a000', '#3465a4', '#75507b', '#06989a', '#d3d7cf',
-    // bright:
-    '#555753', '#ef2929', '#8ae234', '#fce94f', '#729fcf', '#ad7fa8', '#34e2e2', '#eeeeec'
-  ];
+  // Default colors
+  Terminal.defaultColors = {
+    // Colors 0-15
+    colors: [
+      // dark:
+      '#000000', // black
+      '#cd0000', // red3
+      '#00cd00', // green3
+      '#cdcd00', // yellow3
+      '#0000ee', // blue2
+      '#cd00cd', // magenta3
+      '#00cdcd', // cyan3
+      '#e5e5e5', // gray90
+      // bright:
+      '#7f7f7f', // gray50
+      '#ff0000', // red
+      '#00ff00', // green
+      '#ffff00', // yellow
+      '#5c5cff', // rgb:5c/5c/ff
+      '#ff00ff', // magenta
+      '#00ffff', // cyan
+      '#ffffff'  // white
+    ],
+    // Default background color
+    background: '#181818',
+    // Default foreground color
+    foreground: '#ffffff'
+  };
 
   // Colors 16-255
   // Much thanks to TooTallNate for writing this.
-  Terminal.colors = (function (){
+  Terminal.makeColors = function (colors){
     var i;
-    var colors = Terminal.colors;
     var r = [0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff];
+
+    // copy colors
+    colors = colors.slice();
 
     // 16-231
     i = 0;
@@ -46,13 +69,13 @@ module.exports = function (Terminal){
     }
 
     return colors;
-  })();
+  };
 
-  Terminal.vcolors = (function (){
+  // Vcolors 0-255
+  Terminal.makeVcolors = function (colors){
     var color;
     var i = 0;
     var out = [];
-    var colors = Terminal.colors;
 
     for (; i < 256; i++) {
       color = parseInt(colors[i].substring(1), 16);
@@ -61,14 +84,10 @@ module.exports = function (Terminal){
     }
 
     return out;
-  })();
-
-  // Default BG/FG
-  Terminal.defaultColors = {
-    bgColor: '#000000',
-    fgColor: '#f0f0f0'
   };
 
-  Terminal.colors[256] = Terminal.defaultColors.bgColor;
-  Terminal.colors[257] = Terminal.defaultColors.fgColor;
+  // Colors 0-255
+  Terminal.colors = Terminal.makeColors(Terminal.defaultColors.colors);
+  // Vcolors 0-255
+  Terminal.vcolors = Terminal.makeVcolors(Terminal.colors);
 };

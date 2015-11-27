@@ -7,12 +7,13 @@
 module.exports = function (Terminal){
   /**
    * matchColor
+   * @param vcolors
    * @param r1
    * @param g1
    * @param b1
    * @returns {*}
    */
-  function matchColor(r1, g1, b1){
+  function matchColor(vcolors, r1, g1, b1){
     var hash = (r1 << 16) | (g1 << 8) | b1;
 
     if (matchColor._cache.hasOwnProperty(hash + '')) {
@@ -24,8 +25,8 @@ module.exports = function (Terminal){
     var ldiff = Infinity;
     var c, r2, g2, b2, diff;
 
-    for (; i < Terminal.vcolors.length; i++) {
-      c = Terminal.vcolors[i];
+    for (; i < vcolors.length; i++) {
+      c = vcolors[i];
       r2 = c[0];
       g2 = c[1];
       b2 = c[2];
@@ -121,6 +122,7 @@ module.exports = function (Terminal){
     // Optimize a single SGR0.
     if (params.length === 1 && params[0] === 0) {
       this.curAttr = this.defAttr;
+
       return;
     }
 
@@ -198,10 +200,7 @@ module.exports = function (Terminal){
         if (params[i + 1] === 2) {
           i += 2;
 
-          fg = matchColor(
-            params[i] & 0xff,
-            params[i + 1] & 0xff,
-            params[i + 2] & 0xff);
+          fg = matchColor(this.vcolors, params[i] & 0xff, params[i + 1] & 0xff, params[i + 2] & 0xff);
 
           if (fg === -1) fg = 0x1ff;
 
@@ -216,10 +215,7 @@ module.exports = function (Terminal){
         if (params[i + 1] === 2) {
           i += 2;
 
-          bg = matchColor(
-            params[i] & 0xff,
-            params[i + 1] & 0xff,
-            params[i + 2] & 0xff);
+          bg = matchColor(this.vcolors, params[i] & 0xff, params[i + 1] & 0xff, params[i + 2] & 0xff);
 
           if (bg === -1) bg = 0x1ff;
 
