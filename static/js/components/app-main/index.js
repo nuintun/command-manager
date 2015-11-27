@@ -59,7 +59,7 @@ function createXTerm(name, xtermNode){
 
   if (runtime) {
     runtime.xterm.focus();
-    xtermNode.appendChild(runtime.xterm.element);
+    xtermNode.appendChild(runtime.xterm.screen);
   } else {
     var xterm = new Terminal({
       rows: 66,
@@ -70,7 +70,8 @@ function createXTerm(name, xtermNode){
     });
 
     xterm.open();
-    xtermNode.appendChild(xterm.element);
+    xterm.focus();
+    xtermNode.appendChild(xterm.screen);
 
     window.AppRuntime[name] = {
       xterm: xterm
@@ -187,7 +188,7 @@ module.exports = Vue.component('app-main', {
       if (runtime) {
         xtermNode.innerHTML = '';
         runtime.xterm.write(data + '');
-        xtermNode.appendChild(runtime.xterm.element);
+        xtermNode.appendChild(runtime.xterm.screen);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
