@@ -53,15 +53,17 @@ function scroll(xterm, parent){
  * @param xtermNode
  */
 function createXTerm(name, xtermNode){
+  var xterm;
   var runtime = window.AppRuntime[name];
 
-  xtermNode.innerHTML = '';
+  if (Terminal.focus) {
+    xtermNode.removeChild(Terminal.focus.screen);
+  }
 
   if (runtime) {
-    runtime.xterm.focus();
-    xtermNode.appendChild(runtime.xterm.screen);
+    xterm = runtime.xterm;
   } else {
-    var xterm = new Terminal({
+    xterm = new Terminal({
       rows: 66,
       scrollback: 66,
       convertEOL: true,
@@ -70,13 +72,15 @@ function createXTerm(name, xtermNode){
     });
 
     xterm.open();
-    xterm.focus();
-    xtermNode.appendChild(xterm.screen);
 
     window.AppRuntime[name] = {
       xterm: xterm
     };
   }
+
+  xterm.focus();
+  xtermNode.appendChild(xterm.screen);
+  scroll(xterm, xtermNode);
 }
 
 module.exports = Vue.component('app-main', {
@@ -172,6 +176,7 @@ module.exports = Vue.component('app-main', {
     }
   },
   created: function (){
+    var step = 0;
     var context = this;
 
     document.addEventListener('click', function (event){
@@ -181,19 +186,21 @@ module.exports = Vue.component('app-main', {
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
 
-    var timer;
-
     ipc.on('emulator', function (event, type, project, data){
-      var xtermNode = context.$els.terminal;
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
-        xtermNode.innerHTML = '';
-        runtime.xterm.write(data + '');
-        if(runtime.xterm.isFu)
+        step++;
+
         setTimeout(function (){
-          xtermNode.appendChild(runtime.xterm.screen);
-        }, 1);
+          step--;
+
+          runtime.xterm.write(data + '');
+
+          if (project.name === context.project.name) {
+            scroll(runtime.xterm, context.$els.terminal);
+          }
+        }, step * 16);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
