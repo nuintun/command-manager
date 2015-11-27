@@ -56,7 +56,7 @@ function createXTerm(name, xtermNode){
   var xterm;
   var runtime = window.AppRuntime[name];
 
-  if (Terminal.focus) {
+  if (Terminal.focus && Terminal.focus.screen) {
     xtermNode.removeChild(Terminal.focus.screen);
   }
 
