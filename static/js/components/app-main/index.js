@@ -181,6 +181,8 @@ module.exports = Vue.component('app-main', {
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
 
+    var timer;
+
     ipc.on('emulator', function (event, type, project, data){
       var xtermNode = context.$els.terminal;
       var runtime = window.AppRuntime[project.name];
@@ -188,7 +190,10 @@ module.exports = Vue.component('app-main', {
       if (runtime) {
         xtermNode.innerHTML = '';
         runtime.xterm.write(data + '');
-        xtermNode.appendChild(runtime.xterm.screen);
+        if(runtime.xterm.isFu)
+        setTimeout(function (){
+          xtermNode.appendChild(runtime.xterm.screen);
+        }, 1);
       } else {
         event.sender.send('emulator', project, 'stop');
       }
