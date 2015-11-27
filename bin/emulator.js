@@ -7,7 +7,6 @@
 var ipc = require('ipc-main');
 
 var spawn = require('child_process').spawn;
-var Terminal = require('./terminal');
 
 /**
  * Emulator
@@ -84,20 +83,7 @@ module.exports = {
       switch (action) {
         case 'start':
           if (!emulator) {
-            var type;
             var env = {};
-            var terminal = new Terminal({
-              rows: 66,
-              scrollback: 66,
-              convertEOL: true,
-              fgColor: 'inherit',
-              bgColor: 'transparent',
-              onscreen: function (screen){
-                event.sender.send('emulator', type, project, screen);
-              }
-            });
-
-            terminal.open();
 
             Object.keys(process.env).forEach(function (key){
               env[key] = process.env[key];
@@ -116,39 +102,29 @@ module.exports = {
             var stream = emulator.start();
 
             stream.stdout.on('data', function (data){
-              type = 'data';
-
-              terminal.write(data + '');
+              event.sender.send('data', project, data);
             });
 
             stream.stderr.on('error', function (error){
-              type = 'error';
+              event.sender.send('error', project, error);
 
-              terminal.write(error + '\r\n');
               emulator.stop();
 
               delete emulators[key];
             });
 
             stream.on('close', function (signal){
-              type = 'close';
-
-              terminal.write(signal + '\r\n');
-              terminal.close();
+              event.sender.send('close', project, signal);
 
               delete emulators[key];
             });
 
-            emulators[key] = {
-              service: emulator,
-              terminal: terminal
-            };
+            emulators[key] = emulator;
           }
           break;
         case 'stop':
           if (emulator) {
-            emulator.service.stop();
-            emulator.terminal.close();
+            emulator.stop();
           }
           break;
       }

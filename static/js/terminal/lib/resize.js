@@ -11,7 +11,7 @@ module.exports = function (Terminal){
    * @param y
    */
   Terminal.prototype.resize = function (x, y){
-    var line, i, j, ch;
+    var i, j, ch;
 
     if (x < 1) x = 1;
 
