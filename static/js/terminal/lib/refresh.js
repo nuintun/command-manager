@@ -5,21 +5,6 @@
 'use strict';
 
 module.exports = function (Terminal){
-  /**
-   * screen
-   * @param foreground
-   * @param background
-   * @param content
-   * @returns {string}
-   */
-  function screen(foreground, background, content){
-    var intro = '<div class="ui-terminal" tabindex="0" spellcheck="false" '
-      + 'style="outline:none;background-color:' + background + ' ; color:' + foreground + ';">';
-    var outro = '</div>';
-
-    return intro + content + outro;
-  }
-
   // Rendering Engine
   // In the screen buffer, each character
   // is stored as a an array with a character
@@ -37,7 +22,13 @@ module.exports = function (Terminal){
    * @param end
    */
   Terminal.prototype.refresh = function (start, end){
+    var parent = this.element ? this.element.parentNode : null;
+    var optimize = parent && end - start >= this.rows / 2;
     var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row;
+
+    if (optimize) {
+      parent.removeChild(this.element);
+    }
 
     width = this.cols;
     y = start;
@@ -159,11 +150,11 @@ module.exports = function (Terminal){
         out += '</span>';
       }
 
-      this.screenLines[y] = '<div>' + out + '</div>';
+      this.children[y].innerHTML = out;
     }
 
-    this.screen = screen(this.fgColor, this.bgColor, this.screenLines.join(''));
-
-    this.onscreen.call(this, this.screen);
+    if (optimize) {
+      parent.appendChild(this.element);
+    }
   };
 };

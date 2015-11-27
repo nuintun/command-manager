@@ -11,7 +11,7 @@ module.exports = function (Terminal){
    * @param y
    */
   Terminal.prototype.resize = function (x, y){
-    var i, j, ch;
+    var line, element, i, j, ch;
 
     if (x < 1) x = 1;
 
@@ -48,15 +48,33 @@ module.exports = function (Terminal){
     j = this.rows;
 
     if (j < y) {
+      element = this.element;
+
       while (j++ < y) {
         if (this.lines.length < y + this.ybase) {
           this.lines.push(this.blankLine());
+        }
+
+        if (this.children.length < y) {
+          line = this.document.createElement('div');
+
+          element.appendChild(line);
+
+          this.children.push(line);
         }
       }
     } else if (j > y) {
       while (j-- > y) {
         if (this.lines.length > y + this.ybase) {
           this.lines.pop();
+        }
+
+        if (this.children.length > y) {
+          element = this.children.pop();
+
+          if (!element) continue;
+
+          element.parentNode.removeChild(element);
         }
       }
     }

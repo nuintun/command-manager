@@ -30,9 +30,19 @@ module.exports = function (Terminal){
    */
   Terminal.prototype.bell = function (){
     // buffers automatically when created
-    var bell = new Audio('bell.wav');
+    var snd = new Audio('bell.wav');
 
-    bell.play();
+    snd.play();
+
+    if (!this.visualBell) return;
+
+    var context = this;
+
+    this.element.style.borderColor = 'white';
+
+    setTimeout(function (){
+      context.element.style.borderColor = '';
+    }, 10);
 
     if (this.popOnBell) this.focus();
   };
@@ -414,6 +424,7 @@ module.exports = function (Terminal){
               case 2:
                 if (this.params[1]) {
                   this.title = this.params[1];
+
                   this.ontitle.call(this, this.title);
                 }
                 break;

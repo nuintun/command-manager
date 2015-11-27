@@ -11,6 +11,7 @@ module.exports = function (Terminal){
   Terminal.cursor = true;
   Terminal.cursorBlink = true;
   Terminal.cursorBlinkSpeed = 500;
+  Terminal.visualBell = true;
   Terminal.popOnBell = true;
   Terminal.scrollback = 640;
   Terminal.screenKeys = false;
@@ -23,6 +24,7 @@ module.exports = function (Terminal){
     cursor: Terminal.cursor,
     cursorBlink: Terminal.cursorBlink,
     cursorBlinkSpeed: Terminal.cursorBlinkSpeed,
+    visualBell: Terminal.visualBell,
     popOnBell: Terminal.popOnBell,
     scrollback: Terminal.scrollback,
     screenKeys: Terminal.screenKeys,

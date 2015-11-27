@@ -70,19 +70,15 @@ function Terminal(options){
   this.cols = options.cols;
   this.rows = options.rows;
 
-  // set ondata
+  // set on data callback
   options.ondata = typeof options.ondata === 'function' ? options.ondata : function (){};
   this.ondata = options.ondata;
 
-  // set ontitle
+  // set on title callback
   options.ontitle = typeof options.ontitle === 'function' ? options.ontitle : function (){};
   this.ontitle = options.ontitle;
 
-  // set onscreen
-  options.onscreen = typeof options.onscreen === 'function' ? options.onscreen : function (){};
-  this.onscreen = options.onscreen;
-
-  // set convert eol
+  // set convert end of line
   options.convertEOL = options.convertEOL === true;
   this.convertEOL = options.convertEOL;
 
@@ -114,8 +110,8 @@ function Terminal(options){
   this.charsets = [null];
 
   // misc
-  this.screen = '';
-  this.screenLines = [];
+  this.element = null;
+  this.children = [];
   this.refreshStart = null;
   this.refreshEnd = null;
   this.savedX = null;

@@ -107,7 +107,7 @@ module.exports = function (Terminal){
           this.insertMode = true;
           break;
         case 20:
-          this.convertEol = true;
+          this.convertEOL = true;
           break;
       }
     } else if (this.prefix === '?') {
@@ -322,7 +322,7 @@ module.exports = function (Terminal){
           this.insertMode = false;
           break;
         case 20:
-          this.convertEol = false;
+          this.convertEOL = false;
           break;
       }
     } else if (this.prefix === '?') {
