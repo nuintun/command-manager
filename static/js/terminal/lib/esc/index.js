@@ -27,7 +27,7 @@ module.exports = function (Terminal){
 
     if (this.y < this.scrollTop) {
       this.y++;
-      
+
       // possibly move the code below to term.reverseScroll();
       // test: echo -ne '\e[1;1H\e[44m\eM\e[0m'
       // blankLine(true) is xterm/linux behavior

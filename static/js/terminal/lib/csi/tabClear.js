@@ -13,7 +13,7 @@ module.exports = function (Terminal){
   // http://vt100.net/annarbor/aaa-ug/section6.html
   Terminal.prototype.tabClear = function (params){
     var param = params[0];
-    
+
     if (param <= 0) {
       delete this.tabs[this.x];
     } else if (param === 3) {
