@@ -32,16 +32,16 @@ module.exports = function (Terminal){
     var div;
     var i = 0;
 
-    this.element = document.createElement('div');
-    this.element.className = 'ui-terminal';
-    this.element.style.outline = 'none';
+    this.screen = document.createElement('div');
+    this.screen.className = 'ui-terminal';
+    this.screen.style.outline = 'none';
 
-    this.element.setAttribute('tabindex', '0');
-    this.element.setAttribute('spellcheck', 'false');
+    this.screen.setAttribute('tabindex', '0');
+    this.screen.setAttribute('spellcheck', 'false');
 
     // sync default bg/fg colors
-    this.element.style.backgroundColor = this.bgColor;
-    this.element.style.color = this.fgColor;
+    this.screen.style.backgroundColor = this.bgColor;
+    this.screen.style.color = this.fgColor;
 
     // Create the lines for our terminal.
     this.children = [];
@@ -49,7 +49,7 @@ module.exports = function (Terminal){
     for (; i < this.rows; i++) {
       div = document.createElement('div');
 
-      this.element.appendChild(div);
+      this.screen.appendChild(div);
       this.children.push(div);
     }
 

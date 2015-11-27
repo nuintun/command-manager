@@ -15,16 +15,16 @@ module.exports = function (Terminal){
     this.writable = false;
     this.write = function (){};
     this.ondata = function (){};
-    this.ondataTitle = function (){};
+    this.ontitle = function (){};
 
-    if (this.element) {
-      var parent = this.element.parentNode;
+    if (this.screen) {
+      var parent = this.screen.parentNode;
 
       if (parent) {
-        parent.removeChild(this.element);
+        parent.removeChild(this.screen);
       }
 
-      this.element = null;
+      this.screen = null;
     }
   };
 };

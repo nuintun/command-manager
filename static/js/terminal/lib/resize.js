@@ -11,7 +11,7 @@ module.exports = function (Terminal){
    * @param y
    */
   Terminal.prototype.resize = function (x, y){
-    var line, element, i, j, ch;
+    var line, screen, i, j, ch;
 
     if (x < 1) x = 1;
 
@@ -48,7 +48,7 @@ module.exports = function (Terminal){
     j = this.rows;
 
     if (j < y) {
-      element = this.element;
+      screen = this.screen;
 
       while (j++ < y) {
         if (this.lines.length < y + this.ybase) {
@@ -58,7 +58,7 @@ module.exports = function (Terminal){
         if (this.children.length < y) {
           line = this.document.createElement('div');
 
-          element.appendChild(line);
+          screen.appendChild(line);
 
           this.children.push(line);
         }
@@ -70,11 +70,11 @@ module.exports = function (Terminal){
         }
 
         if (this.children.length > y) {
-          element = this.children.pop();
+          screen = this.children.pop();
 
-          if (!element) continue;
+          if (!screen) continue;
 
-          element.parentNode.removeChild(element);
+          screen.parentNode.removeChild(screen);
         }
       }
     }

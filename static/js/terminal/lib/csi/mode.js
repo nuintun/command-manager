@@ -157,7 +157,7 @@ module.exports = function (Terminal){
           // -this.vt200Mouse = params === 1000;
           // -this.normalMouse = params > 1000;
           // -this.mouseEvents = true;
-          // -this.element.style.cursor = 'default';
+          // -this.screen.style.cursor = 'default';
           break;
         // send focusin/focusout events
         case 1004:
@@ -364,7 +364,7 @@ module.exports = function (Terminal){
           // -this.vt200Mouse = false;
           // -this.normalMouse = false;
           // -this.mouseEvents = false;
-          // -this.element.style.cursor = '';
+          // -this.screen.style.cursor = '';
           break;
         // send focusin/focusout events
         case 1004:

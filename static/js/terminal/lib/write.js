@@ -38,10 +38,10 @@ module.exports = function (Terminal){
 
     var context = this;
 
-    this.element.style.borderColor = 'white';
+    this.screen.style.borderColor = 'white';
 
     setTimeout(function (){
-      context.element.style.borderColor = '';
+      context.screen.style.borderColor = '';
     }, 10);
 
     if (this.popOnBell) this.focus();

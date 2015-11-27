@@ -9,21 +9,20 @@ module.exports = function (Terminal){
   Terminal.prototype.reset = function (){
     var parent;
 
-    if (this.element) {
-      parent = this.element.parentNode;
+    if (this.screen) {
+      parent = this.screen.parentNode;
 
       if (parent) {
-        parent.removeChild(this.element);
+        parent.removeChild(this.screen);
       }
     }
 
     Terminal.call(this, this.options);
 
     this.open();
-    this.refresh(0, this.rows - 1);
 
     if (parent) {
-      parent.appendChild(this.element);
+      parent.appendChild(this.screen);
     }
   };
 };

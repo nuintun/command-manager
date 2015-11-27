@@ -22,12 +22,12 @@ module.exports = function (Terminal){
    * @param end
    */
   Terminal.prototype.refresh = function (start, end){
-    var parent = this.element ? this.element.parentNode : null;
+    var parent = this.screen ? this.screen.parentNode : null;
     var optimize = parent && end - start >= this.rows / 2;
     var x, y, i, line, out, ch, width, data, attr, fgColor, bgColor, flags, row;
 
     if (optimize) {
-      parent.removeChild(this.element);
+      parent.removeChild(this.screen);
     }
 
     width = this.cols;
@@ -154,7 +154,7 @@ module.exports = function (Terminal){
     }
 
     if (optimize) {
-      parent.appendChild(this.element);
+      parent.appendChild(this.screen);
     }
   };
 };
