@@ -682,7 +682,8 @@ TChar.prototype.getAttributes = function (){
     blink: !!(bits & 8),
     inverse: !!(bits & 16),
     conceal: !!(bits & 32),
-    cursor: !!(bits & 64),
+    // TODO cursor
+    // cursor: !!(bits & 64),
     foreground: {
       set: !!(colorbits & 4),
       RGB: !!(colorbits & 8),
