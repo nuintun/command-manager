@@ -699,9 +699,9 @@ TChar.prototype.getAttributes = function (){
 TChar.prototype.setAttributes = function (attributes){
   var attr = this.attr;
 
-  ['bold', 'italic', 'underline', 'blink', 'inverse', 'conceal'].map(function (el, i){
-    if (attributes[el] !== undefined) {
-      attr = (attributes[el]) ? attr | (2 << (15 + i)) : attr & ~(2 << (15 + i));
+  ['bold', 'italic', 'underline', 'blink', 'inverse', 'conceal'].map(function (key, i){
+    if (attributes[key] !== undefined) {
+      attr = (attributes[key]) ? attr | (2 << (15 + i)) : attr & ~(2 << (15 + i));
     }
   });
 
