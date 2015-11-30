@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="./static/js/terminal/xterm.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="200"></canvas>
+    <script>
+      // var font = '13px Consolas';
+      var font = '13px 微软雅黑';
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+
+      var span = document.createElement('span');
+      span.style.font = font;
+      span.style.margin = '0';
+      span.style.padding = '0';
+      span.style.lineHeight = '100%';
+      span.style.visibility = 'hidden';
+      span.style.position = 'absolute';
+      span.style.zIndex = '-1';
+      span.style.top = '-100%';
+      span.style.right = '-100%';
+
+      // 设置文字属性
+      context.font = font;
+
+      span.innerHTML = 'Canvas绘制文字';
+
+      document.body.appendChild(span);
+      console.dir(span.getBoundingClientRect());
+      var height = span.getBoundingClientRect().height;
+      document.body.removeChild(span);
+
+      context.save();
+      context.lineWidth = 1;
+      context.strokeStyle = '#00f';
+      context.translate(0.5, 0.5);
+      context.beginPath();
+      context.moveTo(0, height + 1);
+      context.lineTo(context.measureText('Canvas绘制文字').width, height + 1);
+      context.stroke();
+      context.restore();
+
+      context.fillStyle = '#00f';
+      context.textBaseline = 'top';
+      // 填充字符串
+      context.fillText('Canvas绘制文字', 0, 0);
+
+      var C = context.measureText('C').width;
+      var a = context.measureText('a').width;
+
+      console.log(context.measureText('C'));
+      console.log(context.measureText('a'));
+      console.log('C: ', C);
+      console.log('a: ', a);
+      console.log('C + a: ', C + a);
+      console.log('Ca: ', context.measureText('Ca').width);
+
+      var xterm = new AnsiTerminal(80, 60, 100);
+
+      [
+        '',
+        '\u001b[92m\'use strict\'\u001b[39m\u001b[90m;\u001b[39m',
+        '\u001b[90m/*jshint browser:true */\u001b[39m',
+        '',
+        '\u001b[32mvar\u001b[39m \u001b[37mTerminal\u001b[39m \u001b[93m=\u001b[39m \u001b[37mrequire\u001b[39m\u001b[90m(\u001b[39m\u001b[92m\'./term\'\u001b[39m\u001b[90m)\u001b[39m',
+        '  \u001b[32m,\u001b[39m \u001b[37mthrough\u001b[39m \u001b[93m=\u001b[39m \u001b[37mrequire\u001b[39m\u001b[90m(\u001b[39m\u001b[92m\'through\'\u001b[39m\u001b[90m)\u001b[39m',
+        '  \u001b[90m;\u001b[39m',
+        '',
+        '\u001b[37mmodule\u001b[39m\u001b[32m.\u001b[39m\u001b[37mexports\u001b[39m \u001b[93m=\u001b[39m \u001b[94mfunction\u001b[39m \u001b[90m(\u001b[39m\u001b[37mcols\u001b[39m\u001b[32m,\u001b[39m \u001b[37mrows\u001b[39m\u001b[32m,\u001b[39m \u001b[37mhandler\u001b[39m\u001b[90m)\u001b[39m \u001b[33m{\u001b[39m',
+        '  \u001b[32mvar\u001b[39m \u001b[37mterm\u001b[39m \u001b[93m=\u001b[39m \u001b[31mnew\u001b[39m \u001b[37mTerminal\u001b[39m\u001b[90m(\u001b[39m\u001b[37mcols\u001b[39m\u001b[32m,\u001b[39m \u001b[37mrows\u001b[39m\u001b[32m,\u001b[39m \u001b[37mhandler\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '  \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mopen\u001b[39m\u001b[90m(\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '  ',
+        '  \u001b[32mvar\u001b[39m \u001b[37mhypernal\u001b[39m \u001b[93m=\u001b[39m \u001b[37mthrough\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwrite\u001b[39m\u001b[32m.\u001b[39m\u001b[37mbind\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[90m)\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '  \u001b[37mhypernal\u001b[39m\u001b[32m.\u001b[39m\u001b[37mappendTo\u001b[39m \u001b[93m=\u001b[39m \u001b[94mfunction\u001b[39m \u001b[90m(\u001b[39m\u001b[37melem\u001b[39m\u001b[90m)\u001b[39m \u001b[33m{\u001b[39m',
+        '    \u001b[94mif\u001b[39m \u001b[90m(\u001b[39m\u001b[94mtypeof\u001b[39m \u001b[37melem\u001b[39m \u001b[93m===\u001b[39m \u001b[92m\'string\'\u001b[39m\u001b[90m)\u001b[39m \u001b[37melem\u001b[39m \u001b[93m=\u001b[39m \u001b[37mdocument\u001b[39m\u001b[32m.\u001b[39m\u001b[37mquerySelector\u001b[39m\u001b[90m(\u001b[39m\u001b[37melem\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '',
+        '    \u001b[37melem\u001b[39m\u001b[32m.\u001b[39m\u001b[37mappendChild\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37melement\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '    \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37melement\u001b[39m\u001b[32m.\u001b[39m\u001b[37mstyle\u001b[39m\u001b[32m.\u001b[39m\u001b[37mposition\u001b[39m \u001b[93m=\u001b[39m \u001b[92m\'relative\'\u001b[39m\u001b[90m;\u001b[39m',
+        '  \u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
+        '',
+        '  \u001b[37mhypernal\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwriteln\u001b[39m \u001b[93m=\u001b[39m \u001b[94mfunction\u001b[39m \u001b[90m(\u001b[39m\u001b[37mline\u001b[39m\u001b[90m)\u001b[39m \u001b[33m{\u001b[39m',
+        '    \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwriteln\u001b[39m\u001b[90m(\u001b[39m\u001b[37mline\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '  \u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
+        '',
+        '  \u001b[37mhypernal\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwrite\u001b[39m \u001b[93m=\u001b[39m \u001b[37mterm\u001b[39m\u001b[32m.\u001b[39m\u001b[37mwrite\u001b[39m\u001b[32m.\u001b[39m\u001b[37mbind\u001b[39m\u001b[90m(\u001b[39m\u001b[37mterm\u001b[39m\u001b[90m)\u001b[39m\u001b[90m;\u001b[39m',
+        '',
+        '  \u001b[31mreturn\u001b[39m \u001b[37mhypernal\u001b[39m\u001b[90m;\u001b[39m',
+        '\u001b[33m}\u001b[39m\u001b[90m;\u001b[39m',
+        ''
+      ].forEach(function (line){ xterm.write(line + '\r\n'); });
+
+      console.log(xterm.toString('html'));
+    </script>
+  </body>
+</html>
