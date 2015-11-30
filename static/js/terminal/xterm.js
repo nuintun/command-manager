@@ -757,7 +757,7 @@ var _uniqueId = 0;
  */
 function Row(){
   this.uniqueId = _uniqueId++ | 0;
-  this.version = 1;
+  this.version = 0;
   this.cells = [];
 }
 
@@ -778,7 +778,6 @@ function ScreenBuffer(cols, rows, scrollLength){
 
   this.buffer = [];
   this.scrollbuffer = [];
-  this.versions = {};
 
   this.reset();
 }
@@ -786,7 +785,6 @@ function ScreenBuffer(cols, rows, scrollLength){
 ScreenBuffer.prototype.reset = function (){
   this.buffer = [];
   this.scrollbuffer = [];
-  this.versions = {};
 
   var row;
 
@@ -798,7 +796,6 @@ ScreenBuffer.prototype.reset = function (){
     }
 
     this.buffer.push(row);
-    this.versions[row] = 1;
   }
 };
 
