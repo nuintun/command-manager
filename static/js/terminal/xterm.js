@@ -750,11 +750,16 @@ TChar.prototype.toString = function (){
 };
 
 var _uniqueId = 0;
-var Row = function (){
+
+/**
+ * Row
+ * @constructor
+ */
+function Row(){
   this.uniqueId = _uniqueId++ | 0;
   this.version = 1;
   this.cells = [];
-};
+}
 
 /**
  * ScreenBuffer - represents a terminal screen with cols and rows.
@@ -766,7 +771,7 @@ var Row = function (){
  * @param scrollLength
  * @constructor
  */
-var ScreenBuffer = function (cols, rows, scrollLength){
+function ScreenBuffer(cols, rows, scrollLength){
   this.rows = rows;
   this.cols = cols;
   this.scrollLength = scrollLength | 0;
@@ -776,7 +781,7 @@ var ScreenBuffer = function (cols, rows, scrollLength){
   this.versions = {};
 
   this.reset();
-};
+}
 
 ScreenBuffer.prototype.reset = function (){
   this.buffer = [];
