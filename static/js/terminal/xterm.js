@@ -682,7 +682,7 @@ TChar.prototype.getAttributes = function (){
     blink: !!(bits & 8),
     inverse: !!(bits & 16),
     conceal: !!(bits & 32),
-    //cursor: !!(bits & 64),
+    cursor: !!(bits & 64),
     foreground: {
       set: !!(colorbits & 4),
       RGB: !!(colorbits & 8),
@@ -1021,28 +1021,40 @@ AnsiTerminal.prototype.reset = function (){
   this.row_wrap = false;
 };
 
-/** @return {string} String representation of active buffer. */
-AnsiTerminal.prototype.toString = function (){
-  var j;
+/**
+ * toSting
+ * @param [type]
+ * @returns {string} representation of active buffer.
+ */
+AnsiTerminal.prototype.toString = function (type){
+  var i, j;
   var s = '';
 
-  for (var i = 0; i < this.screen.buffer.length; ++i) {
-    // FIXME: quick and dirty fill up from left
-    var last_nonspace = 0;
-
-    for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
-      if (this.screen.buffer[i].cells[j].c) {
-        last_nonspace = j;
+  if (type === 'html') {
+    for (i = 0; i < this.screen.buffer.length; ++i) {
+      for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
+        console.log(this.screen.buffer[i].cells[j].getAttributes());
       }
     }
+  } else {
+    for (i = 0; i < this.screen.buffer.length; ++i) {
+      // FIXME: quick and dirty fill up from left
+      var last_nonspace = 0;
 
-    for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
-      s += (last_nonspace > j)
-        ? (this.screen.buffer[i].cells[j].c || ' ')
-        : this.screen.buffer[i].cells[j].c;
+      for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
+        if (this.screen.buffer[i].cells[j].c) {
+          last_nonspace = j;
+        }
+      }
+
+      for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
+        s += (last_nonspace > j)
+          ? (this.screen.buffer[i].cells[j].c || ' ')
+          : this.screen.buffer[i].cells[j].c;
+      }
+
+      s += '\n';
     }
-
-    s += '\n';
   }
 
   return s;
