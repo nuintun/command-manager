@@ -1265,7 +1265,7 @@ AnsiTerminal.prototype.inst_p = function (s){
       this.cursor.col += 1;
     }
 
-    if (width == 2) {
+    if (width === 2) {
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].width = 0;
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].c = '';
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].attr = this.charattributes;
