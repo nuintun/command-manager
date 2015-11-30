@@ -941,15 +941,33 @@ var TERM_STRING = {
  * @constructor
  */
 function AnsiTerminal(cols, rows, scrollLength){
+  if (!(this instanceof AnsiTerminal)) {
+    return new AnsiTerminal(cols, rows, scrollLength);
+  }
+
   this.rows = rows;
   this.cols = cols;
   this.scrollLength = scrollLength | 0;
-  this.send = function (s){};                            // callback for writing back to stream
-  this.beep = function (tone, duration){};               // callback for sending console beep
-  this.changedMouseHandling = function (mode, protocol){}; // announce changes in mouse handling
+  // callback for writing back to stream
+  this.send = function (data){};
+  // callback for sending console beep
+  this.beep = function (tone, duration){};
+  // announce changes in mouse handling
+  this.changedMouseHandling = function (mode, protocol){};
+
+  // init ansi parser
+  this.AnsiParser = new AnsiParser(this);
 
   this.reset();
 }
+
+/**
+ * write
+ * @param data
+ */
+AnsiTerminal.prototype.write = function (data){
+  this.AnsiParser.parse(data);
+};
 
 /** Hard reset of the terminal. */
 AnsiTerminal.prototype.reset = function (){
