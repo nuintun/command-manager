@@ -55,6 +55,7 @@ module.exports = function (Terminal){
 
     for (; i < 24; i++) {
       r = 8 + i * 10;
+      
       out(r, r, r);
     }
 
