@@ -1032,9 +1032,15 @@ AnsiTerminal.prototype.toString = function (type){
   var s = '';
 
   if (type === 'html') {
+    var cell;
+
     for (i = 0; i < this.screen.buffer.length; ++i) {
       for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
-        console.log(this.screen.buffer[i].cells[j]);
+        cell = this.screen.buffer[i].cells[j];
+
+        if (cell.c) {
+          console.log(cell.c, ': ', cell, ' - ', cell.getAttributes());
+        }
       }
     }
   } else {
