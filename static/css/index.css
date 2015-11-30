@@ -156,7 +156,7 @@ body {
 body {
   border: 1px solid #ccc;
   box-sizing: border-box;
-  min-width: 1024px; !important;
+  min-width: 1024px !important;
   min-height: 768px !important;
 }
 a {
