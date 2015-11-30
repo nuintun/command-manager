@@ -921,7 +921,8 @@ var CHARSET_0 = {
   'y': '≤', 'z': '≥', '{': 'π', '|': '≠', '}': '£', '~': '°'
 };
 
-/** fix: box drawing bold */// FIXME: should this go into frontend?
+/** fix: box drawing bold */
+// FIXME: should this go into frontend?
 // since most monospace fonts can't handle bold on these right we have to
 // switch to to corrensponding unicode character
 var BOXSYMBOLS_BOLD = {
