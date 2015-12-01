@@ -1042,7 +1042,7 @@ AnsiTerminal.prototype.toString = function (type){
         cell = this.screen.buffer[i].cells[j];
 
         if (cell.c) {
-          console.log(cell.c, ': ', getStyles(cell.att, cell.gb, cell.width === 2));
+          console.log(cell.c, ': ', getStyles(cell.attr, cell.gb, cell.width === 2));
         }
       }
     }
@@ -2586,7 +2586,7 @@ var BITS = {
   8: 'blink',
   16: 'inverse',
   32: 'conceal',
-  64: 'c'
+  64: 'cursor'
 };
 var MAP = (function (){
   var m = [];
