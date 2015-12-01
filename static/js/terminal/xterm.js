@@ -2650,6 +2650,61 @@ function getStyles(num, gb, fullwidth){
   return styles;
 }
 
+function hex(c){
+  c = c.toString(16);
+
+  return c.length < 2 ? '0' + c : c;
+}
+
+var COLORS = (function colors256(){
+  var i;
+  var r = [0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff];
+
+  // copy colors
+  var colors = [
+    // dark:
+    '#000000', // black
+    '#cd0000', // red3
+    '#00cd00', // green3
+    '#cdcd00', // yellow3
+    '#0000ee', // blue2
+    '#cd00cd', // magenta3
+    '#00cdcd', // cyan3
+    '#e5e5e5', // gray90
+    // bright:
+    '#7f7f7f', // gray50
+    '#ff0000', // red
+    '#00ff00', // green
+    '#ffff00', // yellow
+    '#5c5cff', // rgb:5c/5c/ff
+    '#ff00ff', // magenta
+    '#00ffff', // cyan
+    '#ffffff'  // white
+  ];
+
+  // 16-231
+  i = 0;
+
+  for (; i < 216; i++) {
+    out(r[(i / 36) % 6 | 0], r[(i / 6) % 6 | 0], r[i % 6]);
+  }
+
+  // 232-255 (grey)
+  i = 0;
+
+  for (; i < 24; i++) {
+    r = 8 + i * 10;
+
+    out(r, r, r);
+  }
+
+  function out(r, g, b){
+    colors.push('#' + hex(r) + hex(g) + hex(b));
+  }
+
+  return colors;
+}());
+
 function styles(node){
   var styles = {};
   var attr = node.attr;
@@ -2667,16 +2722,16 @@ function styles(node){
   if (foreground.set && !foreground.RGB) {
     if (attributes.inverse) {
       if (attributes.bold) {
-        styles.background = (attr >>> 8 & 255) | 8;
+        styles.background = COLORS[(attr >>> 8 & 255) | 8];
       } else {
-        styles.foreground = attr >>> 8 & 255;
+        styles.foreground = COLORS[attr >>> 8 & 255];
       }
     }
   }
 
   if (background.set && !background.RGB) {
     if (attributes.inverse) {
-      styles.foreground = attr & 255;
+      styles.foreground = COLORS[attr & 255];
     }
   }
 
