@@ -701,9 +701,7 @@ TChar.prototype.setAttributes = function (attributes){
   var attr = this.attr;
 
   ['bold', 'italic', 'underline', 'blink', 'inverse', 'conceal'].map(function (key, i){
-    if (attributes[key] !== undefined) {
-      attr = (attributes[key]) ? attr | (2 << (15 + i)) : attr & ~(2 << (15 + i));
-    }
+    attr = (attributes[key]) ? attr | (2 << (15 + i)) : attr & ~(2 << (15 + i));
   });
 
   if (attributes['foreground']) {
