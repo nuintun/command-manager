@@ -1042,6 +1042,7 @@ AnsiTerminal.prototype.toString = function (type){
         cell = this.screen.buffer[i].cells[j];
 
         if (cell.c) {
+          console.log(cell.c, ': ', cell.getAttributes());
           console.log(cell.c, ': ', getStyles(cell.attr, cell.gb, cell.width === 2));
         }
       }
@@ -2608,17 +2609,84 @@ var MAP = (function (){
   return m;
 }());
 
+TChar.prototype.getAttributes = function (){
+  var gb = this.gb;
+  var attr = this.attr;
+  var colorbits = attr >>> 24;
+  var r = attr & 65535;
+  var g = gb >>> 16;
+  var b = gb & 65535;
+  var bits = attr >>> 16 & 255;
+  var styles = {
+    bold: !!(bits & 1),
+    italic: !!(bits & 2),
+    underline: !!(bits & 4),
+    blink: !!(bits & 8),
+    inverse: !!(bits & 16),
+    conceal: !!(bits & 32),
+    // TODO cursor
+    // cursor: !!(bits & 64),
+    foreground: {
+      set: !!(colorbits & 4),
+      RGB: !!(colorbits & 8)
+    },
+    background: {
+      set: !!(colorbits & 1),
+      RGB: !!(colorbits & 2)
+    }
+  };
+  var foreground = styles.foreground;
+  var background = styles.background;
+
+  if (foreground.set && !foreground.RGB) {
+    if (styles.inverse) {
+      if (styles.bold) {
+        console.log('bg: ', (attr >>> 8 & 255) | 8);
+      } else {
+        console.log('fg: ', attr >>> 8 & 255);
+      }
+    }
+  }
+
+  if (background.set && !background.RGB) {
+    if (styles.inverse) {
+      console.log('fg: ', this.attr & 255);
+    }
+  }
+
+  return {
+    bold: !!(bits & 1),
+    italic: !!(bits & 2),
+    underline: !!(bits & 4),
+    blink: !!(bits & 8),
+    inverse: !!(bits & 16),
+    conceal: !!(bits & 32),
+    // TODO cursor
+    // cursor: !!(bits & 64),
+    foreground: {
+      set: !!(colorbits & 4),
+      RGB: !!(colorbits & 8),
+      color: [r >>> 8, g >>> 8, b >>> 8]
+    },
+    background: {
+      set: !!(colorbits & 1),
+      RGB: !!(colorbits & 2),
+      color: [r & 255, g & 255, b & 255]
+    }
+  }
+};
+
 // FIXME: cleanup this ugly mess
 function getStyles(num, gb, fullwidth){
   var fg_rgb = num & 67108864 && num & 134217728;
   var bg_rgb = num & 16777216 && num & 33554432;
   // if (not RGB) and (fg set) and (bold set) and (fg < 8)
   var inverse = num & 1048576;
-  var intense_on_bold = (!fg_rgb && num & 67108864 && num & 65536 && (num >>> 8 & 255) < 8) ? 1 : 0;
+  var bold = (!fg_rgb && num & 67108864 && num & 65536 && (num >>> 8 & 255) < 8) ? 1 : 0;
   var styles = [
     MAP[num >>> 16 & 127]
     + ((num & 67108864 && !fg_rgb)
-      ? ((inverse) ? ' bg' : ' fg') + ((intense_on_bold) ? (num >>> 8 & 255) | 8 : num >>> 8 & 255)
+      ? ((inverse) ? ' bg' : ' fg') + ((bold) ? (num >>> 8 & 255) | 8 : num >>> 8 & 255)
       : '')
     + ((num & 16777216 && !bg_rgb) ? ((inverse) ? ' fg' : ' bg') + (num & 255) : '')
   ];
