@@ -2651,8 +2651,8 @@ function getStyles(num, gb, fullwidth){
 }
 
 function styles(node){
-  var styles = {};
   var attr = node.attr;
+  var styles = { attr: attr };
   var attributes = node.getAttributes();
   var foreground = attributes.foreground;
   var background = attributes.background;
