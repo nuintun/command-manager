@@ -2770,4 +2770,10 @@ function styles(node){
   return styles;
 }
 
-console.log(COLORS);
+var colors = '';
+
+COLORS.forEach(function (color, index){
+  colors += '\r\n' + index + ': ' + color;
+});
+
+console.log(colors);
