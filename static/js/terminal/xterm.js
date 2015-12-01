@@ -2652,10 +2652,10 @@ function getStyles(num, gb, fullwidth){
 
 function styles(node){
   var attr = node.attr;
-  var styles = { attr: attr };
   var attributes = node.getAttributes();
   var foreground = attributes.foreground;
   var background = attributes.background;
+  var styles = { attr: attr, char: node.c };
 
   [
     'bold', 'italic', 'underline',
