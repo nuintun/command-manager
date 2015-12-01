@@ -1037,8 +1037,7 @@ AnsiTerminal.prototype.toString = function (type){
         cell = this.screen.buffer[i].cells[j];
 
         if (cell.c) {
-          console.log(cell.c, ': ', cell.getAttributes());
-          console.log(cell.c, ': ', getStyles(cell.attr, cell.gb, cell.width === 2));
+          console.log(cell.c, ': ', styles(cell), getStyles(cell.attr, cell.gb, cell.width === 2));
         }
       }
     }
@@ -2604,73 +2603,6 @@ var MAP = (function (){
   return m;
 }());
 
-TChar.prototype.getAttributes = function (){
-  var gb = this.gb;
-  var attr = this.attr;
-  var colorbits = attr >>> 24;
-  var r = attr & 65535;
-  var g = gb >>> 16;
-  var b = gb & 65535;
-  var bits = attr >>> 16 & 255;
-  var styles = {
-    bold: !!(bits & 1),
-    italic: !!(bits & 2),
-    underline: !!(bits & 4),
-    blink: !!(bits & 8),
-    inverse: !!(bits & 16),
-    conceal: !!(bits & 32),
-    // TODO cursor
-    // cursor: !!(bits & 64),
-    foreground: {
-      set: !!(colorbits & 4),
-      RGB: !!(colorbits & 8)
-    },
-    background: {
-      set: !!(colorbits & 1),
-      RGB: !!(colorbits & 2)
-    }
-  };
-  var foreground = styles.foreground;
-  var background = styles.background;
-
-  if (foreground.set && !foreground.RGB) {
-    if (styles.inverse) {
-      if (styles.bold) {
-        console.log('bg: ', (attr >>> 8 & 255) | 8);
-      } else {
-        console.log('fg: ', attr >>> 8 & 255);
-      }
-    }
-  }
-
-  if (background.set && !background.RGB) {
-    if (styles.inverse) {
-      console.log('fg: ', this.attr & 255);
-    }
-  }
-
-  return {
-    bold: !!(bits & 1),
-    italic: !!(bits & 2),
-    underline: !!(bits & 4),
-    blink: !!(bits & 8),
-    inverse: !!(bits & 16),
-    conceal: !!(bits & 32),
-    // TODO cursor
-    // cursor: !!(bits & 64),
-    foreground: {
-      set: !!(colorbits & 4),
-      RGB: !!(colorbits & 8),
-      color: [r >>> 8, g >>> 8, b >>> 8]
-    },
-    background: {
-      set: !!(colorbits & 1),
-      RGB: !!(colorbits & 2),
-      color: [r & 255, g & 255, b & 255]
-    }
-  }
-};
-
 // FIXME: cleanup this ugly mess
 function getStyles(num, gb, fullwidth){
   var fg_rgb = num & 67108864 && num & 134217728;
@@ -2714,6 +2646,39 @@ function getStyles(num, gb, fullwidth){
   }
 
   styles.push(s);
+
+  return styles;
+}
+
+function styles(node){
+  var styles = {};
+  var attr = node.attr;
+  var attributes = node.getAttributes();
+  var foreground = attributes.foreground;
+  var background = attributes.background;
+
+  [
+    'bold', 'italic', 'underline',
+    'blink', 'inverse', 'conceal'
+  ].forEach(function (key){
+    styles[key] = attributes[key];
+  });
+
+  if (foreground.set && !foreground.RGB) {
+    if (attributes.inverse) {
+      if (attributes.bold) {
+        styles.background = (attr >>> 8 & 255) | 8;
+      } else {
+        styles.foreground = attr >>> 8 & 255;
+      }
+    }
+  }
+
+  if (background.set && !background.RGB) {
+    if (attributes.inverse) {
+      styles.foreground = attr & 255;
+    }
+  }
 
   return styles;
 }
