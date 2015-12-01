@@ -667,7 +667,10 @@ TChar.prototype.clone = function (){
   return new TChar(this.c, this.attr, this.gb, this.width);
 };
 
-/** @return {object} Object with attributes in a readable manner. */
+/**
+ * getAttributes
+ * @return {object} Object with attributes in a readable manner.
+ */
 TChar.prototype.getAttributes = function (){
   var colorbits = this.attr >>> 24;
   var r = this.attr & 65535;
@@ -697,25 +700,24 @@ TChar.prototype.getAttributes = function (){
   }
 };
 
+/**
+ * setAttributes
+ * @param attributes
+ */
 TChar.prototype.setAttributes = function (attributes){
   var attr = this.attr;
 
   ['bold', 'italic', 'underline', 'blink', 'inverse', 'conceal'].map(function (key, i){
-    attr = (attributes[key]) ? attr | (2 << (15 + i)) : attr & ~(2 << (15 + i));
+    attr = attributes[key] ? attr | (2 << (15 + i)) : attr & ~(2 << (15 + i));
   });
 
   if (attributes['foreground']) {
     var foreground = attributes['foreground'];
 
-    if (foreground['set'] !== undefined) {
-      attr = (foreground['set']) ? attr | (2 << 25) : attr & ~(2 << 25);
-    }
+    attr = foreground['set'] ? attr | (2 << 25) : attr & ~(2 << 25);
+    attr = foreground['RGB'] ? attr | (2 << 26) : attr & ~(2 << 26);
 
-    if (foreground['RGB'] !== undefined) {
-      attr = (foreground['RGB']) ? attr | (2 << 26) : attr & ~(2 << 26);
-    }
-
-    if (foreground['color'] !== undefined) {
+    if (Array.isArray(foreground['color'])) {
       attr = (attr & ~65280) | (foreground['color'][0] << 8);
       this.gb = (this.gb & ~4278190080) | (foreground['color'][1] << 24);
       this.gb = (this.gb & ~65280) | (foreground['color'][2] << 8);
@@ -725,15 +727,10 @@ TChar.prototype.setAttributes = function (attributes){
   if (attributes['background']) {
     var background = attributes['background'];
 
-    if (background['set'] !== undefined) {
-      attr = (background['set']) ? attr | (2 << 23) : attr & ~(2 << 23);
-    }
+    attr = background['set'] ? attr | (2 << 23) : attr & ~(2 << 23);
+    attr = background['RGB'] ? attr | (2 << 24) : attr & ~(2 << 24);
 
-    if (background['RGB'] !== undefined) {
-      attr = (background['RGB']) ? attr | (2 << 24) : attr & ~(2 << 24);
-    }
-
-    if (background['color'] !== undefined) {
+    if (Array.isArray(background['color'])) {
       attr = (attr & ~255) | (background['color'][0]);
       this.gb = (this.gb & ~16711680) | (background['color'][1] << 16);
       this.gb = (this.gb & ~255) | background['color'][2];
