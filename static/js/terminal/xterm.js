@@ -99,7 +99,6 @@ EXECUTABLES.concat(r(0x1c, 0x20));
  *          'dcs_unhook' -> 14
  */
 var TRANSITION_TABLE = (function (){
-  //var table = [];
   var table = new Uint8Array(4095);
 
   // table with default transition [any] --> [error, GROUND]
