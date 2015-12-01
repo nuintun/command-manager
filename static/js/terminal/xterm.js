@@ -2705,11 +2705,13 @@ var COLORS = (function colors256(){
 }());
 
 function styles(node){
-  var styles = {};
+  var color;
+  var gb = node.gb;
   var attr = node.attr;
   var attributes = node.getAttributes();
   var foreground = attributes.foreground;
   var background = attributes.background;
+  var styles = { wide: node.width === 2 };
 
   [
     'bold', 'italic', 'underline',
@@ -2718,10 +2720,19 @@ function styles(node){
     styles[key] = attributes[key];
   });
 
+  styles.frgb = foreground.RGB;
+  styles.grgb = background.RGB;
+
   if (foreground.set && !foreground.RGB) {
     if (attributes.inverse) {
       if (attributes.bold) {
         styles.background = COLORS[(attr >>> 8 & 255) | 8];
+      } else {
+        styles.background = COLORS[attr >>> 8 & 255];
+      }
+    } else {
+      if (attributes.bold) {
+        styles.foreground = COLORS[(attr >>> 8 & 255) | 8];
       } else {
         styles.foreground = COLORS[attr >>> 8 & 255];
       }
@@ -2731,8 +2742,32 @@ function styles(node){
   if (background.set && !background.RGB) {
     if (attributes.inverse) {
       styles.foreground = COLORS[attr & 255];
+    } else {
+      styles.background = COLORS[attr & 255];
+    }
+  }
+
+  if (foreground.set && foreground.RGB) {
+    color = '#' + hex(attr >>> 8 & 255) + hex(gb >>> 24) + hex(gb >>> 8 & 255);
+
+    if (attributes.inverse) {
+      styles.background = color;
+    } else {
+      styles.foreground = color;
+    }
+  }
+
+  if (background.set && background.RGB) {
+    color = '#' + hex(attr & 255) + hex(gb >>> 16 & 255) + hex(gb & 255);
+
+    if (attributes.inverse) {
+      styles.foreground = color;
+    } else {
+      styles.background = color;
     }
   }
 
   return styles;
 }
+
+console.log(COLORS);
