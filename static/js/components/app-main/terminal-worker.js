@@ -26,7 +26,7 @@ onconnect = function (event){
     switch (message.action) {
       case 'open':
         if (!xterm) {
-          xterm = new AnsiTerminal(120, 60, 0);
+          xterm = new AnsiTerminal(120, 80, 0);
           xterm.newline_mode = true;
           xterm.beep = function (){
             port.postMessage({
