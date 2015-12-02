@@ -1053,30 +1053,9 @@ AnsiTerminal.prototype.toString = function (type){
           stylesBuffer[i][j].value = node.value;
         }
 
-        if (styleBuffer.foreground) {
-          style += 'color:' + styleBuffer.foreground + ';';
-        }
-
-        if (styleBuffer.background) {
-          style += 'background-color:' + styleBuffer.background + ';';
-        }
-
-        if (styleBuffer.bold) {
-          style += 'font-weight:bold;';
-        }
-
-        if (styleBuffer.italic) {
-          style += 'font-style: italic;';
-        }
-
-        if (styleBuffer.underline) {
-          style += 'text-decoration: underline;';
-        }
-
         if (j === 0) {
+          style = htmlStyle(styleBuffer);
           s += '<span' + (style ? ' style="' + style + '"' : '') + '>';
-
-          style = '';
           attrCache = node.attr;
         } else if (j === cols - 1) {
           s += '</span>';
@@ -1084,9 +1063,8 @@ AnsiTerminal.prototype.toString = function (type){
 
         if (node.value) {
           if (node.attr !== attrCache) {
+            style = htmlStyle(styleBuffer);
             s += '</span><span' + (style ? ' style="' + style + '"' : '') + '>';
-
-            style = '';
             attrCache = node.attr;
           }
 
@@ -2761,4 +2739,35 @@ function styles(node){
   }
 
   return styles;
+}
+
+/**
+ * html style
+ * @param styles
+ * @returns {string}
+ */
+function htmlStyle(styles){
+  var style = '';
+
+  if (styles.foreground) {
+    style += 'color:' + styles.foreground + ';';
+  }
+
+  if (styles.background) {
+    style += 'background-color:' + styles.background + ';';
+  }
+
+  if (styles.bold) {
+    style += 'font-weight:bold;';
+  }
+
+  if (styles.italic) {
+    style += 'font-style: italic;';
+  }
+
+  if (styles.underline) {
+    style += 'text-decoration: underline;';
+  }
+
+  return style;
 }
