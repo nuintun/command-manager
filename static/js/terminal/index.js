@@ -1082,8 +1082,6 @@ AnsiTerminal.prototype.toString = function (type){
       stylesBuffer[i][j] = styleBuffer;
     }
 
-    console.log(s);
-
     this.stylesBuffer = stylesBuffer;
   } else {
     for (i = 0; i < rows; ++i) {
