@@ -649,21 +649,21 @@ function wcswidth(str, opts){
  *      17-24       BG green
  *      25-32       FG green
  *
- * @param {string} c - An unicode character (multiple if surrogate or combining).
+ * @param {string} value - An unicode character (multiple if surrogate or combining).
  * @param {number} [attr] - Cell attributes as integer.
  * @param {number} [gb] - Green and blue part of RGB as integer.
  * @param {number} [width] - Terminal cells taken by this character.
  * @constructor
  */
-function TChar(c, attr, gb, width){
-  this.c = c;
+function TChar(value, attr, gb, width){
+  this.value = value;
   this.attr = attr | 0;
   this.gb = gb | 0;
   this.width = (width === undefined) ? 1 : width;
 }
 
 TChar.prototype.clone = function (){
-  return new TChar(this.c, this.attr, this.gb, this.width);
+  return new TChar(this.value, this.attr, this.gb, this.width);
 };
 
 /**
@@ -740,7 +740,7 @@ TChar.prototype.setAttributes = function (attributes){
 };
 
 TChar.prototype.toString = function (){
-  return this.c;
+  return this.value;
 };
 
 var _uniqueId = 0;
@@ -1035,8 +1035,8 @@ AnsiTerminal.prototype.toString = function (type){
       for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
         node = this.screen.buffer[i].cells[j];
 
-        if (node.c) {
-          console.log(node.c, ': ', styles(node));
+        if (node.value) {
+          console.log(node.value, ': ', styles(node));
         }
       }
     }
@@ -1046,15 +1046,15 @@ AnsiTerminal.prototype.toString = function (type){
       var last_nonspace = 0;
 
       for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
-        if (this.screen.buffer[i].cells[j].c) {
+        if (this.screen.buffer[i].cells[j].value) {
           last_nonspace = j;
         }
       }
 
       for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
         s += (last_nonspace > j)
-          ? (this.screen.buffer[i].cells[j].c || ' ')
-          : this.screen.buffer[i].cells[j].c;
+          ? (this.screen.buffer[i].cells[j].value || ' ')
+          : this.screen.buffer[i].cells[j].value;
       }
 
       s += '\n';
@@ -1232,10 +1232,10 @@ AnsiTerminal.prototype.inst_p = function (s){
 
     // combining characters
     if (!width && this.cursor.col) {
-      this.screen.buffer[this.cursor.row].cells[this.cursor.col - 1].c += c;
+      this.screen.buffer[this.cursor.row].cells[this.cursor.col - 1].value += c;
     } else {
       c = (this.charset) ? (this.charset[c] || c) : c;
-      this.screen.buffer[this.cursor.row].cells[this.cursor.col].c = c;
+      this.screen.buffer[this.cursor.row].cells[this.cursor.col].value = c;
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].attr = this.charattributes;
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].gb = this.colors;
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].width = width;
@@ -1243,7 +1243,7 @@ AnsiTerminal.prototype.inst_p = function (s){
       // fix box drawing -- this is a really ugly problem - FIXME: goes into frontend
       if (c >= '\u2500' && c <= '\u2547') {
         if (this.textattributes && (this.textattributes & 65536)) {
-          this.screen.buffer[this.cursor.row].cells[this.cursor.col].c = BOXSYMBOLS_BOLD[c] || c;
+          this.screen.buffer[this.cursor.row].cells[this.cursor.col].value = BOXSYMBOLS_BOLD[c] || c;
 
           // unset bold here, but set intense instead if applicable
           var attr = this.charattributes & ~65536;
@@ -1261,7 +1261,7 @@ AnsiTerminal.prototype.inst_p = function (s){
 
     if (width === 2) {
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].width = 0;
-      this.screen.buffer[this.cursor.row].cells[this.cursor.col].c = '';
+      this.screen.buffer[this.cursor.row].cells[this.cursor.col].value = '';
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].attr = this.charattributes;
       this.screen.buffer[this.cursor.row].cells[this.cursor.col].gb = this.colors;
       this.cursor.col += 1;
