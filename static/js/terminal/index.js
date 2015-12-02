@@ -1030,6 +1030,7 @@ AnsiTerminal.prototype.toString = function (type){
   var rows = this.screen.buffer.length;
 
   if (type === 'html') {
+    var style = '';
     var styleBuffer;
     var attrCache;
     var stylesBuffer = this.stylesBuffer || [];
@@ -1053,15 +1054,39 @@ AnsiTerminal.prototype.toString = function (type){
         }
 
         if (j === 0) {
-          s += '<span>';
+          style = '';
           attrCache = node.attr;
+
+          if (styleBuffer.foreground) {
+            style += 'color:' + styleBuffer.foreground + ';';
+          }
+
+          if (styleBuffer.background) {
+            style += 'background-color:' + styleBuffer.background + ';';
+          }
+
+          if (styleBuffer.bold) {
+            style += 'font-weight:bold;';
+          }
+
+          if (styleBuffer.italic) {
+            style += 'font-style: italic;';
+          }
+
+          if (styleBuffer.underline) {
+            style += 'text-decoration: underline;';
+          }
+
+          s += '<span' + (style ? ' style="' + style + '"' : '') + '>';
         } else if (j === cols - 1) {
           s += '</span>';
         }
 
         if (node.value) {
           if (node.attr !== attrCache) {
-            s += '</span><span>';
+            s += '</span><span' + (style ? ' style="' + style + '"' : '') + '>';
+
+            style = '';
             attrCache = node.attr;
           }
 
@@ -2687,10 +2712,7 @@ function styles(node){
   var background = attributes.background;
   var styles = { wide: node.width === 2 };
 
-  [
-    'bold', 'italic', 'underline',
-    'blink', 'inverse', 'conceal'
-  ].forEach(function (key){
+  ['bold', 'italic', 'underline', 'blink', 'conceal'].forEach(function (key){
     styles[key] = attributes[key];
   });
 

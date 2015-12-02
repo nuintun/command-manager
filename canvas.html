@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" src="./static/js/terminal/index.js"></script>
+    <style type="text/css">
+      #term {
+        color: #fff;
+        background-color: #181818;
+        font: 13px/1.5 Consolas, sans-serif;
+      }
+    </style>
   </head>
   <body>
     <canvas id="canvas" width="300" height="200"></canvas>
+    <div id="term"></div>
     <script>
       // var font = '13px Consolas';
       var font = '13px 微软雅黑';
@@ -94,7 +102,12 @@
       ].forEach(function (line){ xterm.write(line + '\r\n'); });
 
       xterm.write('\033[41;32m红底绿字\033[0m');
-      console.log(xterm.toString('html'));
+
+      var html = xterm.toString('html');
+
+      console.log(html);
+
+      document.getElementById('term').innerHTML = html;
     </script>
   </body>
 </html>
