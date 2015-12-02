@@ -106,7 +106,7 @@
 
         document.getElementById('term').innerHTML = xterm.toString('html');
 
-        setTimeout(write, 1000);
+        setTimeout(write, 1000 - new Date().getMilliseconds());
       }
 
       write();
