@@ -1033,7 +1033,7 @@ AnsiTerminal.prototype.toString = function (type){
     var styleBuffer;
     var stylesBuffer = this.stylesBuffer || [];
 
-    this.stylesBuffer = stylesBuffer.slice(0, rows);
+    stylesBuffer = stylesBuffer.slice(0, rows);
 
     for (i = 0; i < rows; ++i) {
       stylesBuffer[i] = stylesBuffer[i] || [];
@@ -1054,6 +1054,8 @@ AnsiTerminal.prototype.toString = function (type){
         }
       }
     }
+
+    this.stylesBuffer = stylesBuffer;
   } else {
     for (i = 0; i < rows; ++i) {
       // FIXME: quick and dirty fill up from left
