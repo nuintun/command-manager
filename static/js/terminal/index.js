@@ -1684,7 +1684,7 @@ AnsiTerminal.prototype.REP = function (params){
     }
 
     this.inst_p(s);
-    
+
     this.last_char = '';
   }
 };
@@ -2655,9 +2655,6 @@ function styles(node){
     styles[key] = attributes[key];
   });
 
-  styles.frgb = foreground.RGB;
-  styles.grgb = background.RGB;
-
   if (foreground.set && !foreground.RGB) {
     if (attributes.inverse) {
       if (attributes.bold) {
@@ -2704,11 +2701,3 @@ function styles(node){
 
   return styles;
 }
-
-var colors = '';
-
-COLORS.forEach(function (color, index){
-  colors += '\r\n' + index + ': ' + color;
-});
-
-console.log(colors);
