@@ -64,10 +64,13 @@ function openXTerm(vm){
     var worker = new SharedWorker('static/js/components/app-main/terminal-worker.js', 'SharedWorker-' + (uuid++));
 
     worker.port.addEventListener('message', function (event){
-      if (event.data.exec === 'beep') {
-        snd.play();
-      } else if (vm.project.name === event.data.name) {
-        vm.$els.terminal.innerHTML = event.data.screen;
+      if (vm.project.name === event.data.name) {
+        if (event.data.exec === 'beep') {
+          snd.play();
+        } else if (event.data.screen) {
+          vm.$els.terminal.innerHTML = event.data.screen;
+        }
+
       }
     });
 

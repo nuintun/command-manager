@@ -47,46 +47,4 @@ onconnect = function (event){
         break;
     }
   };
-
-  //function send(name, xterm){
-  //  postMessage({
-  //    name: name,
-  //    screen: xterm.toString('html')
-  //  });
-  //}
-  //
-  //switch (message.action) {
-  //  case 'open':
-  //    xterm = RUNTIMECACHE[message.name];
-  //
-  //    if (!xterm) {
-  //      xterm = new AnsiTerminal(120, 60, 0);
-  //      xterm.newline_mode = true;
-  //      SCREENCACHE[message.name] = '';
-  //      RUNTIMECACHE[message.name] = xterm;
-  //    }
-  //
-  //    ACTIVE = message.name;
-  //
-  //    if (SCREENCACHE[message.name]) {
-  //      xterm.write(SCREENCACHE[message.name]);
-  //      SCREENCACHE[message.name] = '';
-  //    }
-  //
-  //    send(message.name, xterm);
-  //    break;
-  //  case 'close':
-  //    delete RUNTIMECACHE[message.name];
-  //    break;
-  //  case 'write':
-  //    xterm = RUNTIMECACHE[message.name];
-  //
-  //    if (ACTIVE === message.name) {
-  //      xterm.write(message.data);
-  //      send(message.name, xterm);
-  //    } else {
-  //      SCREENCACHE[message.name] += message.data;
-  //    }
-  //    break;
-  //}
 };
