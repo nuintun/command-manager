@@ -1030,6 +1030,7 @@ AnsiTerminal.prototype.toString = function (type){
   var rows = this.screen.buffer.length;
 
   if (type === 'html') {
+    var line = '';
     var style = '';
     var styleBuffer;
     var attrCache;
@@ -1041,7 +1042,7 @@ AnsiTerminal.prototype.toString = function (type){
       stylesBuffer[i] = stylesBuffer[i] || [];
       cols = this.screen.buffer[i].cells.length;
 
-      s += '<div>';
+      line = '<div>';
 
       for (j = 0; j < cols; ++j) {
         node = this.screen.buffer[i].cells[j];
@@ -1055,28 +1056,33 @@ AnsiTerminal.prototype.toString = function (type){
 
         if (j === 0) {
           style = htmlStyle(styleBuffer);
-          s += '<span' + (style ? ' style="' + style + '"' : '') + '>';
+          line += '<span' + (style ? ' style="' + style + '"' : '') + '>';
           attrCache = node.attr;
-        } else if (j === cols) {
-          s += '</span>';
         }
 
         if (node.value) {
-          console.log(node, styles(node).foreground);
-
           if (node.attr !== attrCache) {
             style = htmlStyle(styleBuffer);
-            s += '</span><span' + (style ? ' style="' + style + '"' : '') + '>';
+            line += '</span><span' + (style ? ' style="' + style + '"' : '') + '>';
             attrCache = node.attr;
           }
 
-          s += node.value.replace(/\s/g, '&nbsp;');
+          line += node.value.replace(/\s/g, '&nbsp;');
         }
       }
 
-      s += '</div>';
+      line += '</span></div>';
+
+      if (this.screen.buffer[i].version > 0) {
+        s += line;
+      } else {
+        s += '<div>&nbsp;</div>';
+      }
+
       stylesBuffer[i][j] = styleBuffer;
     }
+
+    console.log(s);
 
     this.stylesBuffer = stylesBuffer;
   } else {
