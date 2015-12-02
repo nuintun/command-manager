@@ -73,7 +73,7 @@
 
       function write(){
         [
-          '\u001b[32m\'use strict\'\u001b[39m\u001b[38;5;248m;\u001b[39m',
+          '\r\n\u001b[32m\'use strict\'\u001b[39m\u001b[38;5;248m;\u001b[39m',
           '\u001b[38;5;248m/*jshint browser:true */\u001b[39m',
           '',
           '\u001b[32mvar\u001b[39m \u001b[37mTerminal\u001b[39m \u001b[38;5;214m=\u001b[39m \u001b[37mrequire\u001b[39m\u001b[38;5;248m(\u001b[39m\u001b[32m\'./term\'\u001b[39m\u001b[38;5;248m)\u001b[39m\u001b[32m,\u001b[39m',
@@ -105,6 +105,8 @@
         xterm.write('\033[41;32m红底绿字\033[0m' + new Date().toISOString());
 
         document.getElementById('term').innerHTML = xterm.toString('html');
+
+        setTimeout(write, 1000);
       }
 
       write();
