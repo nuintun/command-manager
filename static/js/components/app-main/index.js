@@ -10,7 +10,6 @@ var fs = require('fs');
 var path = require('path');
 var util = require('../../util');
 var Vue = require('../../vue/vue');
-var Terminal = require('../../terminal');
 
 const EMPTYPROJECT = {
   name: '',
@@ -47,14 +46,34 @@ function scroll(xterm, parent){
   }
 }
 
-var worker = new Worker('static/js/components/app-main/terminal-worker.js');
+// uuid
+var uuid = 0;
 
 /**
  * openXTerm
- * @param name
+ * @param vm
  */
-function openXTerm(name){
-  worker.postMessage({ action: 'open', name: name });
+
+function openXTerm(vm){
+  var project = vm.project;
+  var runtime = AppRuntime[project.name];
+
+  if (!runtime) {
+    var worker = new SharedWorker('static/js/components/app-main/terminal-worker.js', 'SharedWorker-' + (uuid++));
+
+    worker.port.addEventListener('message', function (event){
+      if (vm.project.name === event.data.name) {
+        vm.$els.terminal.innerHTML = event.data.screen;
+      }
+    });
+
+    worker.port.start();
+    worker.port.postMessage({ action: 'open', name: project.name });
+
+    AppRuntime[project.name] = { worker: worker };
+  } else {
+    runtime.worker.port.postMessage({ action: 'open', name: project.name });
+  }
 }
 
 /**
@@ -62,7 +81,14 @@ function openXTerm(name){
  * @param name
  */
 function closeXTerm(name){
-  worker.postMessage({ action: 'close', name: name });
+  var runtime = AppRuntime[name];
+
+  if (runtime) {
+    runtime.worker.port.postMessage({ action: 'close', name: name });
+    runtime.worker.terminate();
+
+    delete AppRuntime[name];
+  }
 }
 
 module.exports = Vue.component('app-main', {
@@ -105,7 +131,7 @@ module.exports = Vue.component('app-main', {
       this.command = project.command.slice(0, 3);
       this.moreCommand = project.command.slice(3);
 
-      openXTerm(project.name);
+      openXTerm(this);
     }
   },
   methods: {
@@ -162,6 +188,8 @@ module.exports = Vue.component('app-main', {
     }, false);
 
     ipc.on('emulator', function (event, type, project, data){
+      var runtime = AppRuntime[project.name];
+
       switch (type) {
         case 'data':
           data = data.toString();
@@ -173,19 +201,12 @@ module.exports = Vue.component('app-main', {
           data = '\u001b[32m命令执行完成\u001b[0m';
           break;
       }
-      worker.postMessage({ action: 'write', name: project.name, data: data.toString() });
+
+      runtime.worker.port.postMessage({ action: 'write', name: project.name, data: data.toString() });
       // event.sender.send('emulator', project, 'stop');
     });
   },
   ready: function (){
-    var context = this;
-
-    worker.onmessage = function (event){
-      if (event.data.name === context.project.name) {
-        context.$els.terminal.innerHTML = event.data.screen;
-      }
-    };
-
-    openXTerm(this.project.name);
+    openXTerm(this);
   }
 });
