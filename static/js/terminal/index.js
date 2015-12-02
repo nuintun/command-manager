@@ -1025,36 +1025,56 @@ AnsiTerminal.prototype.reset = function (){
  * @returns {string} representation of active buffer.
  */
 AnsiTerminal.prototype.toString = function (type){
-  var i, j;
   var s = '';
+  var i, j, cols, node;
+  var rows = this.screen.buffer.length;
 
   if (type === 'html') {
-    var node;
+    var styleBuffer;
+    var stylesBuffer = this.stylesBuffer || [];
 
-    for (i = 0; i < this.screen.buffer.length; ++i) {
-      for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
+    this.stylesBuffer = stylesBuffer.slice(0, rows);
+
+    for (i = 0; i < rows; ++i) {
+      stylesBuffer[i] = stylesBuffer[i] || [];
+      cols = this.screen.buffer[i].cells.length;
+
+      for (j = 0; j < cols; ++j) {
         node = this.screen.buffer[i].cells[j];
+        styleBuffer = stylesBuffer[i][j] || styles(node);
+
+        if (styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
+          stylesBuffer[i][j] = styles(node);
+          stylesBuffer[i][j].attr = node.attr;
+          stylesBuffer[i][j].value = node.value;
+        }
 
         if (node.value) {
-          console.log(node.value, ': ', styles(node));
+          console.log(node.value, ': ', stylesBuffer[i][j]);
         }
       }
     }
   } else {
-    for (i = 0; i < this.screen.buffer.length; ++i) {
+    for (i = 0; i < rows; ++i) {
       // FIXME: quick and dirty fill up from left
       var last_nonspace = 0;
 
-      for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
-        if (this.screen.buffer[i].cells[j].value) {
+      cols = this.screen.buffer[i].cells.length;
+
+      for (j = 0; j < cols; ++j) {
+        node = this.screen.buffer[i].cells[j];
+
+        if (node.value) {
           last_nonspace = j;
         }
       }
 
-      for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
+      for (j = 0; j < cols; ++j) {
+        node = this.screen.buffer[i].cells[j];
+
         s += (last_nonspace > j)
-          ? (this.screen.buffer[i].cells[j].value || ' ')
-          : this.screen.buffer[i].cells[j].value;
+          ? node.value || ' '
+          : node.value;
       }
 
       s += '\n';
