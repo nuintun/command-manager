@@ -49,16 +49,12 @@ function scroll(xterm, parent){
 
 var worker = new Worker('static/js/components/app-main/terminal-worker.js');
 
-worker.onmessage = function (){
-  console.log(arguments);
-};
-
 /**
  * openXTerm
  * @param name
  */
 function openXTerm(name){
-  worker.postMessage({ atcion: 'open', name: name });
+  worker.postMessage({ action: 'open', name: name });
 }
 
 /**
@@ -66,7 +62,7 @@ function openXTerm(name){
  * @param name
  */
 function closeXTerm(name){
-  worker.postMessage({ atcion: 'close', name: name });
+  worker.postMessage({ action: 'close', name: name });
 }
 
 module.exports = Vue.component('app-main', {
@@ -166,21 +162,21 @@ module.exports = Vue.component('app-main', {
     }, false);
 
     ipc.on('emulator', function (event, type, project, data){
-      var runtime = window.AppRuntime[project.name];
 
-      if (runtime) {
+      worker.postMessage({ action: 'write', name: project.name, data: data + '' });
 
-        worker.postMessage({ atcion: 'write', name: project.name, data: data + '' });
-
-        if (project.name === context.project.name) {
-
-        }
-      } else {
-        event.sender.send('emulator', project, 'stop');
-      }
+      // event.sender.send('emulator', project, 'stop');
     });
   },
   ready: function (){
+    var context = this;
+
+    worker.onmessage = function (event){
+      if (event.data.name === context.project.name) {
+        context.$els.terminal.innerHTML = event.data.screen;
+      }
+    };
+
     openXTerm(this.project.name);
   }
 });
