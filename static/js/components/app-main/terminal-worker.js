@@ -28,6 +28,12 @@ onconnect = function (event){
         if (!xterm) {
           xterm = new AnsiTerminal(120, 60, 0);
           xterm.newline_mode = true;
+          xterm.beep = function (){
+            port.postMessage({
+              exec: 'beep',
+              name: message.name
+            });
+          };
         }
 
         send(message.name, xterm);

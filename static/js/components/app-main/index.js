@@ -49,11 +49,13 @@ function scroll(xterm, parent){
 // uuid
 var uuid = 0;
 
+// buffers automatically when created
+var snd = new Audio('bell.wav');
+
 /**
  * openXTerm
  * @param vm
  */
-
 function openXTerm(vm){
   var project = vm.project;
   var runtime = AppRuntime[project.name];
@@ -62,7 +64,9 @@ function openXTerm(vm){
     var worker = new SharedWorker('static/js/components/app-main/terminal-worker.js', 'SharedWorker-' + (uuid++));
 
     worker.port.addEventListener('message', function (event){
-      if (vm.project.name === event.data.name) {
+      if (event.data.exec === 'beep') {
+        snd.play();
+      } else if (vm.project.name === event.data.name) {
         vm.$els.terminal.innerHTML = event.data.screen;
       }
     });
