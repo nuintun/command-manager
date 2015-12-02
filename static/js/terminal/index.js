@@ -1031,7 +1031,7 @@ AnsiTerminal.prototype.toString = function (type){
 
   if (type === 'html') {
     var styleBuffer;
-    var attrCache = null;
+    var attrCache;
     var stylesBuffer = this.stylesBuffer || [];
 
     stylesBuffer = stylesBuffer.slice(0, rows);
@@ -1045,7 +1045,6 @@ AnsiTerminal.prototype.toString = function (type){
       for (j = 0; j < cols; ++j) {
         node = this.screen.buffer[i].cells[j];
         styleBuffer = stylesBuffer[i][j] || styles(node);
-        attrCache = j === 0 ? null : attrCache;
 
         if (styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
           stylesBuffer[i][j] = styles(node);
@@ -1053,25 +1052,20 @@ AnsiTerminal.prototype.toString = function (type){
           stylesBuffer[i][j].value = node.value;
         }
 
+        if (j === 0) {
+          s += '<span>';
+          attrCache = node.attr;
+        } else if (j === cols - 1) {
+          s += '</span>';
+        }
+
         if (node.value) {
-          if (attrCache !== null && node.attr === attrCache) {
-            s += node.value;
-
-          } else {
-            if (attrCache === null) {
-              s += '<span>';
-            } else {
-              s += node.value;
-
-              if (j === cols - 1) {
-                s += '</span>';
-              } else {
-                s += '</span><span>';
-              }
-            }
-
+          if (node.attr !== attrCache) {
+            s += '</span><span>';
             attrCache = node.attr;
           }
+
+          s += node.value.replace(/\s/g, '&nbsp;');
         }
       }
 
