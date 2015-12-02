@@ -47,27 +47,26 @@ function scroll(xterm, parent){
   }
 }
 
+var worker = new Worker('static/js/components/app-main/terminal-worker.js');
+
+worker.onmessage = function (){
+  console.log(arguments);
+};
+
 /**
- * createXTerm
+ * openXTerm
  * @param name
- * @param xtermNode
  */
-function createXTerm(name, xtermNode){
-  var xterm;
-  var runtime = window.AppRuntime[name];
+function openXTerm(name){
+  worker.postMessage({ atcion: 'open', name: name });
+}
 
-  if (runtime) {
-    xterm = runtime.xterm;
-  } else {
-    xterm = new Terminal(80, 60, 60);
-
-    window.AppRuntime[name] = {
-      xterm: xterm
-    };
-  }
-
-  xtermNode.innerHTML = xterm.toString('html');
-  scroll(xterm, xtermNode);
+/**
+ * closeXTerm
+ * @param name
+ */
+function closeXTerm(name){
+  worker.postMessage({ atcion: 'close', name: name });
 }
 
 module.exports = Vue.component('app-main', {
@@ -110,7 +109,7 @@ module.exports = Vue.component('app-main', {
       this.command = project.command.slice(0, 3);
       this.moreCommand = project.command.slice(3);
 
-      createXTerm(project.name, this.$els.terminal);
+      openXTerm(project.name);
     }
   },
   methods: {
@@ -129,13 +128,7 @@ module.exports = Vue.component('app-main', {
       this.showSetting = true;
     },
     remove: function (){
-      var runtime = window.AppRuntime[this.project.name];
-
-      if (runtime) {
-        runtime.xterm.close();
-
-        delete window.AppRuntime[this.project.name];
-      }
+      closeXTerm(this.project.name);
 
       // remove project
       this.projects.splice(this.activeIndex, 1);
@@ -177,9 +170,10 @@ module.exports = Vue.component('app-main', {
 
       if (runtime) {
 
-        runtime.xterm.write(data + '');
+        worker.postMessage({ atcion: 'write', name: project.name, data: data + '' });
 
         if (project.name === context.project.name) {
+
         }
       } else {
         event.sender.send('emulator', project, 'stop');
@@ -187,6 +181,6 @@ module.exports = Vue.component('app-main', {
     });
   },
   ready: function (){
-    createXTerm(this.project.name, this.$els.terminal);
+    openXTerm(this.project.name);
   }
 });
