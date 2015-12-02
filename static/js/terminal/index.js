@@ -1048,9 +1048,9 @@ AnsiTerminal.prototype.toString = function (type){
         styleBuffer = stylesBuffer[i][j] || styles(node);
 
         if (styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
-          stylesBuffer[i][j] = styles(node);
-          stylesBuffer[i][j].attr = node.attr;
-          stylesBuffer[i][j].value = node.value;
+          styleBuffer = styles(node);
+          styleBuffer.attr = node.attr;
+          styleBuffer.value = node.value;
         }
 
         if (j === 0) {
