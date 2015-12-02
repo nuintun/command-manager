@@ -1031,6 +1031,7 @@ AnsiTerminal.prototype.toString = function (type){
 
   if (type === 'html') {
     var styleBuffer;
+    var attrCache = null;
     var stylesBuffer = this.stylesBuffer || [];
 
     stylesBuffer = stylesBuffer.slice(0, rows);
@@ -1039,9 +1040,12 @@ AnsiTerminal.prototype.toString = function (type){
       stylesBuffer[i] = stylesBuffer[i] || [];
       cols = this.screen.buffer[i].cells.length;
 
+      s += '<div>';
+
       for (j = 0; j < cols; ++j) {
         node = this.screen.buffer[i].cells[j];
         styleBuffer = stylesBuffer[i][j] || styles(node);
+        attrCache = j === 0 ? null : attrCache;
 
         if (styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
           stylesBuffer[i][j] = styles(node);
@@ -1050,9 +1054,28 @@ AnsiTerminal.prototype.toString = function (type){
         }
 
         if (node.value) {
-          console.log(node.value, ': ', stylesBuffer[i][j]);
+          if (attrCache !== null && node.attr === attrCache) {
+            s += node.value;
+
+          } else {
+            if (attrCache === null) {
+              s += '<span>';
+            } else {
+              s += node.value;
+
+              if (j === cols - 1) {
+                s += '</span>';
+              } else {
+                s += '</span><span>';
+              }
+            }
+
+            attrCache = node.attr;
+          }
         }
       }
+
+      s += '</div>';
     }
 
     this.stylesBuffer = stylesBuffer;
