@@ -162,7 +162,6 @@ module.exports = Vue.component('app-main', {
     }, false);
 
     ipc.on('emulator', function (event, type, project, data){
-
       worker.postMessage({ action: 'write', name: project.name, data: data + '' });
 
       // event.sender.send('emulator', project, 'stop');
@@ -176,6 +175,8 @@ module.exports = Vue.component('app-main', {
         context.$els.terminal.innerHTML = event.data.screen;
       }
     };
+
+    window.worker = worker;
 
     openXTerm(this.project.name);
   }

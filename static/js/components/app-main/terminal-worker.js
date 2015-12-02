@@ -20,7 +20,7 @@ onmessage = function (event){
 
   switch (message.action) {
     case 'open':
-      RUNTIMECACHE[message.name] = RUNTIMECACHE[message.name] || new AnsiTerminal(120, 60, 60);
+      RUNTIMECACHE[message.name] = RUNTIMECACHE[message.name] || new AnsiTerminal(120, 60, 0);
       send(message.name, RUNTIMECACHE[message.name]);
       break;
     case 'close':
