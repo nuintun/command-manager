@@ -6,6 +6,7 @@
 
 importScripts('../../terminal/index.js');
 
+var ACTIVE;
 var RUNTIMECACHE = {};
 
 function send(name, xterm){
@@ -16,22 +17,37 @@ function send(name, xterm){
 }
 
 onmessage = function (event){
+  var xterm;
   var message = event.data;
 
   switch (message.action) {
     case 'open':
-      RUNTIMECACHE[message.name] = RUNTIMECACHE[message.name] || new AnsiTerminal(120, 60, 0);
-      send(message.name, RUNTIMECACHE[message.name]);
+      xterm = RUNTIMECACHE[message.name];
+
+      if (!xterm) {
+        xterm = new AnsiTerminal(120, 60, 0);
+        xterm.newline_mode = true;
+        RUNTIMECACHE[message.name] = xterm;
+      }
+
+      ACTIVE = message.name;
+
+      send(message.name, xterm);
       break;
     case 'close':
       delete RUNTIMECACHE[message.name];
       break;
     case 'write':
-      var xterm = RUNTIMECACHE[message.name];
+      xterm = RUNTIMECACHE[message.name];
 
-      xterm.write(message.data);
-
-      send(message.name, xterm);
+      if (ACTIVE === message.name) {
+        xterm.write(message.data);
+        send(message.name, xterm);
+      } else {
+        setTimeout(function (){
+          xterm.write(message.data);
+        }, 16);
+      }
       break;
   }
 };

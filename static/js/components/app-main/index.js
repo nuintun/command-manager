@@ -161,18 +161,21 @@ module.exports = Vue.component('app-main', {
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
 
-    window.TERMSTR = '';
-
     ipc.on('emulator', function (event, type, project, data){
-      worker.postMessage({ action: 'write', name: project.name, data: data + '' });
-
-      window.TERMSTR += JSON.stringify(data.toString()) + '\n';
+      switch (type) {
+        case 'data':
+          data = data.toString();
+          break;
+        case 'error':
+          data = '\u001b[31m发生错误： \u001b[0m' + data.toString();
+          break;
+        case 'close':
+          data = '\u001b[32m命令执行完成\u001b[0m';
+          break;
+      }
+      worker.postMessage({ action: 'write', name: project.name, data: data.toString() });
       // event.sender.send('emulator', project, 'stop');
     });
-
-    window.doWrite = function (){
-      require('fs').writeFile('./screen.text', window.TERMSTR);
-    };
   },
   ready: function (){
     var context = this;
@@ -182,8 +185,6 @@ module.exports = Vue.component('app-main', {
         context.$els.terminal.innerHTML = event.data.screen;
       }
     };
-
-    window.worker = worker;
 
     openXTerm(this.project.name);
   }
