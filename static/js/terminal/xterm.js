@@ -1684,6 +1684,7 @@ AnsiTerminal.prototype.REP = function (params){
     }
 
     this.inst_p(s);
+    
     this.last_char = '';
   }
 };
