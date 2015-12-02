@@ -1053,31 +1053,31 @@ AnsiTerminal.prototype.toString = function (type){
           stylesBuffer[i][j].value = node.value;
         }
 
+        if (styleBuffer.foreground) {
+          style += 'color:' + styleBuffer.foreground + ';';
+        }
+
+        if (styleBuffer.background) {
+          style += 'background-color:' + styleBuffer.background + ';';
+        }
+
+        if (styleBuffer.bold) {
+          style += 'font-weight:bold;';
+        }
+
+        if (styleBuffer.italic) {
+          style += 'font-style: italic;';
+        }
+
+        if (styleBuffer.underline) {
+          style += 'text-decoration: underline;';
+        }
+
         if (j === 0) {
+          s += '<span' + (style ? ' style="' + style + '"' : '') + '>';
+
           style = '';
           attrCache = node.attr;
-
-          if (styleBuffer.foreground) {
-            style += 'color:' + styleBuffer.foreground + ';';
-          }
-
-          if (styleBuffer.background) {
-            style += 'background-color:' + styleBuffer.background + ';';
-          }
-
-          if (styleBuffer.bold) {
-            style += 'font-weight:bold;';
-          }
-
-          if (styleBuffer.italic) {
-            style += 'font-style: italic;';
-          }
-
-          if (styleBuffer.underline) {
-            style += 'text-decoration: underline;';
-          }
-
-          s += '<span' + (style ? ' style="' + style + '"' : '') + '>';
         } else if (j === cols - 1) {
           s += '</span>';
         }
