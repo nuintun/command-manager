@@ -1029,14 +1029,14 @@ AnsiTerminal.prototype.toString = function (type){
   var s = '';
 
   if (type === 'html') {
-    var cell;
+    var node;
 
     for (i = 0; i < this.screen.buffer.length; ++i) {
       for (j = 0; j < this.screen.buffer[i].cells.length; ++j) {
-        cell = this.screen.buffer[i].cells[j];
+        node = this.screen.buffer[i].cells[j];
 
-        if (cell.c) {
-          console.log(cell.c, ': ', styles(cell));
+        if (node.c) {
+          console.log(node.c, ': ', styles(node));
         }
       }
     }
