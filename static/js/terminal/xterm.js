@@ -1036,7 +1036,7 @@ AnsiTerminal.prototype.toString = function (type){
         cell = this.screen.buffer[i].cells[j];
 
         if (cell.c) {
-          console.log(cell.c, ': ', styles(cell), getStyles(cell.attr, cell.gb, cell.width === 2));
+          console.log(cell.c, ': ', styles(cell));
         }
       }
     }
