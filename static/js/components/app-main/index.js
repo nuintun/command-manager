@@ -161,11 +161,18 @@ module.exports = Vue.component('app-main', {
       context.expandCommand = trigger && trigger.contains(target);
     }, false);
 
+    window.TERMSTR = '';
+
     ipc.on('emulator', function (event, type, project, data){
       worker.postMessage({ action: 'write', name: project.name, data: data + '' });
 
+      window.TERMSTR += JSON.stringify(data.toString()) + '\n';
       // event.sender.send('emulator', project, 'stop');
     });
+
+    window.doWrite = function (){
+      require('fs').writeFile('./screen.text', window.TERMSTR);
+    };
   },
   ready: function (){
     var context = this;
