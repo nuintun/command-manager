@@ -1057,11 +1057,13 @@ AnsiTerminal.prototype.toString = function (type){
           style = htmlStyle(styleBuffer);
           s += '<span' + (style ? ' style="' + style + '"' : '') + '>';
           attrCache = node.attr;
-        } else if (j === cols - 1) {
+        } else if (j === cols) {
           s += '</span>';
         }
 
         if (node.value) {
+          console.log(node, styles(node).foreground);
+
           if (node.attr !== attrCache) {
             style = htmlStyle(styleBuffer);
             s += '</span><span' + (style ? ' style="' + style + '"' : '') + '>';
@@ -1073,6 +1075,7 @@ AnsiTerminal.prototype.toString = function (type){
       }
 
       s += '</div>';
+      stylesBuffer[i][j] = styleBuffer;
     }
 
     this.stylesBuffer = stylesBuffer;
