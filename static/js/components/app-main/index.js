@@ -56,30 +56,17 @@ function createXTerm(name, xtermNode){
   var xterm;
   var runtime = window.AppRuntime[name];
 
-  if (Terminal.focus && Terminal.focus.screen) {
-    xtermNode.removeChild(Terminal.focus.screen);
-  }
-
   if (runtime) {
     xterm = runtime.xterm;
   } else {
-    xterm = new Terminal({
-      rows: 66,
-      scrollback: 66,
-      convertEOL: true,
-      fgColor: 'inherit',
-      bgColor: 'transparent'
-    });
-
-    xterm.open();
+    xterm = new Terminal(80, 60, 60);
 
     window.AppRuntime[name] = {
       xterm: xterm
     };
   }
 
-  xterm.focus();
-  xtermNode.appendChild(xterm.screen);
+  xtermNode.innerHTML = xterm.toString('html');
   scroll(xterm, xtermNode);
 }
 
@@ -176,7 +163,6 @@ module.exports = Vue.component('app-main', {
     }
   },
   created: function (){
-    var step = 0;
     var context = this;
 
     document.addEventListener('click', function (event){
@@ -190,17 +176,11 @@ module.exports = Vue.component('app-main', {
       var runtime = window.AppRuntime[project.name];
 
       if (runtime) {
-        step++;
 
-        setTimeout(function (){
-          step--;
+        runtime.xterm.write(data + '');
 
-          runtime.xterm.write(data + '');
-
-          if (project.name === context.project.name) {
-            scroll(runtime.xterm, context.$els.terminal);
-          }
-        }, step * 16);
+        if (project.name === context.project.name) {
+        }
       } else {
         event.sender.send('emulator', project, 'stop');
       }
