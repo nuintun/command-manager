@@ -102,7 +102,7 @@
           ''
         ].forEach(function (line){ xterm.write(line + '\r\n'); });
 
-        xterm.write('\033[41;32m红底绿字\033[0m' + new Date().toISOString());
+        xterm.write('\033[41;32m红底绿字\033[0m\r\n' + new Date().toISOString());
 
         document.getElementById('term').innerHTML = xterm.toString('html');
 
