@@ -33,7 +33,7 @@ module.exports = {
 
       switch (action) {
         case 'start':
-          if (!worker) {
+          if (!worker || worker.isDead()) {
             var env = {};
 
             Object.keys(process.env).forEach(function (key){
@@ -59,6 +59,10 @@ module.exports = {
             worker.send(project);
 
             workers[project.name] = worker;
+          } else {
+            delete project.env;
+
+            worker.send(project);
           }
           break;
         case 'stop':
