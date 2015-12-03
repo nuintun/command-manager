@@ -150,7 +150,7 @@ module.exports = Vue.component('app-main', {
       runtime.worker.port.postMessage({
         action: 'write',
         name: project.name,
-        data: '\r\n\u001b[32m执行命令\u001b[0m: \u001b[35m' + name + '\u001b[0m\r\n'
+        data: '\u001b[32m执行命令\u001b[0m: \u001b[35m' + name + '\u001b[0m\r\n'
       });
 
       ipc.send('emulator', {
@@ -211,10 +211,10 @@ module.exports = Vue.component('app-main', {
         case 'data':
           break;
         case 'error':
-          data = '\r\n\u001b[31m发生错误: \u001b[0m' + data;
+          data = '\u001b[31m发生错误: \u001b[0m' + data + '\r\n';
           break;
         case 'close':
-          data = '\r\n\u001b[32m命令执行完成\u001b[0m';
+          data = '\u001b[32m命令执行完成\u001b[0m\r\n';
           break;
       }
 
