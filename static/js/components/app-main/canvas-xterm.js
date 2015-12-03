@@ -157,4 +157,4 @@ function underline(brush, fromX, toX, Y, foreground){
   brush.lineTo(toX, Y);
   brush.stroke();
   brush.restore();
-};
+}
