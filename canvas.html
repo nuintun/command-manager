@@ -81,7 +81,7 @@
           '  \u001b[36;1mgulp-cmd \u001b[0mconcat: \u001b[35mAssets/js/util/ztree/3.5.0/css/img/diy/8.png\u001b[39m ...ok\u001b[36m +0ms\u001b[0m\r\n'
         ].forEach(function (line){ xterm.write(line + '\n'); });
 
-        xterm.write('\033[41;32m红底绿字\033[0m\r\n' + new Date().toISOString());
+        xterm.write('\033[4;41;32m红底绿字\033[0m\r\n' + new Date().toISOString());
 
         document.getElementById('term').innerHTML = xterm.toString('html');
 
@@ -92,9 +92,11 @@
 
       var canvasXTerm = new CanvasXTerm();
 
-      canvasXTerm.draw(xterm.stylesBuffer);
+      canvasXTerm.draw(xterm.getStyles());
 
       console.log(canvasXTerm.canvas);
+
+      document.getElementById('term').appendChild(canvasXTerm.canvas);
     </script>
   </body>
 </html>

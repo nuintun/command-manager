@@ -13,15 +13,11 @@ function textRepeat(text, n){
 }
 
 function CanvasXTerm(font){
-  this.font = font || { family: 'Consolas', lineHeight: 20, size: 13, color: '#fff' };
+  this.font = font || { family: 'Consolas', lineHeight: 23, size: 14, color: '#fff' };
   this.canvas = document.createElement('canvas');
   this.canvas.style.backgroundColor = 'transparent';
   this.brush = this.canvas.getContext('2d');
-  this.brush.textAlign = 'start';
-  this.brush.textBaseline = 'bottom';
-  this.brush.font = this.font + ' ' + this.fontSize;
-  this.brush.fillStyle = this.font.color;
-  this.baseY = (this.font.lineHeight + this.font.size) / 2;
+  this.baseY = this.font.lineHeight / 2;
 }
 
 CanvasXTerm.prototype = {
@@ -37,7 +33,7 @@ CanvasXTerm.prototype = {
 
       this.canvas.width = this.measureWidth(
         textRepeat('A', cols),
-        'italic bold ' + ' ' + this.font.size + 'px' + this.font.family
+        'italic bold ' + this.font.size + 'px ' + this.font.family
       );
 
       this.canvas.height = rows * this.font.lineHeight;
@@ -46,39 +42,40 @@ CanvasXTerm.prototype = {
     for (i = 0; i < rows; i++) {
       x = 0;
       y = i * 20 + this.baseY;
-      text = '';
 
       for (j = 0; j < cols; j++) {
         node = screen[i][j];
 
-        //if (j = 0) {
-        //  attrCache = node.attr;
-        //  stylesCache = this.getStyles(node);
-        //}
-        //
-        //if (node.value) {
-        //  if (node.attr !== attrCache) {
-        //    x = this.drawText(text, x, y, this.getStyles(stylesCache)).x;
-        //    attrCache = node.attr;
-        //    stylesCache = this.getStyles(node);
-        //  }
-        //
-        //  text += node.value;
-        //}
+        if (j === 0) {
+          text = '';
+          attrCache = node.attr;
+          stylesCache = this.getStyles(node);
+        }
+
+        if (node.value) {
+          if (node.attr !== attrCache) {
+            x = this.drawText(text, x, y, this.getStyles(stylesCache)).x;
+            text = '';
+            attrCache = node.attr;
+            stylesCache = this.getStyles(node);
+          }
+
+          text += node.value;
+        }
       }
 
-      //this.drawText(text, x, y, this.getStyles(stylesCache));
+      this.drawText(text, x, y, this.getStyles(stylesCache));
     }
   },
   getStyles: function (node){
     var styles = {};
 
     if (node.background) {
-      styles.background = background;
+      styles.background = node.background;
     }
 
     if (node.foreground) {
-      styles.foreground = foreground;
+      styles.foreground = node.foreground;
     } else {
       styles.foreground = this.font.color;
     }
@@ -94,32 +91,34 @@ CanvasXTerm.prototype = {
     return styles;
   },
   drawText: function (text, x, y, styles){
-    var font = styles.italic ? 'italic' : 'normal'
-    + ' ' + styles.bold ? 'bold' : 'normal'
-    + ' ' + this.font.size + 'px'
-    + ' ' + this.font.family;
+    var font = (styles.italic ? 'italic ' : 'normal ')
+      + (styles.bold ? 'bold ' : 'normal ')
+      + this.font.size + 'px '
+      + this.font.family;
 
     var width = this.measureWidth(text, font);
 
     if (styles.background) {
       this.brush.save();
 
-      this.fillStyle = styles.background;
+      this.brush.fillStyle = styles.background;
 
-      this.brush.fillRect(x, y - this.font.size, width, this.font.size);
+      this.brush.fillRect(x, y - this.font.size / 2, width, this.font.size);
       this.brush.restore();
     }
 
     this.brush.save();
 
-    this.font = font;
+    this.brush.font = font;
     this.brush.fillStyle = styles.foreground;
+    this.brush.textAlign = 'start';
+    this.brush.textBaseline = 'middle';
 
-    this.fillText(text, x, y);
+    this.brush.fillText(text, x, y);
     this.brush.restore();
 
     if (styles.underline) {
-      underline.call(this.brush, x, x + width, y, styles.foreground);
+      underline(this.brush, x, x + width, y + this.font.size / 2, styles.foreground);
     }
 
     return {
@@ -140,14 +139,14 @@ CanvasXTerm.prototype = {
   }
 };
 
-function underline(fromX, toX, Y, foreground){
-  this.save();
-  this.translate(0, parseInt(Y) === Y ? 0 : 0.5);
-  this.lineWidth = 1;
-  this.strokeStyle = foreground;
-  this.beginPath();
-  this.moveTo(fromX, Y);
-  this.lineTo(toX, Y);
-  this.stroke();
-  this.restore();
+function underline(brush, fromX, toX, Y, foreground){
+  brush.save();
+  brush.translate(0, parseInt(Y) === Y ? 0.5 : 0);
+  brush.lineWidth = 1;
+  brush.strokeStyle = foreground;
+  brush.beginPath();
+  brush.moveTo(fromX, Y);
+  brush.lineTo(toX, Y);
+  brush.stroke();
+  brush.restore();
 };
