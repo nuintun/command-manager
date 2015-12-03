@@ -42,12 +42,12 @@ CanvasXTerm.prototype = {
     for (i = 0; i < rows; i++) {
       x = 0;
       y = i * this.font.lineHeight + this.baseY;
+      text = '';
 
       for (j = 0; j < cols; j++) {
         node = screen[i][j];
 
         if (j === 0) {
-          text = '';
           attrCache = node.attr;
           stylesCache = this.getStyles(node);
         }
