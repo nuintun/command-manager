@@ -2769,11 +2769,15 @@ function htmlStyle(styles){
   }
 
   if (styles.italic) {
-    style += 'font-style: italic;';
+    style += 'font-style:italic;';
   }
 
   if (styles.underline) {
-    style += 'text-decoration: underline;';
+    style += 'text-decoration:underline;';
+  }
+
+  if (styles.conceal) {
+    style += 'visibility:hidden;';
   }
 
   return style;

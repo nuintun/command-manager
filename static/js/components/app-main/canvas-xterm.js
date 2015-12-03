@@ -24,9 +24,9 @@ function CanvasXTerm(font){
 CanvasXTerm.prototype = {
   draw: function (screen){
     var text = '';
-    var i, j, x, y, attrCache;
     var rows = screen.length;
     var cols = rows ? screen[0].length : 0;
+    var node, styles, i, j, x, y, attrCache;
     var baseY = (this.font.lineHeight + this.font.size) / 2;
 
     if (!this.rows || !this.cols || this.rows !== rows || this.cols !== cols) {
@@ -48,9 +48,46 @@ CanvasXTerm.prototype = {
       y = i * 20 + baseY;
 
       for (j = 0; j < rows; j++) {
+        node = screen[i][j];
 
+        if (j = 0) {
+          attrCache = node.attr;
+
+          styles = {};
+        }
+
+        if (node.value) {
+          if (node.attr !== attrCache) {
+
+            x = this.measureWidth(text);
+            attrCache = node.attr;
+          }
+
+          text += node.value;
+        }
       }
     }
+  },
+  getStyles: function (node){
+    var styles = {};
+
+    if (node.background) {
+      styles.background = background;
+    }
+
+    if (node.foreground) {
+      styles.foreground = foreground;
+    } else {
+      styles.foreground = this.font.color;
+    }
+
+    ['bold', 'italic', 'underline', 'blink', 'conceal'].forEach(function (key){
+      styles[key] = node[key];
+    });
+
+    return styles;
+  },
+  drawText: function (text, x, y, styles){
   },
   measureWidth: function (text, styles){
     this.brush.save();
