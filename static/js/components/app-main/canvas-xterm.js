@@ -13,7 +13,7 @@ function textRepeat(text, n){
 }
 
 function CanvasXTerm(font){
-  this.font = font || { family: 'Consolas', lineHeight: 23, size: 14, color: '#fff' };
+  this.font = font || { family: 'Consolas', lineHeight: 20, size: 13, color: '#fff' };
   this.canvas = document.createElement('canvas');
   this.canvas.style.backgroundColor = 'transparent';
   this.brush = this.canvas.getContext('2d');
@@ -41,7 +41,7 @@ CanvasXTerm.prototype = {
 
     for (i = 0; i < rows; i++) {
       x = 0;
-      y = i * 20 + this.baseY;
+      y = i * this.font.lineHeight + this.baseY;
 
       for (j = 0; j < cols; j++) {
         node = screen[i][j];
@@ -139,6 +139,14 @@ CanvasXTerm.prototype = {
   }
 };
 
+/**
+ * draw underline
+ * @param brush
+ * @param fromX
+ * @param toX
+ * @param Y
+ * @param foreground
+ */
 function underline(brush, fromX, toX, Y, foreground){
   brush.save();
   brush.translate(0, parseInt(Y) === Y ? 0.5 : 0);
