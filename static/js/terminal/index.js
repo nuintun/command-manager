@@ -1020,6 +1020,41 @@ AnsiTerminal.prototype.reset = function (){
 };
 
 /**
+ * getStyles
+ * @returns {*|Array}
+ */
+AnsiTerminal.prototype.getStyles = function (){
+  var i, j, cols, node, styleBuffer;
+  var rows = this.screen.buffer.length;
+  var stylesBuffer = this.stylesBuffer || [];
+
+  stylesBuffer = stylesBuffer.slice(0, rows);
+
+  for (i = 0; i < rows; ++i) {
+    stylesBuffer[i] = stylesBuffer[i] || [];
+    cols = this.screen.buffer[i].cells.length;
+    stylesBuffer[i] = stylesBuffer[i].slice(0, cols);
+
+    for (j = 0; j < cols; ++j) {
+      styleBuffer = stylesBuffer[i][j];
+      node = this.screen.buffer[i].cells[j];
+
+      if (!styleBuffer || styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
+        styleBuffer = styles(node);
+        styleBuffer.attr = node.attr;
+        styleBuffer.value = node.value;
+
+        stylesBuffer[i][j] = styleBuffer;
+      }
+    }
+  }
+
+  this.stylesBuffer = stylesBuffer;
+
+  return stylesBuffer;
+};
+
+/**
  * toSting
  * @param [type]
  * @returns {string} representation of active buffer.
@@ -1034,25 +1069,16 @@ AnsiTerminal.prototype.toString = function (type){
     var style = '';
     var attrCache;
     var styleBuffer;
-    var stylesBuffer = this.stylesBuffer || [];
-
-    stylesBuffer = stylesBuffer.slice(0, rows);
+    var stylesBuffer = this.getStyles();
 
     for (i = 0; i < rows; ++i) {
-      stylesBuffer[i] = stylesBuffer[i] || [];
       cols = this.screen.buffer[i].cells.length;
 
       line = '<div>';
 
       for (j = 0; j < cols; ++j) {
         node = this.screen.buffer[i].cells[j];
-        styleBuffer = stylesBuffer[i][j] || styles(node);
-
-        if (styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
-          styleBuffer = styles(node);
-          styleBuffer.attr = node.attr;
-          styleBuffer.value = node.value;
-        }
+        styleBuffer = stylesBuffer[i][j];
 
         if (j === 0) {
           style = htmlStyle(styleBuffer);
@@ -1078,11 +1104,7 @@ AnsiTerminal.prototype.toString = function (type){
       } else {
         s += '<div>&nbsp;</div>';
       }
-
-      stylesBuffer[i][j] = styleBuffer;
     }
-
-    this.stylesBuffer = stylesBuffer;
   } else {
     for (i = 0; i < rows; ++i) {
       // FIXME: quick and dirty fill up from left
