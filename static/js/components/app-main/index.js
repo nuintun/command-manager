@@ -74,6 +74,7 @@ function openXTerm(vm){
       }
     });
 
+    // start thread
     worker.port.start();
     worker.port.postMessage({ action: 'open', name: project.name });
 
