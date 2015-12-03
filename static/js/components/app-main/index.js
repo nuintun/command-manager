@@ -143,10 +143,19 @@ module.exports = Vue.component('app-main', {
   },
   methods: {
     exec: function (name, command){
+      var project = this.project;
+      var runtime = AppRuntime[project.name];
+
+      runtime.worker.port.postMessage({
+        action: 'write',
+        name: project.name,
+        data: '\u001b[32m执行命令\u001b[0m: \u001b[35m' + name + '\u001b[0m\r\n'
+      });
+
       ipc.send('emulator', {
-        name: this.project.name,
-        path: this.project.path,
-        env: util.normalize(this.project.env),
+        name: project.name,
+        path: project.path,
+        env: util.normalize(project.env),
         command: {
           name: name,
           value: command
@@ -202,7 +211,7 @@ module.exports = Vue.component('app-main', {
           data = data.toString();
           break;
         case 'error':
-          data = '\u001b[31m发生错误： \u001b[0m' + data.toString();
+          data = '\u001b[31m发生错误: \u001b[0m' + data.toString();
           break;
         case 'close':
           data = '\u001b[32m命令执行完成\u001b[0m';

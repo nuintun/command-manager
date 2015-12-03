@@ -4,8 +4,6 @@
 
 'use strict';
 
-var ipc = require('ipc-main');
-
 var spawn = require('child_process').spawn;
 
 /**
@@ -71,64 +69,5 @@ function normalizeExecArgs(command, options){
   };
 }
 
-var emulators = {};
+module.exports = Emulator;
 
-module.exports = {
-  Emulator: Emulator,
-  start: function (){
-    ipc.on('emulator', function (event, project, action){
-      var key = project.name + '-' + project.command.name;
-      var emulator = emulators[key];
-
-      switch (action) {
-        case 'start':
-          if (!emulator) {
-            var stream;
-            var env = {};
-
-            Object.keys(process.env).forEach(function (key){
-              env[key] = process.env[key];
-            });
-
-            project.env.forEach(function (item){
-              env[item.name] = item.value;
-            });
-
-            emulator = new Emulator({
-              env: env,
-              cwd: project.path,
-              command: project.command.value
-            });
-
-            stream = emulator.start();
-
-            stream.stdout.on('data', function (data){
-              event.sender.send('emulator', 'data', project, data);
-            });
-
-            stream.stderr.on('error', function (error){
-              event.sender.send('emulator', 'error', project, error);
-
-              emulator.stop();
-
-              delete emulators[key];
-            });
-
-            stream.on('close', function (signal){
-              event.sender.send('emulator', 'close', project, signal);
-
-              delete emulators[key];
-            });
-
-            emulators[key] = emulator;
-          }
-          break;
-        case 'stop':
-          if (emulator) {
-            emulator.stop();
-          }
-          break;
-      }
-    });
-  }
-};
