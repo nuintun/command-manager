@@ -70,4 +70,3 @@ function normalizeExecArgs(command, options){
 }
 
 module.exports = Emulator;
-

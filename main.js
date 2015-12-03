@@ -116,7 +116,7 @@ if (cluster.isMaster) {
       });
     });
 
-    stream.stderr.on('error', function (error){
+    stream.stderr.on('data', function (error){
       emulator.stop();
       process.send({
         event: 'error',
