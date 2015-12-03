@@ -30,7 +30,6 @@ function CanvasXTerm(font){
   this.canvas = document.createElement('canvas');
   this.canvas.style.backgroundColor = 'transparent';
   this.brush = this.canvas.getContext('2d');
-  this.baseY = this.font.lineHeight / 2;
 }
 
 // CanvasXTerm prototype
@@ -67,7 +66,7 @@ CanvasXTerm.prototype = {
 
     for (i = 0; i < rows; i++) {
       x = 0;
-      y = i * this.font.lineHeight + this.baseY;
+      y = (i + 0.5) * this.font.lineHeight;
       text = '';
 
       for (j = 0; j < cols; j++) {
