@@ -23,6 +23,7 @@ function CanvasXTerm(font){
 CanvasXTerm.prototype = {
   draw: function (screen){
     var text = '';
+    var width, height;
     var rows = screen.length;
     var cols = rows ? screen[0].length : 0;
     var node, i, j, x, y, attrCache, stylesCache;
@@ -31,13 +32,20 @@ CanvasXTerm.prototype = {
       this.rows = rows;
       this.cols = cols;
 
-      this.canvas.width = this.measureWidth(
+      width = this.measureWidth(
         textRepeat('A', cols),
         'italic bold ' + this.font.size + 'px ' + this.font.family
       );
 
-      this.canvas.height = rows * this.font.lineHeight;
+      height = rows * this.font.lineHeight;
+    } else {
+      width = this.canvas.width;
+      height = this.canvas.height;
     }
+
+    // clear canvas
+    this.canvas.width = width;
+    this.canvas.height = height;
 
     for (i = 0; i < rows; i++) {
       x = 0;
