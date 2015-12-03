@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" src="./static/js/terminal/index.js"></script>
+    <script type="text/javascript" src="./static/js/components/app-main/canvas-xterm.js"></script>
     <style type="text/css">
       #term {
         color: #fff;
@@ -67,7 +68,7 @@
       console.log('C + a: ', C + a);
       console.log('Ca: ', context.measureText('Ca').width);
 
-      var xterm = new AnsiTerminal(80, 60, 100);
+      var xterm = new AnsiTerminal(120, 80, 0);
 
       xterm.debug = false;
       xterm.newline_mode = true;
@@ -86,6 +87,12 @@
       }
 
       write();
+
+      var canvasXTerm = new CanvasXTerm();
+      
+      canvasXTerm.draw(xterm.stylesBuffer);
+
+      console.log(canvasXTerm.canvas);
     </script>
   </body>
 </html>
