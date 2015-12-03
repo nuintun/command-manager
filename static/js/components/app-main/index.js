@@ -150,7 +150,7 @@ module.exports = Vue.component('app-main', {
       runtime.worker.port.postMessage({
         action: 'write',
         name: project.name,
-        data: '\u001b[32m执行命令\u001b[0m: \u001b[35m' + name + '\u001b[0m\r\n'
+        data: '\r\n\u001b[32m执行命令\u001b[0m: \u001b[35m' + name + '\u001b[0m\r\n'
       });
 
       ipc.send('emulator', {
