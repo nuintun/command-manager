@@ -4,24 +4,24 @@
 
 'use strict';
 
-var cluster = require('cluster');
-
+var path = require('path');
 var ipc = require('ipc-main');
+var fork = require('child_process').fork;
 
 // cache
-var workers = {};
+var threads = {};
 
 /**
- * killWorker
+ * killThread
  * @param name
  */
-function killWorker(name){
-  var worker = workers[name];
+function killThread(name){
+  var thread = threads[name];
 
-  if (worker && !worker.isDead()) {
-    worker.kill('SIGTERM');
+  if (thread && thread.connected) {
+    thread.kill('SIGTERM');
 
-    delete workers[name];
+    delete threads[name];
   }
 }
 
@@ -29,11 +29,11 @@ module.exports = {
   start: function (){
     ipc.on('emulator', function (event, project, action){
       var key = project.name + '-' + project.command.name;
-      var worker = workers[key];
+      var thread = threads[key];
 
       switch (action) {
         case 'start':
-          if (!worker || worker.isDead()) {
+          if (!thread || !thread.connected) {
             var env = {};
 
             Object.keys(process.env).forEach(function (key){
@@ -44,29 +44,31 @@ module.exports = {
               env[item.name] = item.value;
             });
 
-            worker = cluster.fork(env);
+            thread = fork(path.join(__dirname, 'emulator'), {
+              env: env
+            });
 
-            worker.on('message', function (message){
+            thread.on('message', function (message){
               event.sender.send('emulator', message.event, message.project, message.data);
             });
 
-            worker.on('error', function (){
-              killWorker(project.name);
+            thread.on('error', function (){
+              killThread(project.name);
             });
 
             delete project.env;
 
-            worker.send(project);
+            thread.send(project);
 
-            workers[project.name] = worker;
+            threads[project.name] = thread;
           } else {
             delete project.env;
 
-            worker.send(project);
+            thread.send(project);
           }
           break;
         case 'stop':
-          killWorker(project.name);
+          killThread(project.name);
           break;
       }
     });
