@@ -2,6 +2,14 @@
  * Created by nuintun on 2015/12/3.
  */
 
+'use strict';
+
+/**
+ * textRepeat
+ * @param text
+ * @param n
+ * @returns {string}
+ */
 function textRepeat(text, n){
   var str = '';
 
@@ -12,6 +20,11 @@ function textRepeat(text, n){
   return str;
 }
 
+/**
+ * CanvasXTerm
+ * @param font
+ * @constructor
+ */
 function CanvasXTerm(font){
   this.font = font || { family: 'Consolas', lineHeight: 20, size: 13, color: '#fff' };
   this.canvas = document.createElement('canvas');
@@ -20,7 +33,12 @@ function CanvasXTerm(font){
   this.baseY = this.font.lineHeight / 2;
 }
 
+// CanvasXTerm prototype
 CanvasXTerm.prototype = {
+  /**
+   * draw
+   * @param screen
+   */
   draw: function (screen){
     var text = '';
     var width, height;
@@ -75,6 +93,11 @@ CanvasXTerm.prototype = {
       this.drawText(text, x, y, this.getStyles(stylesCache));
     }
   },
+  /**
+   * getStyles
+   * @param node
+   * @returns {{}}
+   */
   getStyles: function (node){
     var styles = {};
 
@@ -98,6 +121,14 @@ CanvasXTerm.prototype = {
 
     return styles;
   },
+  /**
+   * drawText
+   * @param text
+   * @param x
+   * @param y
+   * @param styles
+   * @returns {{x: *, y: *}}
+   */
   drawText: function (text, x, y, styles){
     var font = (styles.italic ? 'italic ' : 'normal ')
       + (styles.bold ? 'bold ' : 'normal ')
@@ -134,6 +165,12 @@ CanvasXTerm.prototype = {
       y: y
     };
   },
+  /**
+   * measureWidth
+   * @param text
+   * @param font
+   * @returns {Number}
+   */
   measureWidth: function (text, font){
     this.brush.save();
 
