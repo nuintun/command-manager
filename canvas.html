@@ -68,6 +68,8 @@
       console.log('C + a: ', C + a);
       console.log('Ca: ', context.measureText('Ca').width);
 
+      canvas.style.backgroundColor = 'transparent';
+
       var xterm = new AnsiTerminal(120, 80, 0);
 
       xterm.debug = false;
@@ -89,7 +91,7 @@
       write();
 
       var canvasXTerm = new CanvasXTerm();
-      
+
       canvasXTerm.draw(xterm.stylesBuffer);
 
       console.log(canvasXTerm.canvas);

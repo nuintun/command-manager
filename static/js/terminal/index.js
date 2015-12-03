@@ -1032,8 +1032,8 @@ AnsiTerminal.prototype.toString = function (type){
   if (type === 'html') {
     var line = '';
     var style = '';
-    var styleBuffer;
     var attrCache;
+    var styleBuffer;
     var stylesBuffer = this.stylesBuffer || [];
 
     stylesBuffer = stylesBuffer.slice(0, rows);
