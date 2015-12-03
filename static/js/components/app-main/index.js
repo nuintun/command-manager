@@ -67,7 +67,7 @@ function openXTerm(vm){
       if (vm.project.name === event.data.name) {
         if (event.data.exec === 'beep') {
           snd.play();
-        } else if (event.data.screen) {
+        } else if (event.data.screen && !document.hidden) {
           vm.$els.terminal.innerHTML = event.data.screen;
         }
 
@@ -223,6 +223,14 @@ module.exports = Vue.component('app-main', {
     });
   },
   ready: function (){
+    var context = this;
+
     openXTerm(this);
+
+    document.addEventListener('visibilitychange', function (){
+      if (!document.hidden) {
+        openXTerm(context);
+      }
+    }, false);
   }
 });
