@@ -1,4 +1,11 @@
 /**
+ * Created by nuintun on 2015/12/4.
+ * See: https://github.com/rsms/js-lru
+ */
+
+'use strict';
+
+/**
  * A doubly linked list-based Least Recently Used (LRU) cache. Will keep most
  * recently used items while discarding least recently used items when its limit
  * is reached.
@@ -308,6 +315,6 @@ LRUCache.prototype.toString = function (){
       s += ' < ';
     }
   }
-  
+
   return s;
 };
