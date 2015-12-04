@@ -46,7 +46,7 @@ CanvasXTerm.prototype = {
     var attrCache = null;
     var stylesCache = null;
     var width, height;
-    var node, i, j, x, y;
+    var node, i, j, x, y, line, canvas, brush;
 
     if (!this.rows || !this.cols || this.rows !== rows || this.cols !== cols) {
       this.rows = rows;
@@ -70,10 +70,6 @@ CanvasXTerm.prototype = {
     this.canvas.width = width;
     this.canvas.height = height;
 
-    var line;
-    var canvas;
-    var brush;
-
     function reset(){
       text = '';
       attrCache = node.attr;
@@ -81,9 +77,15 @@ CanvasXTerm.prototype = {
     }
 
     for (i = 0; i < rows; i++) {
+      line = screen.buffer[i];
+
+      if (!line) {
+        continue;
+      }
+
       x = 0;
       y = i * this.font.lineHeight;
-      line = this.lru.get(screen.buffer[i].id);
+      line = this.lru.get(line.id);
 
       if (line && line.version === screen.buffer[i].version) {
         this.brush.drawImage(line.canvas, 0, y, line.canvas.width, line.canvas.height);
@@ -98,6 +100,10 @@ CanvasXTerm.prototype = {
 
       for (j = 0; j < cols; j++) {
         node = screen.buffer[i].cells[j];
+
+        if (!node) {
+          continue;
+        }
 
         if (j === 0) {
           reset();
