@@ -21,12 +21,47 @@ function textRepeat(text, n){
 }
 
 /**
+ * iterator
+ * @param from
+ * @param iterator
+ * @param context
+ */
+function iterator(from, iterator, context){
+  for (var key in from) {
+    if (from.hasOwnProperty(key)) {
+      iterator.call(context, key, from[key]);
+    }
+  }
+}
+
+// default font
+var FONT = {
+  size: 13,
+  color: '#fff',
+  lineHeight: 20,
+  family: 'Consolas'
+};
+
+/**
  * CanvasXTerm
  * @param font
  * @constructor
  */
 function CanvasXTerm(font){
-  this.font = font || { family: 'Consolas', lineHeight: 20, size: 13, color: '#fff' };
+  font = font || {};
+
+  // font setting
+  this.font = {};
+
+  // inherits
+  iterator(FONT, function (key, value){
+    if (font.hasOwnProperty(key)) {
+      this.font[key] = font[key];
+    } else {
+      this.font[key] = value;
+    }
+  }, this);
+
   this.canvas = document.createElement('canvas');
   this.canvas.style.backgroundColor = 'transparent';
   this.brush = this.canvas.getContext('2d');
