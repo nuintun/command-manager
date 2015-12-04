@@ -44,7 +44,7 @@ module.exports = {
               env[item.name] = item.value;
             });
 
-            thread = fork(path.join(__dirname, 'emulator'), {
+            thread = fork(path.join(__dirname, 'child-thread'), {
               env: env
             });
 
