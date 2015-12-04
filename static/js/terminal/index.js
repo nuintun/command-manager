@@ -1068,8 +1068,8 @@ AnsiTerminal.prototype.toString = function (type){
       line = '<div>';
 
       for (j = 0; j < cols; ++j) {
-        node = this.screen.buffer[i].cells[j];
         styleBuffer = stylesBuffer[i][j];
+        node = this.screen.buffer[i].cells[j];
 
         if (j === 0) {
           style = htmlStyle(styleBuffer);
