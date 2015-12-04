@@ -78,6 +78,7 @@ CanvasXTerm.prototype = {
     var context = this;
     var rows = screen.rows;
     var cols = screen.cols;
+    var lineCache = null;
     var attrCache = null;
     var stylesCache = null;
     var width, height;
@@ -120,10 +121,10 @@ CanvasXTerm.prototype = {
 
       x = 0;
       y = i * this.font.lineHeight;
-      line = this.lru.get(line.id);
+      lineCache = this.lru.get(line.id);
 
-      if (line && line.version === screen.buffer[i].version) {
-        this.brush.drawImage(line.canvas, 0, y, line.canvas.width, line.canvas.height);
+      if (lineCache && lineCache.version === line.version) {
+        this.brush.drawImage(lineCache.canvas, 0, y, lineCache.canvas.width, lineCache.canvas.height);
         continue;
       }
 
@@ -134,7 +135,7 @@ CanvasXTerm.prototype = {
       brush = canvas.getContext('2d');
 
       for (j = 0; j < cols; j++) {
-        node = screen.buffer[i].cells[j];
+        node = line.cells[j];
 
         if (!node) {
           continue;
@@ -160,9 +161,11 @@ CanvasXTerm.prototype = {
       }
 
       this.brush.drawImage(canvas, 0, y, canvas.width, canvas.height);
-      this.lru.set(screen.buffer[i].id, {
+
+      // cache line
+      this.lru.set(line.id, {
         canvas: canvas,
-        version: screen.buffer[i].version
+        version: line.version
       });
     }
   },
