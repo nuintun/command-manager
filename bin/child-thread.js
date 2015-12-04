@@ -6,11 +6,17 @@
 
 var Emulator = require('./emulator');
 
+var emulator;
+
 // thread
 process.on('message', function (project){
   var stream;
 
-  var emulator = new Emulator({
+  if (emulator) {
+    emulator.stop();
+  }
+
+  emulator = new Emulator({
     cwd: project.path,
     command: project.command.value
   });
