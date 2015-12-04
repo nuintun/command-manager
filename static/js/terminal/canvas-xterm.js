@@ -41,20 +41,23 @@ CanvasXTerm.prototype = {
   draw: function (screen){
     var text = '';
     var width, height;
-    var rows = screen.length;
-    var cols = rows ? screen[0].length : 0;
+    var rows = screen.rows;
+    var cols = screen.cols;
     var node, i, j, x, y, attrCache, stylesCache;
 
     if (!this.rows || !this.cols || this.rows !== rows || this.cols !== cols) {
       this.rows = rows;
       this.cols = cols;
 
-      width = this.measureWidth(
+      width = measureWidth(
+        this.brush,
         textRepeat('A', cols),
         'italic bold ' + this.font.size + 'px ' + this.font.family
       );
 
       height = rows * this.font.lineHeight;
+
+      this.lru = new LRUCache(rows);
     } else {
       width = this.canvas.width;
       height = this.canvas.height;
@@ -64,13 +67,29 @@ CanvasXTerm.prototype = {
     this.canvas.width = width;
     this.canvas.height = height;
 
+    var line;
+    var canvas;
+    var brush;
+
     for (i = 0; i < rows; i++) {
-      x = 0;
-      y = (i + 0.5) * this.font.lineHeight;
       text = '';
+      x = 0;
+      y = i * this.font.lineHeight;
+      line = this.lru.get(screen.buffer[i].id);
+
+      if (line && line.version === screen.buffer[i].version) {
+        this.brush.drawImage(line.canvas, 0, y, line.canvas.width, line.canvas.height);
+        continue;
+      }
+
+      canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = this.font.lineHeight;
+      canvas.style.backgroundColor = 'transparent';
+      brush = canvas.getContext('2d');
 
       for (j = 0; j < cols; j++) {
-        node = screen[i][j];
+        node = screen.buffer[i].cells[j];
 
         if (j === 0) {
           attrCache = node.attr;
@@ -79,7 +98,7 @@ CanvasXTerm.prototype = {
 
         if (node.value) {
           if (node.attr !== attrCache) {
-            x = this.drawText(text, x, y, this.getStyles(stylesCache)).x;
+            x = drawLine(brush, text, x, this.getStyles(stylesCache));
             text = '';
             attrCache = node.attr;
             stylesCache = this.getStyles(node);
@@ -89,7 +108,15 @@ CanvasXTerm.prototype = {
         }
       }
 
-      this.drawText(text, x, y, this.getStyles(stylesCache));
+      if (text) {
+        drawLine(brush, text, x, this.getStyles(stylesCache));
+      }
+
+      this.brush.drawImage(canvas, 0, y, canvas.width, canvas.height);
+      this.lru.set(screen.buffer[i].id, {
+        canvas: canvas,
+        version: screen.buffer[i].version
+      });
     }
   },
   /**
@@ -99,6 +126,8 @@ CanvasXTerm.prototype = {
    */
   getStyles: function (node){
     var styles = {};
+
+    styles.font = this.font;
 
     if (node.background) {
       styles.background = node.background;
@@ -119,69 +148,27 @@ CanvasXTerm.prototype = {
     });
 
     return styles;
-  },
-  /**
-   * drawText
-   * @param text
-   * @param x
-   * @param y
-   * @param styles
-   * @returns {{x: *, y: *}}
-   */
-  drawText: function (text, x, y, styles){
-    var font = (styles.italic ? 'italic ' : 'normal ')
-      + (styles.bold ? 'bold ' : 'normal ')
-      + this.font.size + 'px '
-      + this.font.family;
-
-    var width = this.measureWidth(text, font);
-
-    if (styles.background) {
-      this.brush.save();
-
-      this.brush.fillStyle = styles.background;
-
-      this.brush.fillRect(x, y - this.font.size / 2, width, this.font.size);
-      this.brush.restore();
-    }
-
-    this.brush.save();
-
-    this.brush.font = font;
-    this.brush.fillStyle = styles.foreground;
-    this.brush.textAlign = 'start';
-    this.brush.textBaseline = 'middle';
-
-    this.brush.fillText(text, x, y);
-    this.brush.restore();
-
-    if (styles.underline) {
-      underline(this.brush, x, x + width, y + this.font.size / 2, styles.foreground);
-    }
-
-    return {
-      x: x + width,
-      y: y
-    };
-  },
-  /**
-   * measureWidth
-   * @param text
-   * @param font
-   * @returns {Number}
-   */
-  measureWidth: function (text, font){
-    this.brush.save();
-
-    this.brush.font = font;
-
-    var width = this.brush.measureText(text).width;
-
-    this.brush.restore();
-
-    return width;
   }
 };
+
+/**
+ * measureWidth
+ * @param brush
+ * @param text
+ * @param font
+ * @returns {Number}
+ */
+function measureWidth(brush, text, font){
+  brush.save();
+
+  brush.font = font;
+
+  var width = brush.measureText(text).width;
+
+  brush.restore();
+
+  return width;
+}
 
 /**
  * draw underline
@@ -201,4 +188,50 @@ function underline(brush, fromX, toX, Y, foreground){
   brush.lineTo(toX, Y);
   brush.stroke();
   brush.restore();
+}
+
+/**
+ * drawLine
+ * @param brush
+ * @param text
+ * @param x
+ * @param styles
+ */
+function drawLine(brush, text, x, styles){
+  var y;
+  var font = (styles.italic ? 'italic ' : 'normal ')
+    + (styles.bold ? 'bold ' : 'normal ')
+    + styles.font.size + 'px '
+    + styles.font.family;
+
+  var width = measureWidth(brush, text, font);
+
+  if (styles.background) {
+    brush.save();
+
+    brush.fillStyle = styles.background;
+    y = (styles.font.lineHeight - styles.font.size) / 2;
+
+    brush.fillRect(x, y, width, styles.font.size);
+    brush.restore();
+  }
+
+  brush.save();
+
+  brush.font = font;
+  brush.fillStyle = styles.foreground;
+  brush.textAlign = 'start';
+  brush.textBaseline = 'middle';
+  y = styles.font.lineHeight / 2;
+
+  brush.fillText(text, x, y);
+  brush.restore();
+
+  if (styles.underline) {
+    y = (styles.font.lineHeight + styles.font.size) / 2;
+
+    underline(brush, x, x + width, y, styles.foreground);
+  }
+
+  return x + width;
 }

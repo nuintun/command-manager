@@ -1043,13 +1043,21 @@ AnsiTerminal.prototype.reset = function (){
  * @returns {*|Array}
  */
 AnsiTerminal.prototype.styles = function (){
-  var stylesBuffer = [];
-  var i, j, cols, node, styleBuffer;
-  var rows = this.screen.buffer.length;
+  var i, j, node, styleBuffer;
+  var rows = this.rows;
+  var cols = this.cols;
+  var stylesBuffer = {
+    buffer: [],
+    rows: rows,
+    cols: cols
+  };
 
   for (i = 0; i < rows; ++i) {
-    stylesBuffer[i] = [];
-    cols = this.screen.buffer[i].cells.length;
+    stylesBuffer.buffer[i] = {
+      id: this.screen.buffer[i].uniqueId,
+      version: this.screen.buffer[i].version,
+      cells: []
+    };
 
     for (j = 0; j < cols; ++j) {
       styleBuffer = [];
@@ -1057,7 +1065,7 @@ AnsiTerminal.prototype.styles = function (){
       styleBuffer = styles(node);
       styleBuffer.attr = node.attr;
       styleBuffer.value = node.value;
-      stylesBuffer[i][j] = styleBuffer;
+      stylesBuffer.buffer[i].cells[j] = styleBuffer;
     }
   }
 
@@ -1071,8 +1079,9 @@ AnsiTerminal.prototype.styles = function (){
  */
 AnsiTerminal.prototype.toString = function (type){
   var s = '';
-  var i, j, cols, node;
-  var rows = this.screen.buffer.length;
+  var i, j, node;
+  var rows = this.rows;
+  var cols = this.cols;
 
   if (type === 'html') {
     var text = '';
@@ -1083,13 +1092,11 @@ AnsiTerminal.prototype.toString = function (type){
     var stylesBuffer = this.styles();
 
     for (i = 0; i < rows; ++i) {
-      cols = this.screen.buffer[i].cells.length;
-
       line = '<div>';
 
       for (j = 0; j < cols; ++j) {
-        styleBuffer = stylesBuffer[i][j];
         node = this.screen.buffer[i].cells[j];
+        styleBuffer = stylesBuffer.buffer[i].cells[j];
 
         if (j === 0) {
           style = htmlStyle(styleBuffer);
@@ -1122,8 +1129,6 @@ AnsiTerminal.prototype.toString = function (type){
     for (i = 0; i < rows; ++i) {
       // FIXME: quick and dirty fill up from left
       var last_nonspace = 0;
-
-      cols = this.screen.buffer[i].cells.length;
 
       for (j = 0; j < cols; ++j) {
         node = this.screen.buffer[i].cells[j];

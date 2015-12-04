@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" src="./static/js/terminal/index.js"></script>
-    <script type="text/javascript" src="./static/js/components/app-main/canvas-xterm.js"></script>
+    <script type="text/javascript" src="./static/js/terminal/lru.js"></script>
+    <script type="text/javascript" src="./static/js/terminal/canvas-xterm.js"></script>
     <style type="text/css">
       #term {
         color: #fff;
@@ -85,7 +86,7 @@
 
         xterm.write('\033[4;41;32m红底下划线绿字\033[0m\r\n' + new Date().toISOString() + '\r\n');
 
-        // document.getElementById('term').innerHTML = xterm.toString('html');
+        document.getElementById('term').innerHTML = xterm.toString('html');
 
         canvasXTerm.draw(xterm.styles());
 
