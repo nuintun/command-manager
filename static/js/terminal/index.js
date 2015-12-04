@@ -1020,36 +1020,27 @@ AnsiTerminal.prototype.reset = function (){
 };
 
 /**
- * getStyles
+ * styles
  * @returns {*|Array}
  */
-AnsiTerminal.prototype.getStyles = function (){
+AnsiTerminal.prototype.styles = function (){
+  var stylesBuffer = [];
   var i, j, cols, node, styleBuffer;
   var rows = this.screen.buffer.length;
-  var stylesBuffer = this.stylesBuffer || [];
-
-  stylesBuffer = stylesBuffer.slice(0, -rows);
 
   for (i = 0; i < rows; ++i) {
-    stylesBuffer[i] = stylesBuffer[i] || [];
+    stylesBuffer[i] = [];
     cols = this.screen.buffer[i].cells.length;
-    stylesBuffer[i] = stylesBuffer[i].slice(-cols);
 
     for (j = 0; j < cols; ++j) {
-      styleBuffer = stylesBuffer[i][j];
+      styleBuffer = [];
       node = this.screen.buffer[i].cells[j];
-
-      if (!styleBuffer || styleBuffer.value !== node.value || styleBuffer.attr !== node.attr) {
-        styleBuffer = styles(node);
-        styleBuffer.attr = node.attr;
-        styleBuffer.value = node.value;
-
-        stylesBuffer[i][j] = styleBuffer;
-      }
+      styleBuffer = styles(node);
+      styleBuffer.attr = node.attr;
+      styleBuffer.value = node.value;
+      stylesBuffer[i][j] = styleBuffer;
     }
   }
-
-  this.stylesBuffer = stylesBuffer;
 
   return stylesBuffer;
 };
@@ -1069,7 +1060,7 @@ AnsiTerminal.prototype.toString = function (type){
     var style = '';
     var attrCache;
     var styleBuffer;
-    var stylesBuffer = this.getStyles();
+    var stylesBuffer = this.styles();
 
     for (i = 0; i < rows; ++i) {
       cols = this.screen.buffer[i].cells.length;
