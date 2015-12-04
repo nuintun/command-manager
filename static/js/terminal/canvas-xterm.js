@@ -177,23 +177,38 @@ function measureWidth(brush, text, font){
 }
 
 /**
- * draw underline
+ * drawBackground
  * @param brush
- * @param fromX
- * @param toX
- * @param Y
+ * @param x
+ * @param y
+ * @param width
+ * @param height
+ * @param background
+ */
+function drawBackground(brush, x, y, width, height, background){
+  brush.fillStyle = background;
+
+  brush.fillRect(x, y, width, height);
+}
+
+/**
+ * drawUnderline
+ * @param brush
+ * @param x
+ * @param y
+ * @param width
  * @param foreground
  */
-function underline(brush, fromX, toX, Y, foreground){
-  brush.save();
-  brush.translate(0, parseInt(Y) === Y ? 0.5 : 0);
+function drawUnderline(brush, x, y, width, foreground){
+  brush.translate(0, parseInt(y) === y ? 0.5 : 0);
+
   brush.lineWidth = 1;
   brush.strokeStyle = foreground;
+
   brush.beginPath();
-  brush.moveTo(fromX, Y);
-  brush.lineTo(toX, Y);
+  brush.moveTo(x, y);
+  brush.lineTo(x + width, y);
   brush.stroke();
-  brush.restore();
 }
 
 /**
@@ -212,17 +227,13 @@ function drawLine(brush, text, x, styles){
 
   var width = measureWidth(brush, text, font);
 
-  if (styles.background) {
-    brush.save();
+  brush.save();
 
-    brush.fillStyle = styles.background;
+  if (styles.background) {
     y = (styles.font.lineHeight - styles.font.size) / 2;
 
-    brush.fillRect(x, y, width, styles.font.size);
-    brush.restore();
+    drawBackground(brush, x, y, width, styles.font.size, styles.background);
   }
-
-  brush.save();
 
   brush.font = font;
   brush.fillStyle = styles.foreground;
@@ -231,13 +242,14 @@ function drawLine(brush, text, x, styles){
   y = styles.font.lineHeight / 2;
 
   brush.fillText(text, x, y);
-  brush.restore();
 
   if (styles.underline) {
     y = (styles.font.lineHeight + styles.font.size) / 2;
 
-    underline(brush, x, x + width, y, styles.foreground);
+    drawUnderline(brush, x, y, width, styles.foreground);
   }
+
+  brush.restore();
 
   return x + width;
 }
