@@ -105,7 +105,7 @@ CanvasXTerm.prototype = {
 
         if (node.value) {
           if (node.attr !== attrCache) {
-            x = drawLine(brush, text, x, this.getStyles(stylesCache));
+            x = drawLine(brush, text, x, stylesCache);
 
             reset();
           }
@@ -115,7 +115,7 @@ CanvasXTerm.prototype = {
       }
 
       if (text) {
-        drawLine(brush, text, x, this.getStyles(stylesCache));
+        drawLine(brush, text, x, stylesCache);
       }
 
       this.brush.drawImage(canvas, 0, y, canvas.width, canvas.height);
