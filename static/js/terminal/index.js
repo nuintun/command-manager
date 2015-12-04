@@ -965,6 +965,25 @@ function AnsiTerminal(cols, rows, scrollLength){
  */
 AnsiTerminal.prototype.write = function (data){
   this.AnsiParser.parse(data);
+
+  // TODO cursor?
+  //// place cursor temporarily in buffer - needed to simplify fragment creation
+  //var node = this.screen.buffer[this.cursor.row].cells[this.cursor.col];
+  //
+  //if (this.show_cursor && node) {
+  //  node.attr |= 4194304;
+  //}
+  //
+  //this.screen.buffer[this.cursor.row].version++;
+  //
+  //// remove cursor from buffer
+  //node = this.screen.buffer[this.cursor.row].cells[this.cursor.col];
+  //
+  //if (this.show_cursor && node) {
+  //  node.attr &= ~4194304;
+  //}
+  //
+  //this.screen.buffer[this.cursor.row].version++;
 };
 
 /** Hard reset of the terminal. */
@@ -1056,6 +1075,7 @@ AnsiTerminal.prototype.toString = function (type){
   var rows = this.screen.buffer.length;
 
   if (type === 'html') {
+    var text = '';
     var line = '';
     var style = '';
     var attrCache;
@@ -1086,11 +1106,13 @@ AnsiTerminal.prototype.toString = function (type){
 
           line += node.value.replace(/\s/g, '&nbsp;');
         }
+
+        text += node.value;
       }
 
       line += '</span></div>';
 
-      if (this.screen.buffer[i].version > 0) {
+      if (text) {
         s += line;
       } else {
         s += '<div>&nbsp;</div>';
