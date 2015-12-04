@@ -186,9 +186,12 @@ function measureWidth(brush, text, font){
  * @param background
  */
 function drawBackground(brush, x, y, width, height, background){
+  brush.save();
+
   brush.fillStyle = background;
 
   brush.fillRect(x, y, width, height);
+  brush.restore();
 }
 
 /**
@@ -200,6 +203,7 @@ function drawBackground(brush, x, y, width, height, background){
  * @param foreground
  */
 function drawUnderline(brush, x, y, width, foreground){
+  brush.save();
   brush.translate(0, parseInt(y) === y ? 0.5 : 0);
 
   brush.lineWidth = 1;
@@ -209,6 +213,7 @@ function drawUnderline(brush, x, y, width, foreground){
   brush.moveTo(x, y);
   brush.lineTo(x + width, y);
   brush.stroke();
+  brush.restore();
 }
 
 /**
@@ -227,13 +232,13 @@ function drawLine(brush, text, x, styles){
 
   var width = measureWidth(brush, text, font);
 
-  brush.save();
-
   if (styles.background) {
     y = (styles.font.lineHeight - styles.font.size) / 2;
 
     drawBackground(brush, x, y, width, styles.font.size, styles.background);
   }
+
+  brush.save();
 
   brush.font = font;
   brush.fillStyle = styles.foreground;
@@ -242,14 +247,13 @@ function drawLine(brush, text, x, styles){
   y = styles.font.lineHeight / 2;
 
   brush.fillText(text, x, y);
+  brush.restore();
 
   if (styles.underline) {
     y = (styles.font.lineHeight + styles.font.size) / 2;
 
     drawUnderline(brush, x, y, width, styles.foreground);
   }
-
-  brush.restore();
 
   return x + width;
 }
