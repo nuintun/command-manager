@@ -40,10 +40,13 @@ CanvasXTerm.prototype = {
    */
   draw: function (screen){
     var text = '';
-    var width, height;
+    var context = this;
     var rows = screen.rows;
     var cols = screen.cols;
-    var node, i, j, x, y, attrCache, stylesCache;
+    var attrCache = null;
+    var stylesCache = null;
+    var width, height;
+    var node, i, j, x, y;
 
     if (!this.rows || !this.cols || this.rows !== rows || this.cols !== cols) {
       this.rows = rows;
@@ -71,8 +74,13 @@ CanvasXTerm.prototype = {
     var canvas;
     var brush;
 
-    for (i = 0; i < rows; i++) {
+    function reset(){
       text = '';
+      attrCache = node.attr;
+      stylesCache = context.getStyles(node);
+    }
+
+    for (i = 0; i < rows; i++) {
       x = 0;
       y = i * this.font.lineHeight;
       line = this.lru.get(screen.buffer[i].id);
@@ -92,16 +100,14 @@ CanvasXTerm.prototype = {
         node = screen.buffer[i].cells[j];
 
         if (j === 0) {
-          attrCache = node.attr;
-          stylesCache = this.getStyles(node);
+          reset();
         }
 
         if (node.value) {
           if (node.attr !== attrCache) {
             x = drawLine(brush, text, x, this.getStyles(stylesCache));
-            text = '';
-            attrCache = node.attr;
-            stylesCache = this.getStyles(node);
+
+            reset();
           }
 
           text += node.value;
