@@ -71,7 +71,7 @@ LRUCache.prototype.put = function (key, value){
  *   }
  */
 LRUCache.prototype.shift = function (){
-  // todo: handle special case when limit == 1
+  // todo: handle special case when limit === 1
   var entry = this.head;
 
   if (entry) {
