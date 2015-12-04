@@ -743,15 +743,15 @@ TChar.prototype.toString = function (){
   return this.value;
 };
 
-// rows unique id
-var _uniqueId = 0;
+// unique row id
+var _uniqueRowId = 0;
 
 /**
  * Row
  * @constructor
  */
 function Row(){
-  this.id = _uniqueId++ | 0;
+  this.id = _uniqueRowId++ | 0;
   this.version = 0;
   this.cells = [];
 }
