@@ -88,7 +88,7 @@
 
         xterm.write('\n  \033[4;41;32m红底下划线绿字\033[0m\n  ' + new Date().toISOString() + '\n\n');
 
-        // document.getElementById('term').innerHTML = xterm.toString('html');
+        document.getElementById('term').innerHTML = xterm.toString('html');
 
         canvasXTerm.draw(xterm.styles());
 
@@ -99,7 +99,7 @@
 
         termCanvas.getContext('2d').drawImage(canvasXTerm.canvas, 0, 0);
 
-        setTimeout(write, 0 - new Date().getMilliseconds());
+        setTimeout(write, 1000 - new Date().getMilliseconds());
       }
 
       write();
