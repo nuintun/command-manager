@@ -7,7 +7,7 @@
     <script type="text/javascript" src="./static/js/terminal/lru.js"></script>
     <script type="text/javascript" src="./static/js/terminal/canvas-xterm.js"></script>
     <style type="text/css">
-      #term {
+      .term {
         color: #fff;
         background-color: #181818;
         font: 13px/1.5 Consolas, sans-serif;
@@ -16,8 +16,10 @@
   </head>
   <body>
     <canvas id="canvas" width="300" height="200"></canvas>
-    <div id="term"></div>
-    <canvas id="term-canvas" style="background: #181818;"></canvas>
+    <div id="term" class="term"></div>
+    <div class="term" style="margin-top: 10px;">
+      <canvas id="term-canvas"></canvas>
+    </div>
     <script>
       // var font = '13px Consolas';
       var font = '13px 微软雅黑';

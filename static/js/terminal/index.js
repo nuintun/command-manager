@@ -1092,6 +1092,7 @@ AnsiTerminal.prototype.toString = function (type){
     var stylesBuffer = this.styles();
 
     for (i = 0; i < rows; ++i) {
+      text = '';
       line = '<div>';
 
       for (j = 0; j < cols; ++j) {
