@@ -26,7 +26,13 @@ Emulator.prototype = {
   },
   stop: function (){
     if (this.thread) {
-      this.thread.kill('SIGTERM');
+      this.thread.kill('SIGKILL');
+
+      ['stdin', 'stdout', 'stderr'].forEach(function (stream){
+        this.thread[stream].removeAllListeners();
+      }, this);
+
+      this.thread = null;
     }
   },
   exec: function (){

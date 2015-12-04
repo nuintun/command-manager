@@ -9,43 +9,56 @@ var Emulator = require('./emulator');
 var emulator;
 
 // thread
-process.on('message', function (project){
-  var stream;
+process.on('message', function (message){
+  if (message.action === 'stop') {
+    if (emulator) {
+      emulator.stop();
+    }
 
-  if (emulator) {
-    emulator.stop();
+    process.exit();
+
+    return;
   }
 
-  emulator = new Emulator({
-    cwd: project.path,
-    command: project.command.value
-  });
+  if (message.action === 'start') {
+    var stream;
+    var project = message.project;
 
-  stream = emulator.start();
+    if (emulator) {
+      emulator.stop();
+    }
 
-  stream.stdout.on('data', function (data){
-    process.send({
-      event: 'data',
-      project: project,
-      data: data.toString()
+    emulator = new Emulator({
+      cwd: project.path,
+      command: project.command.value
     });
-  });
 
-  stream.stderr.on('data', function (error){
-    emulator.stop();
-    process.send({
-      event: 'error',
-      project: project,
-      data: error.toString()
-    });
-  });
+    stream = emulator.start();
 
-  stream.on('close', function (signal){
-    emulator.stop();
-    process.send({
-      event: 'close',
-      project: project,
-      data: signal.toString()
+    stream.stdout.on('data', function (data){
+      process.send({
+        event: 'data',
+        project: project,
+        data: data.toString()
+      });
     });
-  });
+
+    stream.stderr.on('data', function (error){
+      emulator.stop();
+      process.send({
+        event: 'error',
+        project: project,
+        data: error.toString()
+      });
+    });
+
+    stream.on('close', function (signal){
+      emulator.stop();
+      process.send({
+        event: 'close',
+        project: project,
+        data: signal.toString()
+      });
+    });
+  }
 });

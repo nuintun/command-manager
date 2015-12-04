@@ -19,7 +19,9 @@ function killThread(name){
   var thread = threads[name];
 
   if (thread && thread.connected) {
-    thread.kill('SIGTERM');
+    thread.send({
+      action: 'stop'
+    });
 
     delete threads[name];
   }
@@ -28,8 +30,7 @@ function killThread(name){
 module.exports = {
   start: function (){
     ipc.on('emulator', function (event, project, action){
-      var key = project.name + '-' + project.command.name;
-      var thread = threads[key];
+      var thread = threads[project.name];
 
       switch (action) {
         case 'start':
@@ -58,13 +59,19 @@ module.exports = {
 
             delete project.env;
 
-            thread.send(project);
+            thread.send({
+              action: 'start',
+              project: project
+            });
 
             threads[project.name] = thread;
           } else {
             delete project.env;
 
-            thread.send(project);
+            thread.send({
+              action: 'start',
+              project: project
+            });
           }
           break;
         case 'stop':
