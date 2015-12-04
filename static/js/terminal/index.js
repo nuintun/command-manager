@@ -743,6 +743,7 @@ TChar.prototype.toString = function (){
   return this.value;
 };
 
+// rows unique id
 var _uniqueId = 0;
 
 /**
@@ -750,7 +751,7 @@ var _uniqueId = 0;
  * @constructor
  */
 function Row(){
-  this.uniqueId = _uniqueId++ | 0;
+  this.id = _uniqueId++ | 0;
   this.version = 0;
   this.cells = [];
 }
@@ -1054,7 +1055,7 @@ AnsiTerminal.prototype.styles = function (){
 
   for (i = 0; i < rows; ++i) {
     stylesBuffer.buffer[i] = {
-      id: this.screen.buffer[i].uniqueId,
+      id: this.screen.buffer[i].id,
       version: this.screen.buffer[i].version,
       cells: []
     };
