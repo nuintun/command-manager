@@ -15,67 +15,16 @@
     </style>
   </head>
   <body>
-    <canvas id="canvas" width="300" height="200"></canvas>
     <div id="term" class="term"></div>
     <div class="term" style="margin-top: 10px;">
       <canvas id="term-canvas"></canvas>
     </div>
     <script>
-      // var font = '13px Consolas';
-      var font = '13px 微软雅黑';
-      var canvas = document.getElementById('canvas');
-      var context = canvas.getContext('2d');
-
-      var span = document.createElement('span');
-      span.style.font = font;
-      span.style.margin = '0';
-      span.style.padding = '0';
-      span.style.lineHeight = '100%';
-      span.style.visibility = 'hidden';
-      span.style.position = 'absolute';
-      span.style.zIndex = '-1';
-      span.style.top = '-100%';
-      span.style.right = '-100%';
-
-      // 设置文字属性
-      context.font = font;
-
-      span.innerHTML = 'Canvas绘制文字';
-
-      document.body.appendChild(span);
-      console.dir(span.getBoundingClientRect());
-      var height = span.getBoundingClientRect().height;
-      document.body.removeChild(span);
-
-      context.save();
-      context.lineWidth = 1;
-      context.strokeStyle = '#00f';
-      context.translate(0.5, 0.5);
-      context.beginPath();
-      context.moveTo(0, height + 1);
-      context.lineTo(context.measureText('Canvas绘制文字').width, height + 1);
-      context.stroke();
-      context.restore();
-
-      context.fillStyle = '#00f';
-      context.textBaseline = 'top';
-      // 填充字符串
-      context.fillText('Canvas绘制文字', 0, 0);
-
-      var C = context.measureText('C').width;
-      var a = context.measureText('a').width;
-
-      console.log(context.measureText('C'));
-      console.log(context.measureText('a'));
-      console.log('C: ', C);
-      console.log('a: ', a);
-      console.log('C + a: ', C + a);
-      console.log('Ca: ', context.measureText('Ca').width);
-
-      canvas.style.backgroundColor = 'transparent';
-
       var xterm = new AnsiTerminal(120, 80, 0);
       var canvasXTerm = new CanvasXTerm();
+      var termNode = document.getElementById('term');
+      var termCanvas = document.getElementById('term-canvas');
+      var brush = termCanvas.getContext('2d');
 
       xterm.debug = false;
       xterm.newline_mode = true;
@@ -84,20 +33,20 @@
         [
           '  \u001b[36;1mgulp-cmd \u001b[0mconcat: \u001b[35mAssets/js/util/ztree/3.5.0/css/img/diy/8.png\u001b[39m start\u001b[36m +0ms\u001b[0m',
           '  \u001b[36;1mgulp-cmd \u001b[0mconcat: \u001b[35mAssets/js/util/ztree/3.5.0/css/img/diy/8.png\u001b[39m ...ok\u001b[36m +0ms\u001b[0m'
-        ].forEach(function (line){ xterm.write(line + ' ' + new Date().toISOString() + '\n'); });
+        ].forEach(function (line){
+          xterm.write(line + ' ' + new Date().toISOString() + '\n');
+        });
 
         xterm.write('\n  \033[4;41;32m红底下划线绿字\033[0m\n  ' + new Date().toISOString() + '\n\n');
 
-        document.getElementById('term').innerHTML = xterm.toString('html');
+        termNode.innerHTML = xterm.toString('html');
 
         canvasXTerm.draw(xterm.styles());
-
-        var termCanvas = document.getElementById('term-canvas');
 
         termCanvas.width = canvasXTerm.canvas.width;
         termCanvas.height = canvasXTerm.canvas.height;
 
-        termCanvas.getContext('2d').drawImage(canvasXTerm.canvas, 0, 0);
+        brush.drawImage(canvasXTerm.canvas, 0, 0);
 
         setTimeout(write, 1000 - new Date().getMilliseconds());
       }
