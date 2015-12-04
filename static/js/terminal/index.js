@@ -1028,12 +1028,12 @@ AnsiTerminal.prototype.getStyles = function (){
   var rows = this.screen.buffer.length;
   var stylesBuffer = this.stylesBuffer || [];
 
-  stylesBuffer = stylesBuffer.slice(0, rows);
+  stylesBuffer = stylesBuffer.slice(0, -rows);
 
   for (i = 0; i < rows; ++i) {
     stylesBuffer[i] = stylesBuffer[i] || [];
     cols = this.screen.buffer[i].cells.length;
-    stylesBuffer[i] = stylesBuffer[i].slice(0, cols);
+    stylesBuffer[i] = stylesBuffer[i].slice(-cols);
 
     for (j = 0; j < cols; ++j) {
       styleBuffer = stylesBuffer[i][j];
