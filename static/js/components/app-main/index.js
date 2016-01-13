@@ -99,6 +99,8 @@ function closeXTerm(name){
   }
 }
 
+var status = 0;
+
 module.exports = Vue.component('app-main', {
   template: fs.readFileSync(path.join(__dirname, 'app-main.html')).toString(),
   props: {
@@ -161,7 +163,9 @@ module.exports = Vue.component('app-main', {
           name: name,
           value: command
         }
-      }, 'start');
+      }, status === 0 ? 'start' : 'stop');
+
+      status = status === 0 ? 1 : 0;
     },
     setting: function (){
       this.showSetting = true;
