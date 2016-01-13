@@ -26,7 +26,7 @@ Emulator.prototype = {
   },
   stop: function (){
     if (this.thread) {
-      this.thread.kill('SIGKILL');
+      this.exec('taskkill /t /f /pid ' + this.thread.pid);
 
       ['stdin', 'stdout', 'stderr'].forEach(function (stream){
         this.thread[stream].removeAllListeners();
