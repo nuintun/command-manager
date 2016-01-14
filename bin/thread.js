@@ -6,6 +6,7 @@
 
 var path = require('path');
 var ipc = require('ipc-main');
+var iconv = require('iconv-lite');
 var Emulator = require('./emulator');
 
 // cache
@@ -36,7 +37,7 @@ module.exports = {
             });
 
             thread.on('data', function (data){
-              event.sender.send('emulator', 'data', project, data.toString());
+              event.sender.send('emulator', 'data', project, iconv.decode(data, 'gbk'));
             });
 
             thread.on('error', function (error){

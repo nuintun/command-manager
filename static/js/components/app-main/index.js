@@ -225,7 +225,6 @@ module.exports = Vue.component('app-main', {
       }
 
       runtime.worker.port.postMessage({ action: 'write', name: project.name, data: data.toString() });
-      // event.sender.send('emulator', project, 'stop');
     });
   },
   ready: function (){
