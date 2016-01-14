@@ -78,7 +78,7 @@ module.exports = Vue.component('app-configure', {
 
       if (trigger.contains(target) || popup.contains(target)) {
         context.showPopup = true;
-      } else {
+      } else if (context.showPopup) {
         context.hidePopup();
       }
     });
