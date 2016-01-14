@@ -8,6 +8,21 @@ importScripts('../../terminal/index.js');
 
 var xterm;
 
+/**
+ * encode
+ * @param str
+ * @returns {string}
+ */
+function encode(str){
+  if (str) {
+    return str.replace(/[<>]/mg, function (match){
+      return match === '<' ? '&lt;' : '&gt;';
+    });
+  } else {
+    return '';
+  }
+}
+
 onconnect = function (event){
   var port = event.ports[0];
 
@@ -42,7 +57,7 @@ onconnect = function (event){
         delete xterm.reset();
         break;
       case 'write':
-        xterm.write(message.data);
+        xterm.write(encode(message.data));
         send(message.name, xterm);
         break;
     }
