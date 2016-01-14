@@ -13,6 +13,27 @@ var Emulator = require('./emulator');
 // cache
 var threads = {};
 
+/**
+ * DecodeGenerator
+ * @returns {Function}
+ * @constructor
+ */
+function DecodeGenerator(){
+  var charset;
+
+  return function (data){
+    if (data) {
+      if (charset === undefined) {
+        charset = jschardet.detect(data).encoding;
+      }
+
+      return charset ? iconv.decode(data, charset) : data.toString();
+    } else {
+      return '';
+    }
+  }
+}
+
 module.exports = {
   start: function (){
     ipc.on('emulator', function (event, project, action){
@@ -22,7 +43,7 @@ module.exports = {
         case 'start':
           if (!thread || !thread.connected) {
             var env = {};
-            var encoding;
+            var decode = DecodeGenerator();
 
             Object.keys(process.env).forEach(function (key){
               env[key] = process.env[key];
@@ -39,29 +60,17 @@ module.exports = {
             });
 
             thread.on('data', function (data){
-              if (encoding === undefined) {
-                encoding = jschardet.detect(data).encoding;
-              }
-
-              data = encoding ? iconv.decode(data, encoding) : data.toString();
-
-              event.sender.send('emulator', 'data', project, data);
+              event.sender.send('emulator', 'data', project, decode(data));
             });
 
             thread.on('error', function (error){
-              if (encoding === undefined) {
-                encoding = jschardet.detect(error).encoding;
-              }
-
-              error = encoding ? iconv.decode(error, encoding) : error.toString();
-
-              event.sender.send('emulator', 'error', project, error);
+              event.sender.send('emulator', 'error', project, decode(error));
             });
 
             thread.on('close', function (signal){
-              event.sender.send('emulator', 'close', project, signal.toString());
-
               delete threads[project.name];
+
+              event.sender.send('emulator', 'close', project, decode(signal));
             });
 
             thread.start();
