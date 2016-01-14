@@ -7,6 +7,7 @@
 var path = require('path');
 var ipc = require('ipc-main');
 var iconv = require('iconv-lite');
+var jschardet = require('jschardet');
 var Emulator = require('./emulator');
 
 // cache
@@ -21,6 +22,7 @@ module.exports = {
         case 'start':
           if (!thread || !thread.connected) {
             var env = {};
+            var encoding;
 
             Object.keys(process.env).forEach(function (key){
               env[key] = process.env[key];
@@ -37,11 +39,23 @@ module.exports = {
             });
 
             thread.on('data', function (data){
-              event.sender.send('emulator', 'data', project, iconv.decode(data, 'gbk'));
+              if (encoding === undefined) {
+                encoding = jschardet.detect(data).encoding;
+              }
+
+              data = encoding ? iconv.decode(data, encoding) : data.toString();
+
+              event.sender.send('emulator', 'data', project, data);
             });
 
             thread.on('error', function (error){
-              event.sender.send('emulator', 'error', project, error.toString());
+              if (encoding === undefined) {
+                encoding = jschardet.detect(error).encoding;
+              }
+
+              error = encoding ? iconv.decode(error, encoding) : error.toString();
+
+              event.sender.send('emulator', 'error', project, error);
             });
 
             thread.on('close', function (signal){
