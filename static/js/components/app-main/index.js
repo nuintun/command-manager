@@ -93,7 +93,6 @@ function closeXTerm(name){
 
   if (runtime) {
     runtime.worker.port.postMessage({ action: 'close', name: name });
-    runtime.worker.terminate();
 
     delete AppRuntime[name];
   }
