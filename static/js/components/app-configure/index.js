@@ -47,8 +47,6 @@ module.exports = Vue.component('app-configure', {
       var base = this.$refs.base;
 
       if (base.isValid()) {
-        this.showPopup = false;
-
         // add
         this.configure.projects.push({
           name: this.name,
@@ -60,11 +58,14 @@ module.exports = Vue.component('app-configure', {
         // active index
         var index = Math.max(0, this.configure.projects.length - 1);
 
-        // clean
-        base.$emit('reset-input');
         // send message
         this.$dispatch('change-active', index, true);
         this.$dispatch('save-configure');
+
+        // hide popup
+        this.showPopup = false;
+        // clean
+        base.$emit('reset-input');
       }
     }
   },
