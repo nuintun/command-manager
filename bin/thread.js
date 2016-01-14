@@ -22,7 +22,7 @@ function DecodeGenerator(){
   var charset;
 
   return function (data){
-    if (data) {
+    if (Buffer.isBuffer(data)) {
       if (charset === undefined) {
         charset = jschardet.detect(data).encoding;
       }
