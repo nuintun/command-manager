@@ -1081,7 +1081,7 @@ AnsiTerminal.prototype.styles = function (){
 AnsiTerminal.prototype.toString = function (type){
   var s = '';
   var i, j, node;
-  var rows = this.rows;
+  var rows = this.cursor.row + 1;
   var cols = this.cols;
 
   if (type === 'html') {
