@@ -218,7 +218,7 @@ module.exports = Vue.component('app-main', {
         case 'error':
           break;
         case 'close':
-          data = '\u001b[32m' + (status === 1 ? '执行' : '结束') + '命令成功\u001b[0m\r\n';
+          data = '\u001b[32m' + (status === 1 ? '执行' : '结束') + '命令成功\u001b[0m\r\n\r\n';
           status = 0;
           break;
       }
