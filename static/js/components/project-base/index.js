@@ -49,7 +49,7 @@ module.exports = Vue.component('project-base', {
       this.path = this.path.trim();
 
       if (this.name) {
-        if (this.originName && this.originName !== this.name && this.unique[this.name]) {
+        if ((!this.originName || (this.originName && this.originName !== this.name)) && this.unique[this.name]) {
           this.nameError = '项目已存在';
         } else {
           this.nameError = '';
