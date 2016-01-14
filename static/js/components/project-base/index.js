@@ -76,6 +76,7 @@ module.exports = Vue.component('project-base', {
     'reset-input': function (){
       this.name = '';
       this.path = '';
+      this.originName = '';
     }
   }
 });
