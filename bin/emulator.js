@@ -60,6 +60,8 @@ Emulator.prototype.start = function (){
 Emulator.prototype.stop = function (){
   if (this.thread) {
     threadKill(this.thread.pid);
+  } else {
+    context.emit('close', 0);
   }
 };
 
