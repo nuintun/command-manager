@@ -35,21 +35,21 @@ module.exports = {
               command: project.command.value
             });
 
-            var stream = thread.start();
-
-            stream.stdout.on('data', function (data){
+            thread.on('data', function (data){
               event.sender.send('emulator', 'data', project, data.toString());
             });
 
-            stream.stderr.on('data', function (error){
+            thread.on('error', function (error){
               event.sender.send('emulator', 'error', project, error.toString());
             });
 
-            stream.on('close', function (signal){
+            thread.on('close', function (signal){
               event.sender.send('emulator', 'close', project, signal.toString());
 
               delete threads[project.name];
             });
+
+            thread.start();
 
             threads[project.name] = thread;
           } else {

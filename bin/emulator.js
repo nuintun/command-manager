@@ -4,7 +4,9 @@
 
 'use strict';
 
+var util = require('util');
 var spawn = require('./spawn');
+var EventEmitter = require('events');
 var threadKill = require('./thread-kill');
 
 /**
@@ -16,42 +18,48 @@ function Emulator(task){
   this.task = task;
   this.thread = null;
   this.connected = false;
+
+  EventEmitter.call(this);
 }
 
-Emulator.prototype = {
-  start: function (){
-    var context = this;
+util.inherits(Emulator, EventEmitter);
 
-    this.thread = spawn(this.task.command, {
-      env: this.task.env,
-      cwd: this.task.cwd
+Emulator.prototype.start = function (){
+  var context = this;
+
+  this.thread = spawn(this.task.command, {
+    env: this.task.env,
+    cwd: this.task.cwd
+  });
+
+  this.thread.stdout.on('data', function (chunk){
+    context.emit('data', chunk);
+  });
+
+  this.thread.stderr.on('data', function (chunk){
+    context.stop();
+    context.emit('error', chunk);
+  });
+
+  this.thread.on('close', function (signal){
+    ['stdin', 'stdout', 'stderr'].forEach(function (stream){
+      context.thread[stream].removeAllListeners();
     });
 
-    this.thread.stderr.on('data', function (){
-      context.stop();
-    });
+    context.thread = null;
+    context.connected = false;
 
-    this.thread.on('close', function (){
-      context.stop();
-    });
+    context.emit('close', signal);
+  });
 
-    this.connected = true;
+  this.connected = true;
 
-    return this.thread;
-  },
-  stop: function (){
-    if (this.thread) {
-      var context = this;
+  return this;
+};
 
-      threadKill(this.thread.pid, function (){
-        ['stdin', 'stdout', 'stderr'].forEach(function (stream){
-          context.thread[stream].removeAllListeners();
-        });
-
-        context.thread = null;
-        context.connected = false;
-      });
-    }
+Emulator.prototype.stop = function (){
+  if (this.thread) {
+    threadKill(this.thread.pid);
   }
 };
 
