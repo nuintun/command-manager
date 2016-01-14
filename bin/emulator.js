@@ -46,6 +46,8 @@ Emulator.prototype.start = function (){
       context.thread[stream].removeAllListeners();
     });
 
+    context.thread.removeAllListeners();
+
     context.thread = null;
     context.connected = false;
 
