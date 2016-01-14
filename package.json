@@ -4,5 +4,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron ."
+  },
+  "dependencies": {
+    "iconv-lite": "^0.4.13"
   }
 }
