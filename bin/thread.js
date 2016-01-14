@@ -16,9 +16,14 @@ module.exports = {
     ipc.on('emulator', function (event, project, action){
       var thread = threads[project.name];
 
+      console.log('action', action);
+
       switch (action) {
         case 'start':
+          console.log(!thread || !thread.connected);
+
           if (!thread || !thread.connected) {
+            console.log('start');
             var env = {};
 
             Object.keys(process.env).forEach(function (key){
@@ -46,6 +51,7 @@ module.exports = {
             thread.on('close', function (signal){
               event.sender.send('emulator', 'close', project, signal.toString());
 
+              console.log('close');
               delete threads[project.name];
             });
 
@@ -59,6 +65,8 @@ module.exports = {
         case 'stop':
           if (thread) {
             thread.stop();
+          } else {
+            event.sender.send('emulator', 'close', project, 0);
           }
           break;
       }
