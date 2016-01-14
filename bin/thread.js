@@ -46,7 +46,6 @@ module.exports = {
             thread.on('close', function (signal){
               event.sender.send('emulator', 'close', project, signal.toString());
 
-              console.log('close');
               delete threads[project.name];
             });
 
