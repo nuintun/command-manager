@@ -34,15 +34,15 @@ function clone(projects, index){
 /**
  * srcoll
  * @param xterm
- * @param parent
+ * @param y
  */
-function scroll(xterm, parent){
-  var height = (xterm.y + 2) * 18;
-  var scrollTop = parent.scrollTop;
-  var viewHeight = parent.clientHeight;
+function scroll(xterm, y){
+  var height = (y + 2) * 18;
+  var scrollTop = xterm.scrollTop;
+  var viewHeight = xterm.clientHeight;
 
   if (scrollTop > height || height > scrollTop + viewHeight) {
-    parent.scrollTop = Math.max(0, height - viewHeight);
+    xterm.scrollTop = Math.max(0, height - viewHeight);
   }
 }
 
@@ -70,7 +70,6 @@ function openXTerm(vm){
         } else if (event.data.screen && !document.hidden) {
           vm.$els.terminal.innerHTML = event.data.screen;
         }
-
       }
     });
 
