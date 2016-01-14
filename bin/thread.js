@@ -6,26 +6,10 @@
 
 var path = require('path');
 var ipc = require('ipc-main');
-var fork = require('child_process').fork;
+var Emulator = require('./emulator');
 
 // cache
 var threads = {};
-
-/**
- * killThread
- * @param name
- */
-function killThread(name){
-  var thread = threads[name];
-
-  if (thread && thread.connected) {
-    thread.send({
-      action: 'stop'
-    });
-
-    delete threads[name];
-  }
-}
 
 module.exports = {
   start: function (){
@@ -45,37 +29,37 @@ module.exports = {
               env[item.name] = item.value;
             });
 
-            thread = fork(path.join(__dirname, 'child-thread'), {
-              env: env
+            thread = new Emulator({
+              env: env,
+              cwd: project.path,
+              command: project.command.value
             });
 
-            thread.on('message', function (message){
-              event.sender.send('emulator', message.event, message.project, message.data);
+            var stream = thread.start();
+
+            stream.stdout.on('data', function (data){
+              event.sender.send('emulator', 'data', project, data.toString());
             });
 
-            thread.on('error', function (){
-              killThread(project.name);
+            stream.stderr.on('data', function (error){
+              event.sender.send('emulator', 'error', project, error.toString());
             });
 
-            delete project.env;
+            stream.on('close', function (signal){
+              event.sender.send('emulator', 'close', project, signal.toString());
 
-            thread.send({
-              action: 'start',
-              project: project
+              delete threads[project.name];
             });
 
             threads[project.name] = thread;
           } else {
-            delete project.env;
-
-            thread.send({
-              action: 'start',
-              project: project
-            });
+            thread.stop();
           }
           break;
         case 'stop':
-          killThread(project.name);
+          if (thread) {
+            thread.stop();
+          }
           break;
       }
     });

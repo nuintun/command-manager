@@ -14,14 +14,28 @@ var threadKill = require('./thread-kill');
  */
 function Emulator(task){
   this.task = task;
+  this.thread = null;
+  this.connected = false;
 }
 
 Emulator.prototype = {
   start: function (){
+    var context = this;
+
     this.thread = spawn(this.task.command, {
       env: this.task.env,
       cwd: this.task.cwd
     });
+
+    this.thread.stderr.on('data', function (){
+      context.stop();
+    });
+
+    this.thread.on('close', function (){
+      context.stop();
+    });
+
+    this.connected = true;
 
     return this.thread;
   },
@@ -35,6 +49,7 @@ Emulator.prototype = {
         });
 
         context.thread = null;
+        context.connected = false;
       });
     }
   }
