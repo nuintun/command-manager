@@ -16,14 +16,9 @@ module.exports = {
     ipc.on('emulator', function (event, project, action){
       var thread = threads[project.name];
 
-      console.log('action', action);
-
       switch (action) {
         case 'start':
-          console.log(!thread || !thread.connected);
-
           if (!thread || !thread.connected) {
-            console.log('start');
             var env = {};
 
             Object.keys(process.env).forEach(function (key){
