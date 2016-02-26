@@ -27,7 +27,9 @@ function DecodeGenerator(){
         charset = jschardet.detect(data).encoding;
       }
 
-      return charset ? iconv.decode(data, charset) : data.toString();
+      return charset && iconv.encodingExists(charset)
+        ? iconv.decode(data, charset)
+        : data.toString();
     } else {
       return '';
     }
