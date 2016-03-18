@@ -425,6 +425,7 @@ header [class*=" icon-"] {
   border-left: 1px dashed #ccc;
   font-family: Consolas, sans-serif;
   overflow: auto;
+  will-change: contents;
 }
 .ui-control-bar .ui-button-orange {
   margin: 0 10px 0 0;
