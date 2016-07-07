@@ -5,7 +5,8 @@
 'use strict';
 
 var path = require('path');
-var ipc = require('ipc-main');
+var electron = require('electron');
+var ipc = electron.ipcMain;
 var iconv = require('iconv-lite');
 var jschardet = require('jschardet');
 var Emulator = require('./emulator');

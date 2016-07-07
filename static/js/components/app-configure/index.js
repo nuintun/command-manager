@@ -6,7 +6,8 @@
 
 var fs = require('fs');
 var path = require('path');
-var ipc = require('ipc-renderer');
+var electron = require('electron');
+var ipc = electron.ipcRenderer;
 var Vue = require('../../vue/vue');
 
 require('../project-base');
@@ -49,7 +50,7 @@ module.exports = Vue.component('app-configure', {
       if (base.isValid()) {
         // hide popup
         this.showPopup = false;
-        
+
         // add
         this.configure.projects.push({
           name: this.name,

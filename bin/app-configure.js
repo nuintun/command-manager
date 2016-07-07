@@ -8,10 +8,11 @@ var fs = require('fs');
 var path = require('path');
 var join = path.join;
 // module to control application life
-var app = require('app');
-var ipc = require('ipc-main');
-var dialog = require('dialog');
-var shell = require('shell');
+var electron = require('electron');
+var app = electron.app;
+var ipc = electron.ipcMain;
+var dialog = electron.dialog;
+var shell = electron.shell;
 
 const USERDATA = app.getPath('userData');
 const USERDESKTOP = app.getPath('userDesktop');

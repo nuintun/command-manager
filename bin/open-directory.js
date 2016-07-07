@@ -5,8 +5,9 @@
 'use strict';
 
 // module to control application life
-var ipc = require('ipc-main');
-var dialog = require('dialog');
+var electron = require('electron');
+var ipc = electron.ipcMain;
+var dialog = electron.dialog;
 
 /**
  * open directory

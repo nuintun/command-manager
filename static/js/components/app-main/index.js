@@ -4,7 +4,8 @@
 
 'use strict';
 
-var ipc = require('ipc-renderer');
+var electron = require('electron');
+var ipc = electron.ipcRenderer;
 
 var fs = require('fs');
 var path = require('path');

@@ -5,7 +5,8 @@
 'use strict';
 
 // module to control application life
-var ipc = require('ipc-main');
+var electron = require('electron');
+var ipc = electron.ipcMain;
 
 /**
  * window control

@@ -7,11 +7,12 @@
 // node module
 var path = require('path');
 // module to control application life
-var app = require('app');
-var Menu = require('menu');
-var Tray = require('tray');
+var electron = require('electron');
+var app = electron.app;
+var Menu = electron.Menu;
+var Tray = electron.Tray;
 // module to create native browser window
-var BrowserWindow = require('browser-window');
+var BrowserWindow = electron.BrowserWindow;
 // custom module
 var windowControl = require('./bin/window-control');
 var openDirectory = require('./bin/open-directory');

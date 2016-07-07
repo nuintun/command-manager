@@ -6,7 +6,8 @@
 
 var fs = require('fs');
 var path = require('path');
-var ipc = require('ipc-renderer');
+var electron = require('electron');
+var ipc = electron.ipcRenderer;
 var Vue = require('../../vue/vue');
 
 module.exports = Vue.component('window-control', {
