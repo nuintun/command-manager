@@ -101,7 +101,7 @@ function buildProcessTree(parentPid, tree, pidsToProcess, spawnChildProcessesLis
   var onClose = function (code){
     delete pidsToProcess[parentPid];
 
-    if (code != 0) {
+    if (code !== 0) {
       // no more parent processes
       if (Object.keys(pidsToProcess).length == 0) {
         callback();
