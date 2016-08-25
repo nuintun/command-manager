@@ -61,11 +61,14 @@ function killAll(tree, signal, callback){
       tree[pid].forEach(function (pidpid){
         if (!killed[pidpid]) {
           killPid(pidpid, signal);
+          
           killed[pidpid] = 1;
         }
       });
+      
       if (!killed[pid]) {
         killPid(pid, signal);
+        
         killed[pid] = 1;
       }
     });
@@ -76,6 +79,7 @@ function killAll(tree, signal, callback){
       throw error;
     }
   }
+  
   if (callback) {
     return callback();
   }
@@ -84,8 +88,7 @@ function killAll(tree, signal, callback){
 function killPid(pid, signal){
   try {
     process.kill(parseInt(pid, 10), signal);
-  }
-  catch (error) {
+  } catch (error) {
     if (error.code !== 'ESRCH') throw error;
   }
 }
@@ -103,7 +106,7 @@ function buildProcessTree(parentPid, tree, pidsToProcess, spawnChildProcessesLis
 
     if (code !== 0) {
       // no more parent processes
-      if (Object.keys(pidsToProcess).length == 0) {
+      if (Object.keys(pidsToProcess).length === 0) {
         callback();
       }
       return;
@@ -111,9 +114,12 @@ function buildProcessTree(parentPid, tree, pidsToProcess, spawnChildProcessesLis
 
     allData.match(/\d+/g).forEach(function (pid){
       pid = parseInt(pid, 10);
+      
       tree[parentPid].push(pid);
+      
       tree[pid] = [];
       pidsToProcess[pid] = 1;
+      
       buildProcessTree(pid, tree, pidsToProcess, spawnChildProcessesList, callback);
     });
   };
