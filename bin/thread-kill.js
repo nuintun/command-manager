@@ -1,6 +1,12 @@
-/**
- * Created by nuintun on 2016/1/14.
+/*!
+ * thread-kill
+ * Date: 2016/1/14
+ * https://github.com/nuintun/command-manager
+ *
+ * Referer: https://github.com/pkrumins/node-tree-kill
  */
+
+'use strict';
 
 var spawn = require('./spawn');
 var exec = require('child_process').exec;
