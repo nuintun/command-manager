@@ -1,5 +1,5 @@
-command-manager
-===========
+#command-manager
+
 >A command manager app
 >
 >[![Dependencies][david-image]][david-url]
